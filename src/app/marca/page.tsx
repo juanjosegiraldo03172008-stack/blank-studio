@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EditorialImage from "@/components/EditorialImage";
+import BrandMark from "@/components/BrandMark";
 import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
 
 export const metadata: Metadata = {
@@ -33,9 +34,10 @@ export default function MarcaPage() {
           gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
         />
         <div className="absolute inset-0 bg-black/40" />
-        <div className="relative z-10 px-6 text-center">
+        <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <p className="label text-white/60">Premium Essentials</p>
-          <h1 className="font-display mt-4 text-4xl text-white sm:text-6xl">
+          <BrandMark variant="white" size={72} className="mt-6" />
+          <h1 className="font-display mt-6 text-4xl text-white sm:text-6xl">
             BLANK STUDIO
           </h1>
         </div>

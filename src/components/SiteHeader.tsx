@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
+import BrandMark from "./BrandMark";
 
 const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
@@ -31,8 +32,9 @@ export default function SiteHeader() {
 
         <Link
           href="/"
-          className="font-display text-lg tracking-[0.28em] whitespace-nowrap"
+          className="flex items-center gap-2.5 font-display text-lg tracking-[0.28em] whitespace-nowrap"
         >
+          <BrandMark size={20} />
           BLANK STUDIO
         </Link>
 
