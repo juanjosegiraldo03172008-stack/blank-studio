@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand neutrals */
+  --color-ink: #0f0e0c;
+  --color-paper: #faf8f4;
+
+  /* Brand palette — real product colors only */
+  --color-black: #111110;
+  --color-white: #f7f5f0;
+  --color-beige: #e4dcc8;
+  --color-sand: #d9cfb8;
+  --color-stone: #a9a196;
+  --color-cement: #8c8880;
+  --color-chocolate: #4a3626;
+  --color-navy: #1b2330;
+  --color-brown: #5b4433;
+  --color-earth: #6d5a44;
+
+  --color-line: rgba(15, 14, 12, 0.12);
+  --color-line-soft: rgba(15, 14, 12, 0.07);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-brand-black: var(--color-black);
+  --color-brand-white: var(--color-white);
+  --color-brand-beige: var(--color-beige);
+  --color-brand-sand: var(--color-sand);
+  --color-brand-stone: var(--color-stone);
+  --color-brand-cement: var(--color-cement);
+  --color-brand-chocolate: var(--color-chocolate);
+  --color-brand-navy: var(--color-navy);
+  --color-brand-brown: var(--color-brown);
+  --color-brand-earth: var(--color-earth);
+  --color-line: var(--color-line);
+  --color-line-soft: var(--color-line-soft);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in: fade-in 1.1s ease forwards;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.font-display {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+/* Editorial label style used across the site for micro-labels */
+.label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Thin, quiet scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
