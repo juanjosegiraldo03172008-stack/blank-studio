@@ -95,22 +95,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setItems([]);
 
+  const totalItems = useMemo(
+    () => items.reduce((sum, i) => sum + i.quantity, 0),
+    [items]
+  );
+
+  /**
+   * La escala de precio (Mayorista/Emprendedor/Pionero/Visionario/Detal) se
+   * calcula sobre el TOTAL de unidades del pedido completo — mezclando
+   * referencias, colores y tallas S-XL. La 2XL cuenta para ese total pero
+   * usa su propia tabla de precio (más alta).
+   */
   const itemsWithPrice = useMemo<CartItemWithPrice[]>(
     () =>
       items.map((item) => {
-        const unitPrice = getUnitPrice(item.line, item.size, item.quantity);
+        const unitPrice = getUnitPrice(item.line, item.size, totalItems);
         return {
           ...item,
           unitPrice,
           lineTotal: unitPrice === null ? null : unitPrice * item.quantity,
         };
       }),
-    [items]
-  );
-
-  const totalItems = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity, 0),
-    [items]
+    [items, totalItems]
   );
 
   const totalPrice = useMemo(() => {

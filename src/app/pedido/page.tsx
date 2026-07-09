@@ -90,7 +90,7 @@ export default function PedidoPage() {
                     {COLORS[item.color].name} · Talla {item.size}
                   </p>
                   <p className="mt-0.5 text-xs text-ink/40">
-                    {formatCOP(item.unitPrice)} c/u según cantidad
+                    {formatCOP(item.unitPrice)} c/u
                   </p>
                 </div>
                 <div className="flex items-center border border-line">
@@ -123,10 +123,14 @@ export default function PedidoPage() {
             ))}
           </ul>
 
-          <div className="flex items-center justify-between py-6 text-sm">
+          <div className="flex items-center justify-between pt-6 text-sm">
             <span className="text-ink/60">Total estimado</span>
             <span className="text-lg font-medium">{formatCOP(totalPrice)}</span>
           </div>
+          <p className="pb-6 text-xs text-ink/40">
+            Puedes mezclar referencias, colores y tallas S–XL: la escala de
+            precio se calcula sobre el total de unidades de todo el pedido.
+          </p>
 
           <form
             onSubmit={(e) => {

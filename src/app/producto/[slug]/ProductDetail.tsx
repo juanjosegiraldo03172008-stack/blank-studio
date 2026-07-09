@@ -18,14 +18,17 @@ import {
 import { TIER_LABELS } from "@/data/pricing";
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const { addItem, openCart } = useCart();
+  const { addItem, openCart, totalItems } = useCart();
   const [color, setColor] = useState<ColorId>(product.colorsLinea[0]);
   const [size, setSize] = useState<Size>(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   const tiers = getPriceTiers(product.line, size);
-  const unitPrice = getUnitPrice(product.line, size, quantity);
+  // La escala de precio se calcula sobre el total del pedido (lo que ya
+  // hay en el carrito + lo que se va a agregar ahora), no solo esta prenda.
+  const projectedTotalQty = totalItems + quantity;
+  const unitPrice = getUnitPrice(product.line, size, projectedTotalQty);
   const total = unitPrice === null ? null : unitPrice * quantity;
 
   const sizeOptions = useMemo(() => product.sizes, [product.sizes]);
@@ -89,8 +92,14 @@ export default function ProductDetail({ product }: { product: Product }) {
           <div className="mt-8">
             <p className="text-2xl font-medium">{formatCOP(unitPrice)}</p>
             <p className="text-xs text-ink/45">
-              Precio por unidad según cantidad · Total: {formatCOP(total)}
+              Precio por unidad · Total: {formatCOP(total)}
             </p>
+            {totalItems > 0 && (
+              <p className="mt-1 text-xs text-ink/40">
+                Ya llevas {totalItems} {totalItems === 1 ? "unidad" : "unidades"} en
+                tu pedido — este precio ya las incluye.
+              </p>
+            )}
           </div>
 
           {/* Color */}
@@ -215,6 +224,12 @@ export default function ProductDetail({ product }: { product: Product }) {
                   </tbody>
                 </table>
               </div>
+              <p className="mt-4 text-xs leading-relaxed text-ink/45">
+                Puedes mezclar referencias, colores y tallas S–XL: la escala
+                se calcula sobre el total de unidades de todo tu pedido. La
+                talla 2XL tiene su propia tabla de precio, pero sus unidades
+                también cuentan para ese total.
+              </p>
             </div>
           )}
 
