@@ -8,6 +8,7 @@ export const INSTAGRAM_DM_URL = `https://ig.me/m/${INSTAGRAM_HANDLE}`;
 export interface CustomerInfo {
   name: string;
   city: string;
+  address: string;
   phone: string;
   notes?: string;
 }
@@ -35,6 +36,7 @@ export function buildOrderMessage(
   lines.push("");
   lines.push(`Nombre: ${customer.name}`);
   lines.push(`Ciudad: ${customer.city}`);
+  lines.push(`Dirección: ${customer.address}`);
   lines.push(`Teléfono: ${customer.phone}`);
   if (customer.notes) lines.push(`Notas: ${customer.notes}`);
   return lines.join("\n");

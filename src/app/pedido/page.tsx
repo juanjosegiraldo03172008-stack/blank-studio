@@ -18,6 +18,7 @@ export default function PedidoPage() {
   const [customer, setCustomer] = useState<CustomerInfo>({
     name: "",
     city: "",
+    address: "",
     phone: "",
     notes: "",
   });
@@ -33,6 +34,7 @@ export default function PedidoPage() {
     items.length > 0 &&
     customer.name.trim() !== "" &&
     customer.city.trim() !== "" &&
+    customer.address.trim() !== "" &&
     customer.phone.trim() !== "";
 
   async function handleSend() {
@@ -157,6 +159,18 @@ export default function PedidoPage() {
                 value={customer.city}
                 onChange={(e) =>
                   setCustomer((c) => ({ ...c, city: e.target.value }))
+                }
+                className="border border-line bg-transparent px-4 py-3 text-sm outline-none focus:border-ink"
+              />
+            </label>
+            <label className="flex flex-col gap-2 sm:col-span-2">
+              <span className="label text-ink/50">Dirección de envío *</span>
+              <input
+                required
+                placeholder="Calle, número, barrio, apto/casa"
+                value={customer.address}
+                onChange={(e) =>
+                  setCustomer((c) => ({ ...c, address: e.target.value }))
                 }
                 className="border border-line bg-transparent px-4 py-3 text-sm outline-none focus:border-ink"
               />

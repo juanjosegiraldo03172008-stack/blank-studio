@@ -17,6 +17,7 @@ const COLUMNS = [
       { href: "/guia-de-tallas", label: "Guía de tallas" },
       { href: "/pedido", label: "Cómo hacer un pedido" },
       { href: "/marca", label: "Sobre BLANK STUDIO" },
+      { href: "/terminos", label: "Términos y condiciones" },
     ],
   },
 ];
