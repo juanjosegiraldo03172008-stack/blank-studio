@@ -68,6 +68,59 @@ export default function MarcaPage() {
         ))}
       </section>
 
+      <section className="grid grid-cols-1 items-center gap-10 bg-black/[0.02] px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-16">
+        <div className="relative aspect-[4/5] w-full max-w-md overflow-hidden justify-self-center lg:order-2 lg:justify-self-end">
+          <EditorialImage
+            src="/catalog/fabric-texture.jpg"
+            alt="Proceso de fabricación BLANK STUDIO"
+            gradient="from-[#5b4433] via-[#4a3626] to-[#2c2018]"
+          />
+        </div>
+        <div className="max-w-lg lg:order-1">
+          <p className="label text-ink/40">Cómo se hace</p>
+          <h2 className="font-display mt-3 text-3xl sm:text-4xl">
+            El proceso detrás de cada prenda
+          </h2>
+          <p className="mt-6 text-sm leading-relaxed text-ink/65">
+            Cada camiseta se confecciona con 100% algodón peruano — una de
+            las fibras de algodón más reconocidas del mundo por su suavidad,
+            resistencia y durabilidad. Trabajamos dos gramajes pensados para
+            necesidades distintas: 200 GSM, un tejido ligero para el uso
+            diario, y 300 GSM, de mayor cuerpo y estructura.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-ink/65">
+            Cada lote pasa por control de calidad antes de salir: revisamos
+            que la tela no se encoja ni se deforme con el lavado, y que el
+            color se mantenga sólido con el tiempo. El corte del cuello, las
+            costuras y la caída de la prenda se ajustan según la silueta —
+            Essentials (horma normal) u Oversize (silueta amplia, cuello en
+            rib) — para que cada línea se vea intencional, no genérica.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-5 py-24 text-center sm:px-8">
+        <p className="label text-ink/40">Para quién</p>
+        <h2 className="font-display mt-3 text-3xl sm:text-4xl">
+          ¿A quién viste BLANK STUDIO?
+        </h2>
+        <p className="mt-6 text-sm leading-relaxed text-ink/65">
+          Hombres y mujeres, principalmente entre los 18 y los 35 años, que
+          valoran vestir bien sin depender de logos gigantes ni de
+          tendencias que pasan de moda en una temporada. Personas que
+          prefieren una prenda limpia que combine con todo su clóset, que
+          entienden que la calidad se nota en el detalle — la caída de la
+          tela, el gramaje, la consistencia del color — y que se sienten
+          identificadas con un estilo minimalista, cercano al Old Money y al
+          Quiet Luxury: elegante sin ser ruidoso.
+        </p>
+        <p className="mt-4 text-sm leading-relaxed text-ink/65">
+          Si buscas piezas base para armar un guardarropa versátil (capsule
+          wardrobe) en vez de comprar por impulso, BLANK STUDIO está pensado
+          para ti.
+        </p>
+      </section>
+
       <section className="mx-auto flex max-w-2xl flex-col items-center px-5 py-24 text-center sm:px-8">
         <p className="label text-ink/40">Hecho en Perú</p>
         <p className="font-display mt-4 text-2xl sm:text-3xl">
