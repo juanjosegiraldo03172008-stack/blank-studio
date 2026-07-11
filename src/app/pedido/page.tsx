@@ -223,6 +223,24 @@ export default function PedidoPage() {
               por Instagram antes del envío.
             </p>
           </form>
+
+          <div className="mt-14 border-t border-line pt-10">
+            <p className="label text-ink/50">¿Primera vez pidiendo con nosotros?</p>
+            <h2 className="font-display mt-2 text-xl">
+              Mira cómo se hace en 20 segundos
+            </h2>
+            <div className="mt-6 max-w-sm overflow-hidden border border-line-soft">
+              <video
+                src="/videos/pedido-demo.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+                className="w-full"
+              />
+            </div>
+          </div>
         </>
       )}
 
