@@ -51,9 +51,9 @@ export default function Home() {
       <section className="mx-auto max-w-2xl px-5 py-28 text-center sm:px-8">
         <p className="label text-ink/40">Filosofía</p>
         <p className="font-display mt-6 text-2xl leading-relaxed text-ink/85 sm:text-3xl">
-          Diseñamos prendas simples, versátiles y duraderas. Sin logos
-          gigantes, sin saturación — solo tela de calidad, un corte limpio y
-          colores que combinan con todo.
+          Diseñamos prendas simples, versátiles y duraderas. Sin saturación
+          visual — solo tela de calidad, un corte limpio y detalles con
+          intención.
         </p>
       </section>
 

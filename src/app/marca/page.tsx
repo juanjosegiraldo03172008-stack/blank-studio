@@ -16,7 +16,7 @@ const VALUES = [
   },
   {
     title: "Diseño limpio",
-    text: "Sin logos gigantes, sin saturación visual. Una prenda que combina con todo, siempre.",
+    text: "Sin saturación visual. Cuando llevamos un gráfico o una marca, es intencional y discreta — nunca el protagonista de la prenda.",
   },
   {
     title: "Atemporal",
