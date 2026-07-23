@@ -10,6 +10,8 @@ const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/catalogo?fit=essential", label: "Essentials" },
   { href: "/catalogo?fit=oversize", label: "Oversize" },
+  { href: "/studio-series", label: "Studio Series" },
+  { href: "/icon-series", label: "Icon Series" },
   { href: "/guia-de-tallas", label: "Guía de tallas" },
   { href: "/marca", label: "La marca" },
 ];
