@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
+import { Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
+// Único tipo de letra en todo el sitio, a pedido — igual al del logo.
 const bodoniModa = Bodoni_Moda({
   variable: "--font-bodoni",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
@@ -55,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${bodoniModa.variable} ${inter.variable} h-full antialiased`}
+      className={`${bodoniModa.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <CartProvider>
