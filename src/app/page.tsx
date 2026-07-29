@@ -10,8 +10,8 @@ export default function Home() {
       {/* HERO */}
       <section className="relative h-[92vh] min-h-[560px] w-full overflow-hidden bg-brand-black">
         <EditorialImage
-          src="/catalog/hero-rack.jpg"
-          alt="Camisetas VALENCIANO en algodón peruano, colgadas en estudio"
+          src="/catalog/hero-elegant.jpg"
+          alt="Textura de tela negra VALENCIANO"
           priority
           gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
         />
