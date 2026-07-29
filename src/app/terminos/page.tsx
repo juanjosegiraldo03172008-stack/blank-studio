@@ -4,7 +4,7 @@ import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
 export const metadata: Metadata = {
   title: "Términos y condiciones",
   description:
-    "Términos y condiciones de compra de BLANK STUDIO: envíos, métodos de pago, cambios por defecto de fábrica y cambios por talla.",
+    "Términos y condiciones de compra de VALENCIANO: envíos, métodos de pago, cambios por defecto de fábrica y cambios por talla.",
 };
 
 export default function TerminosPage() {
@@ -15,7 +15,7 @@ export default function TerminosPage() {
         Términos y condiciones
       </h1>
       <p className="mt-5 text-sm leading-relaxed text-ink/60">
-        Al hacer un pedido con BLANK STUDIO aceptas las condiciones descritas
+        Al hacer un pedido con VALENCIANO aceptas las condiciones descritas
         en esta página.
       </p>
 

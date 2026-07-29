@@ -1,5 +1,5 @@
 /**
- * Precios reales tomados del catálogo BLANK STUDIO 2024 (COP).
+ * Precios reales tomados del catálogo VALENCIANO 2024 (COP).
  * Estructura de venta por escalas de cantidad (mayor a menor precio):
  *
  *   mayorista24   → 24 o más unidades del mismo diseño/color

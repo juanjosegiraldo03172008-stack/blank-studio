@@ -18,7 +18,7 @@ const COLUMNS = [
     links: [
       { href: "/guia-de-tallas", label: "Guía de tallas" },
       { href: "/pedido", label: "Cómo hacer un pedido" },
-      { href: "/marca", label: "Sobre BLANK STUDIO" },
+      { href: "/marca", label: "Sobre VALENCIANO" },
       { href: "/terminos", label: "Términos y condiciones" },
     ],
   },
@@ -32,11 +32,12 @@ export default function SiteFooter() {
           <div className="col-span-2 md:col-span-2">
             <p className="flex items-center gap-2.5 font-display text-xl tracking-[0.24em]">
               <BrandMark size={26} />
-              BLANK STUDIO
+              VALENCIANO
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink/60">
-              Ropa esencial en 100% algodón peruano. Essentials y Oversize,
-              horma limpia, materiales premium, sin ruido visual.
+              Ropa esencial en 100% algodón peruano, con una estética
+              elegante e italiana. Essentials y Oversize, horma limpia,
+              materiales premium.
             </p>
             <a
               href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
@@ -69,7 +70,7 @@ export default function SiteFooter() {
 
         <div className="mt-16 flex flex-col-reverse items-start justify-between gap-4 border-t border-line-soft pt-6 sm:flex-row sm:items-center">
           <p className="text-xs text-ink/40">
-            © {new Date().getFullYear()} BLANK STUDIO. Todos los derechos
+            © {new Date().getFullYear()} VALENCIANO. Todos los derechos
             reservados.
           </p>
           <p className="label text-ink/40">Diseñado en Colombia</p>

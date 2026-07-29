@@ -37,7 +37,7 @@ export default function SiteHeader() {
           className="flex items-center gap-2.5 font-display text-lg tracking-[0.28em] whitespace-nowrap"
         >
           <BrandMark size={20} />
-          BLANK STUDIO
+          VALENCIANO
         </Link>
 
         <nav className="hidden md:flex md:items-center md:gap-8">

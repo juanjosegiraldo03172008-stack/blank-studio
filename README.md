@@ -1,6 +1,6 @@
-# BLANK STUDIO
+# VALENCIANO
 
-Sitio web de BLANK STUDIO — ropa esencial en 100% algodón peruano. Construido con Next.js, TypeScript y Tailwind CSS.
+Sitio web de VALENCIANO — ropa esencial en 100% algodón peruano, con una estética elegante e italiana. Construido con Next.js, TypeScript y Tailwind CSS.
 
 ## Cómo correr el proyecto
 
@@ -42,15 +42,16 @@ cuanto sueltas la foto real con el nombre correcto, se reemplaza sola.
 
 ## Logo
 
-El logo definitivo (el archivo "BS" en blanco sobre negro que se ve limpio)
+El logo definitivo de VALENCIANO (el monograma "AV" en blanco sobre negro)
 todavía no está integrado — súbelo como archivo (no lo pegues en el chat)
 para que quede en el repo, y se puede colocar en el header, footer y favicon.
+Mientras tanto, `BrandMark` muestra una "V" tipográfica de reemplazo.
 
 ## Pedidos
 
 El sitio no tiene pasarela de pago ni checkout real todavía. El flujo de
 "Hacer pedido" arma un resumen del carrito, lo copia al portapapeles y abre
-el chat directo de Instagram (`@blank_studio.co`) para que el cliente lo
+el chat directo de Instagram (`@valenciano.co`) para que el cliente lo
 pegue y lo envíe. Eso queda centralizado en `src/lib/instagramOrder.ts`.
 
 ## Deploy

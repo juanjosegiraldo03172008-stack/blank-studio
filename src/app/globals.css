@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand neutrals */
-  --color-ink: #0f0e0c;
-  --color-paper: #faf8f4;
+  /* Brand neutrals — stark black/white, Valentino-inspired */
+  --color-ink: #0a0a0a;
+  --color-paper: #fcfcfb;
 
   /* Brand palette — real product colors only */
   --color-black: #111110;

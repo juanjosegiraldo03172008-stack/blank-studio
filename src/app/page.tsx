@@ -11,7 +11,7 @@ export default function Home() {
       <section className="relative h-[92vh] min-h-[560px] w-full overflow-hidden bg-brand-black">
         <EditorialImage
           src="/catalog/hero-rack.jpg"
-          alt="Camisetas BLANK STUDIO en algodón peruano, colgadas en estudio"
+          alt="Camisetas VALENCIANO en algodón peruano, colgadas en estudio"
           priority
           gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
         />
@@ -21,14 +21,14 @@ export default function Home() {
             100% algodón peruano
           </p>
           <h1 className="font-display max-w-3xl text-5xl leading-[1.05] text-white sm:text-7xl">
-            Elegancia urbana.
+            L&apos;eleganza essenziale.
             <br />
-            <span className="italic text-white/85">Comodidad esencial.</span>
+            <span className="italic text-white/85">Hecha para durar.</span>
           </h1>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-white/70">
-            Essentials y Oversize en algodón 100% peruano. Horma limpia,
-            materiales premium, sin ruido visual — diseñada para vestirse
-            todos los días.
+            Essentials y Oversize en algodón 100% peruano. Espíritu italiano,
+            horma limpia, materiales premium — elegancia sin esfuerzo, todos
+            los días.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
@@ -51,9 +51,9 @@ export default function Home() {
       <section className="mx-auto max-w-2xl px-5 py-28 text-center sm:px-8">
         <p className="label text-ink/40">Filosofía</p>
         <p className="font-display mt-6 text-2xl leading-relaxed text-ink/85 sm:text-3xl">
-          Diseñamos prendas simples, versátiles y duraderas. Sin saturación
-          visual — solo tela de calidad, un corte limpio y detalles con
-          intención.
+          Diseñamos prendas simples, versátiles y elegantes, con un espíritu
+          italiano. Sin saturación visual — solo tela de calidad, un corte
+          impecable y detalles con intención.
         </p>
       </section>
 
@@ -132,7 +132,7 @@ export default function Home() {
         <div className="relative aspect-square w-full max-w-md overflow-hidden justify-self-center lg:justify-self-end">
           <EditorialImage
             src="/catalog/fabric-texture.jpg"
-            alt="Detalle de textura del algodón peruano BLANK STUDIO"
+            alt="Detalle de textura del algodón peruano VALENCIANO"
             gradient="from-[#5b4433] via-[#4a3626] to-[#2c2018]"
           />
         </div>
@@ -167,16 +167,16 @@ export default function Home() {
       <section className="relative flex h-[60vh] min-h-[420px] w-full items-center justify-center overflow-hidden bg-brand-black">
         <EditorialImage
           src="/catalog/fabric-bg.jpg"
-          alt="Tela negra BLANK STUDIO"
+          alt="Tela negra VALENCIANO"
           gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
         />
         <div className="absolute inset-0 bg-black/35" />
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <span className="label rounded-full border border-white/25 px-5 py-2 text-white/70">
-            Quality over everything
+            L&apos;eccellenza non si spiega, si vive
           </span>
           <p className="font-display mt-8 max-w-xl text-2xl leading-snug text-white sm:text-3xl">
-            No competimos por precio. Competimos por calidad, diseño y
+            No competimos por precio. Competimos por elegancia, calidad y
             confianza.
           </p>
         </div>
@@ -189,8 +189,8 @@ export default function Home() {
           @{INSTAGRAM_HANDLE}
         </h2>
         <p className="mt-4 max-w-sm text-sm text-ink/60">
-          Nuevas prendas, colores de temporada y el detrás de escena de BLANK
-          STUDIO.
+          Nuevas prendas, colores de temporada y el detrás de escena de
+          VALENCIANO.
         </p>
         <a
           href={`https://instagram.com/${INSTAGRAM_HANDLE}`}

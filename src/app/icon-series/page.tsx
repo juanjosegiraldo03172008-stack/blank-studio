@@ -3,7 +3,7 @@ import EditorialImage from "@/components/EditorialImage";
 
 export const metadata: Metadata = {
   title: "Icon Series — En lanzamiento",
-  description: "Icon Series — la nueva línea urbana de BLANK STUDIO. En lanzamiento.",
+  description: "Icon Series — la nueva línea urbana de VALENCIANO. En lanzamiento.",
 };
 
 export default function IconSeriesPage() {

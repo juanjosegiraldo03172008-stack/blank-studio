@@ -1,7 +1,7 @@
 import { COLORS, formatCOP } from "@/data/products";
 import type { CartItemWithPrice } from "@/context/CartContext";
 
-export const INSTAGRAM_HANDLE = "blank_studio.co";
+export const INSTAGRAM_HANDLE = "valenciano.co";
 /** ig.me abre directo el chat interno con la cuenta, no el perfil. */
 export const INSTAGRAM_DM_URL = `https://ig.me/m/${INSTAGRAM_HANDLE}`;
 
@@ -18,7 +18,7 @@ export function buildOrderMessage(
   customer: CustomerInfo
 ): string {
   const lines: string[] = [];
-  lines.push("Hola BLANK STUDIO, quiero hacer este pedido:");
+  lines.push("Hola VALENCIANO, quiero hacer este pedido:");
   lines.push("");
   items.forEach((item, idx) => {
     const colorName = COLORS[item.color].name;

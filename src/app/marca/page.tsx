@@ -6,7 +6,7 @@ import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
 export const metadata: Metadata = {
   title: "La marca",
   description:
-    "BLANK STUDIO diseña ropa esencial en 100% algodón peruano. Calidad, diseño limpio y quiet luxury.",
+    "VALENCIANO diseña ropa esencial en 100% algodón peruano, con una estética elegante e italiana.",
 };
 
 const VALUES = [
@@ -15,7 +15,7 @@ const VALUES = [
     text: "Algodón 100% peruano en 200 y 300 GSM. Colores sólidos que perduran, tela que no se encoge ni se deforma.",
   },
   {
-    title: "Diseño limpio",
+    title: "Elegancia silenciosa",
     text: "Sin saturación visual. Cuando llevamos un gráfico o una marca, es intencional y discreta — nunca el protagonista de la prenda.",
   },
   {
@@ -30,7 +30,7 @@ export default function MarcaPage() {
       <section className="relative flex h-[60vh] min-h-[420px] w-full items-center justify-center overflow-hidden bg-brand-black">
         <EditorialImage
           src="/catalog/fabric-bg.jpg"
-          alt="BLANK STUDIO"
+          alt="VALENCIANO"
           gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
         />
         <div className="absolute inset-0 bg-black/40" />
@@ -38,22 +38,22 @@ export default function MarcaPage() {
           <p className="label text-white/60">Premium Essentials</p>
           <BrandMark variant="white" size={72} className="mt-6" />
           <h1 className="font-display mt-6 text-4xl text-white sm:text-6xl">
-            BLANK STUDIO
+            VALENCIANO
           </h1>
         </div>
       </section>
 
       <section className="mx-auto max-w-2xl px-5 py-24 text-center sm:px-8">
         <p className="font-display text-2xl leading-relaxed text-ink/85 sm:text-3xl">
-          No competimos por precio. Competimos por percepción de calidad,
-          identidad y confianza.
+          No competimos por precio. Competimos por elegancia, identidad y
+          confianza.
         </p>
         <p className="mt-8 text-sm leading-relaxed text-ink/60">
-          BLANK STUDIO nace para construir una marca de ropa minimalista
-          reconocida por su calidad y su diseño limpio. Camisetas premium
-          confeccionadas con 100% algodón peruano, pensadas para quienes
-          valoran la simplicidad, la durabilidad y la versatilidad por
-          encima de las tendencias pasajeras.
+          VALENCIANO nace para construir una marca de ropa elegante,
+          inspirada en el rigor y la sobriedad de las grandes casas de moda
+          italianas. Piezas premium confeccionadas con 100% algodón peruano,
+          pensadas para quienes valoran la simplicidad, la durabilidad y una
+          elegancia que no necesita alzar la voz.
         </p>
       </section>
 
@@ -72,7 +72,7 @@ export default function MarcaPage() {
         <div className="relative aspect-[4/5] w-full max-w-md overflow-hidden justify-self-center lg:order-2 lg:justify-self-end">
           <EditorialImage
             src="/catalog/fabric-texture.jpg"
-            alt="Proceso de fabricación BLANK STUDIO"
+            alt="Proceso de fabricación VALENCIANO"
             gradient="from-[#5b4433] via-[#4a3626] to-[#2c2018]"
           />
         </div>
@@ -82,8 +82,8 @@ export default function MarcaPage() {
             El proceso detrás de cada prenda
           </h2>
           <p className="mt-6 text-sm leading-relaxed text-ink/65">
-            Cada camiseta se confecciona con 100% algodón peruano — una de
-            las fibras de algodón más reconocidas del mundo por su suavidad,
+            Cada prenda se confecciona con 100% algodón peruano — una de las
+            fibras de algodón más reconocidas del mundo por su suavidad,
             resistencia y durabilidad. Trabajamos dos gramajes pensados para
             necesidades distintas: 200 GSM, un tejido ligero para el uso
             diario, y 300 GSM, de mayor cuerpo y estructura.
@@ -94,7 +94,7 @@ export default function MarcaPage() {
             color se mantenga sólido con el tiempo. El corte del cuello, las
             costuras y la caída de la prenda se ajustan según la silueta —
             Essentials (horma normal) u Oversize (silueta amplia, cuello en
-            rib) — para que cada línea se vea intencional, no genérica.
+            rib) — para que cada línea se vea intencional, nunca genérica.
           </p>
         </div>
       </section>
@@ -102,22 +102,21 @@ export default function MarcaPage() {
       <section className="mx-auto max-w-3xl px-5 py-24 text-center sm:px-8">
         <p className="label text-ink/40">Para quién</p>
         <h2 className="font-display mt-3 text-3xl sm:text-4xl">
-          ¿A quién viste BLANK STUDIO?
+          ¿A quién viste VALENCIANO?
         </h2>
         <p className="mt-6 text-sm leading-relaxed text-ink/65">
           Hombres y mujeres, principalmente entre los 18 y los 35 años, que
           valoran vestir bien sin depender de logos gigantes ni de
           tendencias que pasan de moda en una temporada. Personas que
-          prefieren una prenda limpia que combine con todo su clóset, que
-          entienden que la calidad se nota en el detalle — la caída de la
+          prefieren una prenda impecable que combine con todo su clóset, que
+          entienden que la elegancia se nota en el detalle — la caída de la
           tela, el gramaje, la consistencia del color — y que se sienten
-          identificadas con un estilo minimalista, cercano al Old Money y al
-          Quiet Luxury: elegante sin ser ruidoso.
+          identificadas con un estilo sobrio y refinado, cercano al Quiet
+          Luxury europeo: elegante sin ser ruidoso.
         </p>
         <p className="mt-4 text-sm leading-relaxed text-ink/65">
-          Si buscas piezas base para armar un guardarropa versátil (capsule
-          wardrobe) en vez de comprar por impulso, BLANK STUDIO está pensado
-          para ti.
+          Si buscas piezas base para armar un guardarropa versátil en vez de
+          comprar por impulso, VALENCIANO está pensado para ti.
         </p>
       </section>
 

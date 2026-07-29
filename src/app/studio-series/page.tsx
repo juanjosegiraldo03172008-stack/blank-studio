@@ -3,7 +3,7 @@ import EditorialImage from "@/components/EditorialImage";
 
 export const metadata: Metadata = {
   title: "Studio Series — En lanzamiento",
-  description: "Studio Series — la nueva línea de BLANK STUDIO. En lanzamiento.",
+  description: "Studio Series — la nueva línea de VALENCIANO. En lanzamiento.",
 };
 
 export default function StudioSeriesPage() {

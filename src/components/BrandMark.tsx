@@ -1,6 +1,8 @@
-import Image from "next/image";
-
-/** Isotipo "BS" real de BLANK STUDIO, extraído del catálogo oficial. */
+/**
+ * Marca tipográfica provisional de VALENCIANO — una sola "V" en la fuente
+ * editorial de la marca. Sustituir por el isotipo real en cuanto llegue
+ * el archivo del logo (debe subirse como adjunto, no pegado en el chat).
+ */
 export default function BrandMark({
   variant = "black",
   size = 22,
@@ -10,17 +12,14 @@ export default function BrandMark({
   size?: number;
   className?: string;
 }) {
-  const src = variant === "white" ? "/logo-mark-white.png" : "/logo-mark-black.png";
-  // aspect ratio ~1578:2243
-  const width = Math.round(size * (1578 / 2243));
+  const color = variant === "white" ? "#faf8f4" : "#0f0e0c";
   return (
-    <Image
-      src={src}
-      alt="BLANK STUDIO"
-      width={width}
-      height={size}
-      className={className}
-      priority
-    />
+    <span
+      aria-hidden="true"
+      className={`font-display inline-block leading-none ${className}`}
+      style={{ fontSize: size, color, transform: "translateY(1px)" }}
+    >
+      V
+    </span>
   );
 }

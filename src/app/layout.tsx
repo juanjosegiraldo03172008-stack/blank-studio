@@ -22,26 +22,26 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://blankstudio.co"),
+  metadataBase: new URL("https://valenciano.co"),
   title: {
-    default: "BLANK STUDIO — Ropa esencial en algodón peruano",
-    template: "%s — BLANK STUDIO",
+    default: "VALENCIANO — Ropa esencial en algodón peruano",
+    template: "%s — VALENCIANO",
   },
   description:
-    "BLANK STUDIO diseña camisetas esenciales en 100% algodón peruano. Essentials y Oversize, horma limpia, materiales premium, sin ruido visual.",
+    "VALENCIANO diseña ropa esencial en 100% algodón peruano con una estética elegante e italiana. Essentials y Oversize, horma limpia, materiales premium.",
   keywords: [
-    "BLANK STUDIO",
+    "VALENCIANO",
     "camisetas algodón peruano",
     "essentials",
     "oversize",
-    "ropa minimalista Colombia",
-    "quiet luxury",
+    "ropa elegante Colombia",
+    "moda italiana",
   ],
   openGraph: {
-    title: "BLANK STUDIO — Ropa esencial en algodón peruano",
+    title: "VALENCIANO — Ropa esencial en algodón peruano",
     description:
-      "Essentials y Oversize en 100% algodón peruano. Diseño limpio, atemporal, premium.",
-    siteName: "BLANK STUDIO",
+      "Essentials y Oversize en 100% algodón peruano. Diseño elegante, atemporal, premium.",
+    siteName: "VALENCIANO",
     locale: "es_CO",
     type: "website",
   },

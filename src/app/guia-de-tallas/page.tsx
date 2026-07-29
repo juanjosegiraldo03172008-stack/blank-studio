@@ -4,7 +4,7 @@ import { PRODUCTS } from "@/data/products";
 export const metadata: Metadata = {
   title: "Guía de tallas",
   description:
-    "Tabla de medidas oficial de BLANK STUDIO para Essentials y Oversize, en centímetros.",
+    "Tabla de medidas oficial de VALENCIANO para Essentials y Oversize, en centímetros.",
 };
 
 export default function GuiaDeTallasPage() {
