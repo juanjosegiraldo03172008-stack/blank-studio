@@ -87,6 +87,11 @@ body {
   font-family: var(--font-brand), ui-serif, Georgia, serif;
 }
 
+/* Solo para el wordmark "VALENCIANO" — misma tipografía del logo real. */
+.font-logo {
+  font-family: var(--font-logo), ui-serif, Georgia, serif;
+}
+
 /* Editorial label style used across the site for micro-labels. */
 .label {
   font-size: 0.6875rem;

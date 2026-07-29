@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
-import { Italiana } from "next/font/google";
+import { Bodoni_Moda, Italiana } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
-// Único tipo de letra en todo el sitio, a pedido — igual al del logo.
-const italiana = Italiana({
+// Tipografía general del sitio (títulos, cuerpo, botones, nav).
+const bodoniModa = Bodoni_Moda({
   variable: "--font-brand",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+// Tipografía exclusiva para el wordmark "VALENCIANO" — igual al logo real.
+const italiana = Italiana({
+  variable: "--font-logo",
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
@@ -48,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${italiana.variable} h-full antialiased`}
+      className={`${bodoniModa.variable} ${italiana.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <CartProvider>

@@ -33,7 +33,7 @@ export default function SiteHeader() {
 
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-display text-lg tracking-[0.28em] whitespace-nowrap"
+          className="font-logo flex items-center gap-2.5 text-lg tracking-[0.28em] whitespace-nowrap"
         >
           VALENCIANO
         </Link>
