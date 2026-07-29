@@ -94,8 +94,8 @@ body {
 
 /* Editorial label style used across the site for micro-labels. */
 .label {
-  font-size: 0.9375rem;
-  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 600;
 }

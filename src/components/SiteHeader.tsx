@@ -33,12 +33,12 @@ export default function SiteHeader() {
 
         <Link
           href="/"
-          className="font-logo flex items-center gap-2.5 text-2xl tracking-[0.24em] whitespace-nowrap"
+          className="font-logo flex items-center gap-2.5 text-xl tracking-[0.26em] whitespace-nowrap"
         >
           VALENCIANO
         </Link>
 
-        <nav className="hidden md:flex md:items-center md:gap-4">
+        <nav className="hidden md:flex md:items-center md:gap-5">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
@@ -50,12 +50,12 @@ export default function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           <a
             href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="label hidden whitespace-nowrap text-ink/70 transition hover:text-ink 2xl:inline"
+            className="label hidden whitespace-nowrap text-ink/70 transition hover:text-ink sm:inline"
           >
             @{INSTAGRAM_HANDLE}
           </a>
