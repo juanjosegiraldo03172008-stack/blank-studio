@@ -38,12 +38,12 @@ export default function SiteHeader() {
           VALENCIANO
         </Link>
 
-        <nav className="hidden md:flex md:items-center md:gap-8">
+        <nav className="hidden md:flex md:items-center md:gap-6">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="label text-ink/70 transition hover:text-ink"
+              className="label whitespace-nowrap text-ink/70 transition hover:text-ink"
             >
               {link.label}
             </Link>
