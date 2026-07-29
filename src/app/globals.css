@@ -37,7 +37,7 @@
   --color-line: var(--color-line);
   --color-line-soft: var(--color-line-soft);
 
-  --font-display: var(--font-fraunces);
+  --font-display: var(--font-bodoni);
   --font-sans: var(--font-inter);
 
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -84,7 +84,7 @@ body {
 }
 
 .font-display {
-  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-family: var(--font-bodoni), ui-serif, Georgia, serif;
 }
 
 /* Editorial label style used across the site for micro-labels */

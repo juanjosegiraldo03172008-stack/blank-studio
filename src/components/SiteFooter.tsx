@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
-import BrandMark from "./BrandMark";
 
 const COLUMNS = [
   {
@@ -31,7 +30,6 @@ export default function SiteFooter() {
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           <div className="col-span-2 md:col-span-2">
             <p className="flex items-center gap-2.5 font-display text-xl tracking-[0.24em]">
-              <BrandMark size={26} />
               VALENCIANO
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink/60">

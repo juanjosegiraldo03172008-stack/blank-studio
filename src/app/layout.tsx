@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const bodoniModa = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -55,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
+      className={`${bodoniModa.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <CartProvider>

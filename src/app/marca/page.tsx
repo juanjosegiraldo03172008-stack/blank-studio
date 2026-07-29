@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import EditorialImage from "@/components/EditorialImage";
-import BrandMark from "@/components/BrandMark";
 import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
 
 export const metadata: Metadata = {
@@ -36,7 +35,6 @@ export default function MarcaPage() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <p className="label text-white/60">Premium Essentials</p>
-          <BrandMark variant="white" size={72} className="mt-6" />
           <h1 className="font-display mt-6 text-4xl text-white sm:text-6xl">
             VALENCIANO
           </h1>
