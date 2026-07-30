@@ -21,9 +21,9 @@ export default function Home() {
             100% algodón peruano
           </p>
           <h1 className="font-display max-w-3xl text-5xl leading-[1.05] text-white sm:text-7xl">
-            L&apos;eleganza essenziale.
+            L&apos;eleganza, senza tempo.
             <br />
-            <span className="italic text-white/85">Hecha para durar.</span>
+            <span className="italic text-white/85">La elegancia, sin tiempo.</span>
           </h1>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-white/70">
             Essentials y Oversize en algodón 100% peruano. Espíritu italiano,
