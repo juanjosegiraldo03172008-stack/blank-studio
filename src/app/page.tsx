@@ -47,31 +47,6 @@ export default function Home() {
             VALENCIANO
           </h1>
         </div>
-
-        <div className="relative z-10 flex h-full flex-col justify-end px-5 pb-16 sm:px-8 sm:pb-24">
-          <p className="label mb-4 text-white/70 animate-fade-in">
-            100% algodón peruano
-          </p>
-          <p className="max-w-md text-sm leading-relaxed text-white/75">
-            Essentials y Oversize en algodón 100% peruano. Espíritu italiano,
-            horma limpia, materiales premium — elegancia sin esfuerzo, todos
-            los días.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-4">
-            <Link
-              href="/catalogo"
-              className="label bg-white px-8 py-4 text-brand-black transition hover:bg-white/85"
-            >
-              Ver catálogo
-            </Link>
-            <Link
-              href="/marca"
-              className="label border border-white/40 px-8 py-4 text-white transition hover:border-white"
-            >
-              Conoce la marca
-            </Link>
-          </div>
-        </div>
       </section>
 
       {/* MANIFESTO */}
