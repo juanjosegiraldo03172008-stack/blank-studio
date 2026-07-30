@@ -5,11 +5,9 @@ const COLUMNS = [
   {
     title: "Comprar",
     links: [
-      { href: "/catalogo", label: "Catálogo completo" },
-      { href: "/catalogo?fit=essential", label: "Essentials" },
-      { href: "/catalogo?fit=oversize", label: "Oversize" },
-      { href: "/studio-series", label: "Studio Series" },
-      { href: "/icon-series", label: "Icon Series" },
+      { href: "/catalogo", label: "Iconic" },
+      { href: "/origin", label: "Origin" },
+      { href: "/legacy", label: "Legacy" },
     ],
   },
   {

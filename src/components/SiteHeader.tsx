@@ -3,15 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { INSTAGRAM_HANDLE } from "@/lib/instagramOrder";
 
 const NAV_LINKS = [
-  { href: "/catalogo", label: "Catálogo" },
-  { href: "/catalogo?fit=essential", label: "Essentials" },
-  { href: "/catalogo?fit=oversize", label: "Oversize" },
-  { href: "/studio-series", label: "Studio Series" },
-  { href: "/icon-series", label: "Icon Series" },
-  { href: "/guia-de-tallas", label: "Guía de tallas" },
+  { href: "/catalogo", label: "Iconic" },
+  { href: "/origin", label: "Origin" },
+  { href: "/legacy", label: "Legacy" },
   { href: "/marca", label: "La marca" },
 ];
 
@@ -38,7 +34,7 @@ export default function SiteHeader() {
           VALENCIANO
         </Link>
 
-        <nav className="hidden md:flex md:items-center md:gap-5">
+        <nav className="hidden md:flex md:items-center md:gap-9">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
@@ -51,20 +47,12 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-5">
-          <a
-            href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label hidden whitespace-nowrap text-ink/70 transition hover:text-ink sm:inline"
-          >
-            @{INSTAGRAM_HANDLE}
-          </a>
           <button
             onClick={openCart}
             className="label relative flex items-center gap-2 text-ink"
             aria-label="Ver pedido"
           >
-            Pedido
+            Pedidos
             {totalItems > 0 && (
               <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-medium text-paper">
                 {totalItems}

@@ -41,7 +41,7 @@ export default function CatalogClient() {
   return (
     <div className="mx-auto max-w-[1600px] px-5 py-16 sm:px-8">
       <div className="mb-14">
-        <p className="label text-ink/40">Catálogo</p>
+        <p className="label text-ink/40">Iconic</p>
         <h1 className="font-display mt-3 text-4xl sm:text-5xl">
           Essentials &amp; Oversize
         </h1>
