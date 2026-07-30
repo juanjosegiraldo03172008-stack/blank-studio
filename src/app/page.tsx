@@ -9,23 +9,50 @@ export default function Home() {
     <div>
       {/* HERO */}
       <section className="relative h-[92vh] min-h-[560px] w-full overflow-hidden bg-brand-black">
-        <EditorialImage
-          src="/catalog/hero-elegant.jpg"
-          alt="Textura de tela negra VALENCIANO"
-          priority
-          gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
+        <div
+          className="hero-slide"
+          style={{
+            backgroundImage: "url(/catalog/essentials-200-negro.jpg)",
+            animationDelay: "0s",
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/40" />
+        <div
+          className="hero-slide"
+          style={{
+            backgroundImage: "url(/catalog/oversize-200-bronce.jpg)",
+            animationDelay: "5s",
+          }}
+        />
+        <div
+          className="hero-slide"
+          style={{
+            backgroundImage: "url(/catalog/essentials-300-beige.jpg)",
+            animationDelay: "10s",
+          }}
+        />
+        <div
+          className="hero-slide"
+          style={{
+            backgroundImage: "url(/catalog/oversize-300-stack.jpg)",
+            animationDelay: "15s",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/55" />
+
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
+          <h1
+            className="font-logo select-none whitespace-nowrap text-white/45"
+            style={{ fontSize: "clamp(2.75rem, 13vw, 11rem)", letterSpacing: "0.04em" }}
+          >
+            VALENCIANO
+          </h1>
+        </div>
+
         <div className="relative z-10 flex h-full flex-col justify-end px-5 pb-16 sm:px-8 sm:pb-24">
           <p className="label mb-4 text-white/70 animate-fade-in">
             100% algodón peruano
           </p>
-          <h1 className="font-display max-w-3xl text-5xl leading-[1.05] text-white sm:text-7xl">
-            L&apos;eleganza, senza tempo.
-            <br />
-            <span className="italic text-white/85">La elegancia, sin tiempo.</span>
-          </h1>
-          <p className="mt-6 max-w-md text-sm leading-relaxed text-white/70">
+          <p className="max-w-md text-sm leading-relaxed text-white/75">
             Essentials y Oversize en algodón 100% peruano. Espíritu italiano,
             horma limpia, materiales premium — elegancia sin esfuerzo, todos
             los días.
