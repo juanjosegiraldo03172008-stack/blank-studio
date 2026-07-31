@@ -9,33 +9,14 @@ export default function Home() {
     <div>
       {/* HERO */}
       <section className="relative h-[92vh] min-h-[560px] w-full overflow-hidden bg-brand-black">
-        <div
-          className="hero-slide"
-          style={{
-            backgroundImage: "url(/catalog/essentials-200-negro.jpg)",
-            animationDelay: "0s",
-          }}
-        />
-        <div
-          className="hero-slide"
-          style={{
-            backgroundImage: "url(/catalog/oversize-200-bronce.jpg)",
-            animationDelay: "5s",
-          }}
-        />
-        <div
-          className="hero-slide"
-          style={{
-            backgroundImage: "url(/catalog/essentials-300-beige.jpg)",
-            animationDelay: "10s",
-          }}
-        />
-        <div
-          className="hero-slide"
-          style={{
-            backgroundImage: "url(/catalog/oversize-300-stack.jpg)",
-            animationDelay: "15s",
-          }}
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src="/video/hero-loop.mp4"
+          poster="/video/hero-poster.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/55" />
 
