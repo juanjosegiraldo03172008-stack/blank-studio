@@ -55,7 +55,10 @@ export default function MarcaPage() {
         </p>
       </section>
 
-      <section className="mx-auto grid max-w-5xl grid-cols-1 gap-10 px-5 pb-24 sm:px-8 md:grid-cols-3">
+      <section
+        id="valores"
+        className="mx-auto grid max-w-5xl scroll-mt-16 grid-cols-1 gap-10 px-5 pb-24 sm:px-8 md:grid-cols-3"
+      >
         {VALUES.map((v) => (
           <div key={v.title} className="border-t border-ink/20 pt-6">
             <h3 className="font-display text-xl">{v.title}</h3>

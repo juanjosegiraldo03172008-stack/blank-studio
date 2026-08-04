@@ -41,19 +41,31 @@ export default function Home() {
       </section>
 
       {/* CATEGORY SPLIT */}
-      <section className="grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
+      <section className="grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
         {[
           {
-            href: "/catalogo?fit=essential",
-            label: "Essentials",
-            desc: "Horma normal · 200 / 300 GSM",
-            img: "/catalog/essentials-300-beige.jpg",
+            href: "/catalogo",
+            label: "Iconic",
+            desc: "Essentials & Oversize · 200 / 300 GSM",
+            img: "/catalog/oversize-300-stack.jpg",
+            gradient: "from-[#d9d2c2] via-[#c9c2b0] to-[#b6ae9c]",
+            cta: "Explorar →",
           },
           {
-            href: "/catalogo?fit=oversize",
-            label: "Oversize",
-            desc: "Silueta amplia · 200 / 300 GSM",
-            img: "/catalog/oversize-300-stack.jpg",
+            href: "/origin",
+            label: "Origin",
+            desc: "Próximo lanzamiento",
+            img: "/upcoming/studio-series-verde.jpg",
+            gradient: "from-[#1f4f3b] via-[#1b432f] to-[#0f2c21]",
+            cta: "Ver más →",
+          },
+          {
+            href: "/legacy",
+            label: "Legacy",
+            desc: "Próximo lanzamiento",
+            img: "/upcoming/icon-series.jpg",
+            gradient: "from-[#1c1b19] via-[#141312] to-[#0c0b0a]",
+            cta: "Ver más →",
           },
         ].map((cat) => (
           <Link
@@ -64,7 +76,7 @@ export default function Home() {
             <EditorialImage
               src={cat.img}
               alt={cat.label}
-              gradient="from-[#d9d2c2] via-[#c9c2b0] to-[#b6ae9c]"
+              gradient={cat.gradient}
               className="transition-transform duration-700 ease-out group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -74,7 +86,7 @@ export default function Home() {
               </p>
               <p className="label mt-2 text-white/75">{cat.desc}</p>
               <span className="label mt-5 inline-block border-b border-white/60 pb-1 text-white">
-                Explorar →
+                {cat.cta}
               </span>
             </div>
           </Link>
@@ -85,7 +97,7 @@ export default function Home() {
       <section className="mx-auto max-w-[1600px] px-5 py-28 sm:px-8">
         <div className="mb-12 flex items-end justify-between">
           <div>
-            <p className="label text-ink/40">Catálogo</p>
+            <p className="label text-ink/40">Iconic</p>
             <h2 className="font-display mt-3 text-3xl sm:text-4xl">
               Las cuatro esenciales
             </h2>

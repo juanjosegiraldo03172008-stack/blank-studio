@@ -15,8 +15,14 @@ const COLUMNS = [
     links: [
       { href: "/guia-de-tallas", label: "Guía de tallas" },
       { href: "/pedido", label: "Cómo hacer un pedido" },
-      { href: "/marca", label: "Sobre VALENCIANO" },
       { href: "/terminos", label: "Términos y condiciones" },
+    ],
+  },
+  {
+    title: "La marca",
+    links: [
+      { href: "/marca", label: "Sobre VALENCIANO" },
+      { href: "/marca#valores", label: "Nuestros valores" },
     ],
   },
 ];
@@ -25,8 +31,8 @@ export default function SiteFooter() {
   return (
     <footer className="mt-32 border-t border-line">
       <div className="mx-auto max-w-[1600px] px-5 py-16 sm:px-8">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
-          <div className="col-span-2 md:col-span-2">
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
+          <div className="col-span-2">
             <p className="font-logo flex items-center gap-2.5 text-2xl tracking-[0.22em]">
               VALENCIANO
             </p>
