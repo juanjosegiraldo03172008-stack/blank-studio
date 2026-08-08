@@ -1,4 +1,4 @@
-import { PRICING, tierForQuantity, type PriceTiers } from "./pricing";
+import { PRICING, type PriceTiers } from "./pricing";
 
 export const ALL_SIZES = ["XS", "S", "M", "L", "XL", "2XL"] as const;
 export type Size = (typeof ALL_SIZES)[number];
@@ -32,7 +32,9 @@ export type ColorId =
   | "rubor"
   | "bronce"
   | "crema"
-  | "melon";
+  | "melon"
+  | "arena"
+  | "merlot";
 
 /**
  * Hex aproximados a partir del catálogo oficial. Son de referencia visual;
@@ -65,15 +67,45 @@ export const COLORS: Record<ColorId, { name: string; hex: string }> = {
   bronce: { name: "Bronce", hex: "#8a5a34" },
   crema: { name: "Crema", hex: "#ece4d2" },
   melon: { name: "Melón", hex: "#f0d8b0" },
+  arena: { name: "Arena", hex: "#e7e0d8" },
+  merlot: { name: "Merlot", hex: "#3b1316" },
 };
+
+/**
+ * CORE COLORS aparecen primero y con mayor prioridad visual — son el ADN
+ * atemporal de la marca. Los demás colores del registro (tonos vivos,
+ * pasteles) se muestran como colores de temporada, con menor jerarquía.
+ */
+export const CORE_COLORS: ColorId[] = [
+  "blanco",
+  "perla",
+  "vainilla",
+  "beige",
+  "camel",
+  "tabaco",
+  "chocolate",
+  "negro",
+  "gris-oscuro",
+  "plomo-plata",
+  "azul-navy",
+  "verde-militar",
+  "verde-botella",
+  "palo-de-rosa",
+];
 
 export type ProductLine =
   | "essentials-200"
   | "essentials-300"
   | "oversize-200"
-  | "oversize-300";
+  | "oversize-300"
+  | "origin"
+  | "legacy-chocolate"
+  | "legacy-merlot";
 
 export type Fit = "essential" | "oversize";
+
+/** Colección comercial — determina en qué página/nav vive el producto. */
+export type Collection = "iconic" | "origin" | "legacy";
 
 export interface SizeChartRow {
   size: Size;
@@ -81,9 +113,16 @@ export interface SizeChartRow {
   lengthCm: number;
 }
 
+export interface ProductMediaItem {
+  src: string;
+  alt: string;
+  role: "front" | "back" | "detail" | "model";
+}
+
 export interface Product {
   slug: string;
   line: ProductLine;
+  collection: Collection;
   name: string;
   fit: Fit;
   gsm: 200 | 300;
@@ -97,12 +136,24 @@ export interface Product {
   imageFolder: string;
   /** Foto real de catálogo mostrada de portada (no ligada a un color específico). */
   coverImage: string;
+  /**
+   * Galería explícita por color (frente/espalda/detalle/modelo, cualquier
+   * cantidad de imágenes). Si no está definida para un color, se usa el
+   * patrón heredado `${imageFolder}/${color}-N.jpg` con 3 imágenes fijas.
+   */
+  media?: Partial<Record<ColorId, ProductMediaItem[]>>;
+  /**
+   * Precio público B2C fijo por unidad. No varía con la cantidad ni la
+   * talla. Todos los productos lo usan — ver getUnitPrice más abajo.
+   */
+  retailPrice: number;
 }
 
 export const PRODUCTS: Product[] = [
   {
     slug: "essentials-200",
     line: "essentials-200",
+    collection: "iconic",
     name: "Essentials 200",
     fit: "essential",
     gsm: 200,
@@ -145,10 +196,12 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: ["camel", "palo-de-rosa", "verde-menta", "verde-manzana", "verde-limon"],
     imageFolder: "/products/essentials-200",
     coverImage: "/catalog/essentials-200-negro.jpg",
+    retailPrice: 61900,
   },
   {
     slug: "essentials-300",
     line: "essentials-300",
+    collection: "iconic",
     name: "Essentials 300",
     fit: "essential",
     gsm: 300,
@@ -184,10 +237,12 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/essentials-300",
     coverImage: "/catalog/essentials-300-beige.jpg",
+    retailPrice: 87900,
   },
   {
     slug: "oversize-200",
     line: "oversize-200",
+    collection: "iconic",
     name: "Oversize 200",
     fit: "oversize",
     gsm: 200,
@@ -224,10 +279,12 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: ["rojo", "rubor", "bronce", "crema", "melon"],
     imageFolder: "/products/oversize-200",
     coverImage: "/catalog/oversize-200-bronce.jpg",
+    retailPrice: 77900,
   },
   {
     slug: "oversize-300",
     line: "oversize-300",
+    collection: "iconic",
     name: "Oversize 300",
     fit: "oversize",
     gsm: 300,
@@ -253,6 +310,123 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/oversize-300",
     coverImage: "/catalog/oversize-300-stack.jpg",
+    retailPrice: 106900,
+  },
+  {
+    slug: "origin-legacy-of-luxury",
+    line: "origin",
+    collection: "origin",
+    name: "Origin — Legacy Of Luxury",
+    fit: "oversize",
+    gsm: 200,
+    tagline: "Oversize · Arena",
+    description:
+      "Primera referencia de Origin: oversize en algodón peruano de 200 GSM, color arena, con texto pequeño al pecho y estampado grande en la espalda inspirado en el mundo del streetwear premium.",
+    details: [
+      "100% algodón peruano",
+      "200 GSM",
+      "Horma oversize unisex",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 53, lengthCm: 70.5 },
+      { size: "S", chestCm: 57, lengthCm: 73 },
+      { size: "M", chestCm: 59, lengthCm: 76 },
+      { size: "L", chestCm: 62, lengthCm: 77 },
+      { size: "XL", chestCm: 65, lengthCm: 79 },
+    ],
+    colorsLinea: ["arena"],
+    colorsTemporada: [],
+    imageFolder: "/products/origin-arena",
+    coverImage: "/products/origin-arena/arena-1.jpg",
+    retailPrice: 138900,
+    media: {
+      arena: [
+        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin arena — frente", role: "front" },
+        { src: "/products/origin-arena/arena-2.jpg", alt: "Origin arena — espalda", role: "back" },
+        { src: "/products/origin-arena/arena-3.jpg", alt: "Origin arena — detalle de espalda", role: "detail" },
+      ],
+    },
+  },
+  {
+    slug: "legacy-chocolate",
+    line: "legacy-chocolate",
+    collection: "legacy",
+    name: "Legacy — Valenciano Legacy",
+    fit: "essential",
+    gsm: 300,
+    tagline: "Essentials · Chocolate",
+    description:
+      "Primera referencia de Legacy: horma essential en algodón peruano de 300 GSM, color chocolate, con texto pequeño al pecho y el estampado 'Valenciano Legacy' arqueado en la espalda.",
+    details: [
+      "100% algodón peruano",
+      "300 GSM",
+      "Horma essential (normal)",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 48, lengthCm: 70 },
+      { size: "S", chestCm: 50, lengthCm: 72 },
+      { size: "M", chestCm: 55, lengthCm: 73 },
+      { size: "L", chestCm: 58, lengthCm: 75 },
+      { size: "XL", chestCm: 61, lengthCm: 77 },
+    ],
+    colorsLinea: ["chocolate"],
+    colorsTemporada: [],
+    imageFolder: "/products/legacy-chocolate",
+    coverImage: "/products/legacy-chocolate/chocolate-1.jpg",
+    retailPrice: 129900,
+    media: {
+      chocolate: [
+        { src: "/products/legacy-chocolate/chocolate-1.jpg", alt: "Legacy chocolate — frente", role: "front" },
+        { src: "/products/legacy-chocolate/chocolate-2.jpg", alt: "Legacy chocolate — espalda", role: "back" },
+      ],
+    },
+  },
+  {
+    slug: "legacy-merlot",
+    line: "legacy-merlot",
+    collection: "legacy",
+    name: "Legacy — Valenciano Legacy",
+    fit: "oversize",
+    gsm: 300,
+    tagline: "Oversize · Merlot",
+    description:
+      "Segunda referencia de Legacy: oversize en algodón peruano de 300 GSM, color merlot, con texto pequeño al pecho y el estampado 'Valenciano Legacy' con tipografía desgastada en la espalda — Designed for the timeless.",
+    details: [
+      "100% algodón peruano",
+      "300 GSM",
+      "Horma oversize unisex",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 58, lengthCm: 75 },
+      { size: "S", chestCm: 59, lengthCm: 77 },
+      { size: "M", chestCm: 63, lengthCm: 78 },
+      { size: "L", chestCm: 65, lengthCm: 80 },
+      { size: "XL", chestCm: 69, lengthCm: 84 },
+    ],
+    colorsLinea: ["merlot"],
+    colorsTemporada: [],
+    imageFolder: "/products/legacy-merlot",
+    coverImage: "/products/legacy-merlot/merlot-1.jpg",
+    retailPrice: 148900,
+    media: {
+      merlot: [
+        { src: "/products/legacy-merlot/merlot-1.jpg", alt: "Legacy merlot — frente", role: "front" },
+        { src: "/products/legacy-merlot/merlot-2.jpg", alt: "Legacy merlot — espalda", role: "back" },
+        { src: "/products/legacy-merlot/merlot-3.jpg", alt: "Legacy merlot — modelo frente", role: "model" },
+        { src: "/products/legacy-merlot/merlot-4.jpg", alt: "Legacy merlot — modelo espalda", role: "model" },
+        { src: "/products/legacy-merlot/merlot-5.jpg", alt: "Legacy merlot — detalle pecho", role: "detail" },
+        { src: "/products/legacy-merlot/merlot-6.jpg", alt: "Legacy merlot — detalle espalda", role: "detail" },
+      ],
+    },
   },
 ];
 
@@ -274,26 +448,31 @@ export function isSizeAvailable(
   return EXTENDED_SIZE_COLORS.includes(color);
 }
 
+/**
+ * Escalas por cantidad (mayorista/emprendedor/pionero/visionario/detal) —
+ * infraestructura B2B conservada en datos, pero ya no impulsa el precio
+ * mostrado al público (ver getUnitPrice). Queda lista para un futuro canal
+ * mayorista independiente.
+ */
 export function getPriceTiers(line: ProductLine, size: Size): PriceTiers | null {
-  const pricing = PRICING[line];
+  const pricing = (PRICING as Partial<typeof PRICING>)[line as keyof typeof PRICING];
+  if (!pricing) return null;
   return size === "2XL" ? pricing.xxl : pricing.base;
 }
 
-export function getUnitPrice(
-  line: ProductLine,
-  size: Size,
-  quantity: number
-): number | null {
-  const tiers = getPriceTiers(line, size);
-  if (!tiers) return null;
-  return tiers[tierForQuantity(quantity)];
+/**
+ * Precio público B2C — fijo por unidad, no varía con la talla ni la
+ * cantidad. Todos los productos (Iconic, Origin, Legacy) usan su
+ * `retailPrice`.
+ */
+export function getUnitPrice(line: ProductLine): number | null {
+  const product = PRODUCTS.find((p) => p.line === line);
+  return product?.retailPrice ?? null;
 }
 
 export function formatCOP(value: number | null): string {
   if (value === null) return "Próximamente";
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(value);
+  // Intl currency formatting for es-CO inserts a space after "$" — se quita
+  // a mano para que quede "$61.900", no "$ 61.900".
+  return `$${new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(value)}`;
 }
