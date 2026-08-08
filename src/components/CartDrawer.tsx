@@ -94,7 +94,7 @@ export default function CartDrawer() {
             <span className="font-medium">{formatCOP(totalPrice)}</span>
           </div>
           <p className="mb-4 text-xs text-ink/40">
-            El precio baja automáticamente por mayor cantidad de unidades.
+            Envío calculado en el siguiente paso.
           </p>
           <Link
             href="/pedido"
