@@ -8,30 +8,27 @@ import { useCart } from "@/context/CartContext";
 import {
   COLORS,
   formatCOP,
-  getPriceTiers,
   getUnitPrice,
   isSizeAvailable,
   type ColorId,
   type Product,
   type Size,
 } from "@/data/products";
-import { TIER_LABELS } from "@/data/pricing";
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const { addItem, openCart, totalItems } = useCart();
+  const { addItem, openCart } = useCart();
   const [color, setColor] = useState<ColorId>(product.colorsLinea[0]);
   const [size, setSize] = useState<Size>(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
-  const tiers = getPriceTiers(product.line, size);
-  // La escala de precio se calcula sobre el total del pedido (lo que ya
-  // hay en el carrito + lo que se va a agregar ahora), no solo esta prenda.
-  const projectedTotalQty = totalItems + quantity;
-  const unitPrice = getUnitPrice(product.line, size, projectedTotalQty);
+  // Precio fijo B2C — no varía con la talla ni la cantidad.
+  const unitPrice = getUnitPrice(product.line);
   const total = unitPrice === null ? null : unitPrice * quantity;
 
   const sizeOptions = useMemo(() => product.sizes, [product.sizes]);
+
+  const media = product.media?.[color];
 
   function handleSelectColor(c: ColorId) {
     setColor(c);
@@ -53,28 +50,46 @@ export default function ProductDetail({ product }: { product: Product }) {
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
         {/* Gallery */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="col-span-2">
-            <ProductImage
-              src={`${product.imageFolder}/${color}-1.jpg`}
-              fallbackSrc={product.coverImage}
-              alt={`${product.name} en ${COLORS[color].name}`}
-              fit={product.fit}
-              hex={COLORS[color].hex}
-              priority
-              bgClassName="bg-[#efece4]"
-            />
-          </div>
-          {[1, 2].map((v) => (
-            <ProductImage
-              key={v}
-              src={`${product.imageFolder}/${color}-${v + 1}.jpg`}
-              alt={`${product.name} detalle ${v}`}
-              fit={product.fit}
-              hex={COLORS[color].hex}
-              variant={v}
-              bgClassName="bg-[#efece4]"
-            />
-          ))}
+          {media ? (
+            media.map((item, i) => (
+              <div key={item.src} className={i === 0 ? "col-span-2" : ""}>
+                <ProductImage
+                  src={item.src}
+                  alt={item.alt}
+                  fit={product.fit}
+                  hex={COLORS[color].hex}
+                  priority={i === 0}
+                  variant={i}
+                  bgClassName="bg-[#efece4]"
+                />
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="col-span-2">
+                <ProductImage
+                  src={`${product.imageFolder}/${color}-1.jpg`}
+                  fallbackSrc={product.coverImage}
+                  alt={`${product.name} en ${COLORS[color].name}`}
+                  fit={product.fit}
+                  hex={COLORS[color].hex}
+                  priority
+                  bgClassName="bg-[#efece4]"
+                />
+              </div>
+              {[1, 2].map((v) => (
+                <ProductImage
+                  key={v}
+                  src={`${product.imageFolder}/${color}-${v + 1}.jpg`}
+                  alt={`${product.name} detalle ${v}`}
+                  fit={product.fit}
+                  hex={COLORS[color].hex}
+                  variant={v}
+                  bgClassName="bg-[#efece4]"
+                />
+              ))}
+            </>
+          )}
         </div>
 
         {/* Info */}
@@ -94,12 +109,6 @@ export default function ProductDetail({ product }: { product: Product }) {
             <p className="text-xs text-ink/45">
               Precio por unidad · Total: {formatCOP(total)}
             </p>
-            {totalItems > 0 && (
-              <p className="mt-1 text-xs text-ink/40">
-                Ya llevas {totalItems} {totalItems === 1 ? "unidad" : "unidades"} en
-                tu pedido — este precio ya las incluye.
-              </p>
-            )}
           </div>
 
           {/* Color */}
@@ -203,35 +212,8 @@ export default function ProductDetail({ product }: { product: Product }) {
             onClick={handleAdd}
             className="label mt-8 w-full bg-ink py-4 text-center text-paper transition hover:bg-ink/85 sm:w-auto sm:px-14"
           >
-            {added ? "Agregado ✓" : "Agregar al pedido"}
+            {added ? "Agregado ✓" : "Agregar al carrito"}
           </button>
-
-          {/* Price tiers */}
-          {tiers && (
-            <div className="mt-12 border-t border-line pt-6">
-              <p className="label text-ink/40">Precio por cantidad</p>
-              <div className="mt-4 overflow-x-auto">
-                <table className="w-full min-w-[420px] border-collapse text-sm">
-                  <tbody>
-                    {TIER_LABELS.map((t) => (
-                      <tr key={t.key} className="border-b border-line-soft">
-                        <td className="py-2 pr-4 text-ink/60">{t.label}</td>
-                        <td className="py-2 text-right font-medium">
-                          {formatCOP(tiers[t.key])}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="mt-4 text-xs leading-relaxed text-ink/45">
-                Puedes mezclar referencias, colores y tallas S–XL: la escala
-                se calcula sobre el total de unidades de todo tu pedido. La
-                talla 2XL tiene su propia tabla de precio, pero sus unidades
-                también cuentan para ese total.
-              </p>
-            </div>
-          )}
 
           {/* Details */}
           <div className="mt-10 border-t border-line pt-6">

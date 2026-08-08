@@ -8,19 +8,20 @@ import {
   allColorsFor,
   COLORS,
   formatCOP,
-  getPriceTiers,
+  getUnitPrice,
   type Product,
 } from "@/data/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   const colors = allColorsFor(product);
   const [hoverColor, setHoverColor] = useState(colors[0]);
-  const tiers = getPriceTiers(product.line, product.sizes[0]);
+  const price = getUnitPrice(product.line);
+  const cardImage = product.media?.[hoverColor]?.[0]?.src ?? `${product.imageFolder}/${hoverColor}-1.jpg`;
 
   return (
     <Link href={`/producto/${product.slug}`} className="group block">
       <ProductImage
-        src={`${product.imageFolder}/${hoverColor}-1.jpg`}
+        src={cardImage}
         alt={`${product.name} en ${COLORS[hoverColor].name}`}
         fit={product.fit}
         hex={COLORS[hoverColor].hex}
@@ -35,7 +36,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <p className="mt-1 text-xs text-ink/50">{product.tagline}</p>
         </div>
         <p className="whitespace-nowrap text-sm text-ink/80">
-          Desde {formatCOP(tiers?.mayorista24 ?? null)}
+          {formatCOP(price)}
         </p>
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
