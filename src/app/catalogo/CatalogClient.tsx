@@ -25,13 +25,18 @@ export default function CatalogClient() {
   const [gsm, setGsm] = useState<200 | 300 | "all">("all");
   const [color, setColor] = useState<ColorId | "all">("all");
 
+  const iconicProducts = useMemo(
+    () => PRODUCTS.filter((p) => p.collection === "iconic"),
+    []
+  );
+
   const allColors = useMemo(() => {
     const set = new Set<ColorId>();
-    PRODUCTS.forEach((p) => allColorsFor(p).forEach((c) => set.add(c)));
+    iconicProducts.forEach((p) => allColorsFor(p).forEach((c) => set.add(c)));
     return Array.from(set);
-  }, []);
+  }, [iconicProducts]);
 
-  const filtered = PRODUCTS.filter((p) => {
+  const filtered = iconicProducts.filter((p) => {
     if (fit !== "all" && p.fit !== fit) return false;
     if (gsm !== "all" && p.gsm !== gsm) return false;
     if (color !== "all" && !allColorsFor(p).includes(color)) return false;
