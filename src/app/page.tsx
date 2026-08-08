@@ -54,18 +54,18 @@ export default function Home() {
           {
             href: "/origin",
             label: "Origin",
-            desc: "Próximo lanzamiento",
-            img: "/upcoming/studio-series-verde.jpg",
-            gradient: "from-[#1f4f3b] via-[#1b432f] to-[#0f2c21]",
-            cta: "Ver más →",
+            desc: "Donde empieza la identidad",
+            img: "/products/origin-arena/arena-2.jpg",
+            gradient: "from-[#d9d2c2] via-[#c9c2b0] to-[#b6ae9c]",
+            cta: "Explorar →",
           },
           {
             href: "/legacy",
             label: "Legacy",
-            desc: "Próximo lanzamiento",
-            img: "/upcoming/icon-series.jpg",
-            gradient: "from-[#1c1b19] via-[#141312] to-[#0c0b0a]",
-            cta: "Ver más →",
+            desc: "Diseñado para perdurar",
+            img: "/products/legacy-merlot/merlot-1.jpg",
+            gradient: "from-[#2a1013] via-[#1c0a0c] to-[#0c0405]",
+            cta: "Explorar →",
           },
         ].map((cat) => (
           <Link
