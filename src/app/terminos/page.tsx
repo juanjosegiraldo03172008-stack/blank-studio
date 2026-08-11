@@ -23,10 +23,9 @@ export default function TerminosPage() {
         <section>
           <h2 className="font-display text-2xl">Pedidos y precios</h2>
           <p className="mt-4 text-sm leading-relaxed text-ink/70">
-            Los precios mostrados en el sitio son estimados y se calculan
-            según la cantidad total de tu pedido. El precio final, la
-            disponibilidad de color/talla y los detalles de envío se
-            confirman por Instagram (
+            Los precios mostrados en el sitio son precios finales por
+            unidad. La disponibilidad de color/talla y los detalles de envío
+            se confirman por Instagram (
             <span className="font-medium">@{INSTAGRAM_HANDLE}</span>) antes
             de despachar el pedido.
           </p>

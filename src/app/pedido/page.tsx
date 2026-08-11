@@ -130,8 +130,8 @@ export default function PedidoPage() {
             <span className="text-lg font-medium">{formatCOP(totalPrice)}</span>
           </div>
           <p className="pb-6 text-xs text-ink/40">
-            Puedes mezclar referencias, colores y tallas S–XL: la escala de
-            precio se calcula sobre el total de unidades de todo el pedido.
+            Puedes mezclar referencias, colores y tallas S–XL. El envío se
+            confirma por Instagram antes de despachar el pedido.
           </p>
 
           <form
