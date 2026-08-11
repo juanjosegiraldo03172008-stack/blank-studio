@@ -59,7 +59,7 @@ export default function SiteFooter() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-ink/70 transition hover:text-ink"
+                      className="font-ui text-sm text-ink/70 transition hover:text-ink"
                     >
                       {link.label}
                     </Link>
@@ -71,7 +71,7 @@ export default function SiteFooter() {
         </div>
 
         <div className="mt-16 flex flex-col-reverse items-start justify-between gap-4 border-t border-line-soft pt-6 sm:flex-row sm:items-center">
-          <p className="text-xs text-ink/40">
+          <p className="font-ui text-xs text-ink/40">
             © {new Date().getFullYear()} VALENCIANO. Todos los derechos
             reservados.
           </p>

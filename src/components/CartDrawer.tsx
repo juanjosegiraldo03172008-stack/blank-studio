@@ -48,7 +48,7 @@ export default function CartDrawer() {
                       {COLORS[item.color].name} · Talla {item.size}
                     </p>
                     <div className="mt-2 flex items-center gap-3">
-                      <div className="flex items-center border border-line">
+                      <div className="font-ui flex items-center border border-line">
                         <button
                           className="px-2 py-1 text-sm"
                           onClick={() =>
@@ -72,14 +72,14 @@ export default function CartDrawer() {
                         </button>
                       </div>
                       <button
-                        className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
+                        className="font-ui text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
                         onClick={() => removeItem(item.id)}
                       >
                         Quitar
                       </button>
                     </div>
                   </div>
-                  <p className="whitespace-nowrap text-sm text-ink/70">
+                  <p className="font-ui whitespace-nowrap text-sm text-ink/70">
                     {formatCOP(item.lineTotal)}
                   </p>
                 </li>
@@ -89,7 +89,7 @@ export default function CartDrawer() {
         </div>
 
         <div className="border-t border-line px-6 py-5">
-          <div className="mb-1 flex items-center justify-between text-sm">
+          <div className="font-ui mb-1 flex items-center justify-between text-sm">
             <span className="text-ink/60">Total</span>
             <span className="font-medium">{formatCOP(totalPrice)}</span>
           </div>

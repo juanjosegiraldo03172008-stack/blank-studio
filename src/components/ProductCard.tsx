@@ -35,7 +35,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </h3>
           <p className="mt-1 text-xs text-ink/50">{product.tagline}</p>
         </div>
-        <p className="whitespace-nowrap text-sm text-ink/80">
+        <p className="font-ui whitespace-nowrap text-sm text-ink/80">
           {formatCOP(price)}
         </p>
       </div>
