@@ -30,7 +30,10 @@ export default function ProductCard({ product }: { product: Product }) {
       />
       <div className="mt-4 flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-sm font-medium tracking-tight">
+          <p className="font-ui label text-ink/40">
+            {product.fit === "essential" ? "Essential" : "Oversize"} · {product.gsm} GSM
+          </p>
+          <h3 className="mt-1.5 text-sm font-medium tracking-tight">
             {product.name}
           </h3>
           <p className="mt-1 text-xs text-ink/50">{product.tagline}</p>

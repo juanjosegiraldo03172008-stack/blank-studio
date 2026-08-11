@@ -14,12 +14,14 @@ export default function EditorialImage({
   className = "",
   gradient = "from-[#d9d2c2] via-[#c9c2b0] to-[#b6ae9c]",
   priority = false,
+  objectPosition,
 }: {
   src: string;
   alt: string;
   className?: string;
   gradient?: string;
   priority?: boolean;
+  objectPosition?: string;
 }) {
   const [broken, setBroken] = useState(false);
 
@@ -42,6 +44,7 @@ export default function EditorialImage({
       priority={priority}
       sizes="100vw"
       className={`object-cover ${className}`}
+      style={objectPosition ? { objectPosition } : undefined}
       onError={() => setBroken(true)}
     />
   );
