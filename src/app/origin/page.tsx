@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import EditorialImage from "@/components/EditorialImage";
+import Image from "next/image";
 import ProductCard from "@/components/ProductCard";
+import Reveal from "@/components/Reveal";
 import { PRODUCTS } from "@/data/products";
 
 export const metadata: Metadata = {
@@ -14,18 +15,32 @@ export default function OriginPage() {
 
   return (
     <div>
-      <section className="relative flex h-[65vh] min-h-[440px] w-full items-center justify-center overflow-hidden bg-brand-stone">
-        <EditorialImage
-          src="/products/origin-arena/arena-2.jpg"
-          alt="Origin"
-          priority
-          gradient="from-[#d9d2c2] via-[#c9c2b0] to-[#b6ae9c]"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="relative z-10 flex flex-col items-center px-6 text-center">
-          <h1 className="font-display text-5xl text-white sm:text-7xl">Origin</h1>
-          <p className="label mt-6 text-white/85">Donde empieza la identidad</p>
-        </div>
+      <section className="mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-16">
+        <Reveal className="order-2 max-w-lg lg:order-1">
+          <p className="label text-ink/40">Origin</p>
+          <h1 className="font-display mt-3 text-5xl sm:text-6xl">Origin</h1>
+          <p className="label mt-5 text-ink/60">Donde empieza la identidad</p>
+          <p className="mt-6 text-sm leading-relaxed text-ink/65">
+            El primer universo propio de VALENCIANO: diseño con identidad
+            gráfica, más expresivo que Iconic, siempre sobre la misma base de
+            100% algodón peruano.
+          </p>
+        </Reveal>
+        <Reveal
+          delay={100}
+          className="order-1 flex aspect-[4/5] w-full items-center justify-center bg-brand-sand/25 lg:order-2"
+        >
+          <div className="relative h-[85%] w-[85%]">
+            <Image
+              src="/products/origin-arena/arena-1.jpg"
+              alt="Origin — Legacy Of Luxury, color arena"
+              fill
+              priority
+              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="object-contain"
+            />
+          </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-[1600px] px-5 py-20 sm:px-8">

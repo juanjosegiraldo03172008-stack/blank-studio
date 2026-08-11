@@ -345,8 +345,6 @@ export const PRODUCTS: Product[] = [
     media: {
       arena: [
         { src: "/products/origin-arena/arena-1.jpg", alt: "Origin arena — frente", role: "front" },
-        { src: "/products/origin-arena/arena-2.jpg", alt: "Origin arena — espalda", role: "back" },
-        { src: "/products/origin-arena/arena-3.jpg", alt: "Origin arena — detalle de espalda", role: "detail" },
       ],
     },
   },
