@@ -26,13 +26,7 @@ const VALUES = [
 export default function MarcaPage() {
   return (
     <div>
-      <section className="relative flex h-[60vh] min-h-[420px] w-full items-center justify-center overflow-hidden bg-brand-black">
-        <EditorialImage
-          src="/catalog/fabric-bg.jpg"
-          alt="VALENCIANO"
-          gradient="from-[#1c1b19] via-[#141312] to-[#0c0b0a]"
-        />
-        <div className="absolute inset-0 bg-black/40" />
+      <section className="relative flex h-[60vh] min-h-[420px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#1c1b19] via-[#141312] to-[#0c0b0a]">
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <p className="label text-white/60">Premium Essentials</p>
           <h1 className="font-logo mt-6 text-4xl text-white sm:text-6xl">
