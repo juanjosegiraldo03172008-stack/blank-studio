@@ -49,12 +49,23 @@ export default function SiteHeader() {
         <div className="flex items-center gap-5">
           <button
             onClick={openCart}
-            className="label relative flex items-center gap-2 text-ink"
-            aria-label="Ver pedido"
+            className="relative flex h-9 w-9 items-center justify-center text-ink"
+            aria-label="Ver bolsa"
           >
-            Pedidos
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              aria-hidden="true"
+            >
+              <path d="M7 8V6.5a5 5 0 0 1 10 0V8" strokeLinecap="round" />
+              <path d="M4.5 8h15l-1 13h-13l-1-13Z" strokeLinejoin="round" />
+            </svg>
             {totalItems > 0 && (
-              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-medium text-paper">
+              <span className="font-ui absolute -right-0.5 -top-0.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-ink px-[3px] text-[9px] font-medium leading-none text-paper">
                 {totalItems}
               </span>
             )}
@@ -63,7 +74,7 @@ export default function SiteHeader() {
       </div>
 
       {menuOpen && (
-        <nav className="flex flex-col border-t border-line px-5 py-4 md:hidden">
+        <nav className="animate-fade-in flex flex-col border-t border-line px-5 py-4 md:hidden">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
