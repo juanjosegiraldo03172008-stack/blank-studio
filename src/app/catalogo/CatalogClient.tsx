@@ -2,8 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import ColorSwatch from "@/components/ColorSwatch";
 import ProductCard from "@/components/ProductCard";
-import { allColorsFor, COLORS, PRODUCTS, type ColorId, type Fit } from "@/data/products";
+import Reveal from "@/components/Reveal";
+import { allColorsFor, PRODUCTS, type ColorId, type Fit } from "@/data/products";
 
 const FIT_OPTIONS: { value: Fit | "all"; label: string }[] = [
   { value: "all", label: "Todos" },
@@ -43,25 +45,33 @@ export default function CatalogClient() {
     return true;
   });
 
+  const resultLabel =
+    filtered.length === 1 ? "1 prenda" : `${filtered.length} prendas`;
+
   return (
-    <div className="mx-auto max-w-[1600px] px-5 py-16 sm:px-8">
-      <div className="mb-14">
+    <div className="mx-auto max-w-[1600px] px-5 py-16 sm:px-8 sm:py-20">
+      <Reveal className="mb-14 max-w-lg">
         <p className="label text-ink/40">Iconic</p>
         <h1 className="font-display mt-3 text-4xl sm:text-5xl">
           Essentials &amp; Oversize
         </h1>
-        <p className="mt-4 max-w-lg text-sm text-ink/60">
+        <p className="mt-4 text-sm leading-relaxed text-ink/60">
           Cuatro siluetas, dos gramajes, un mismo algodón peruano. Filtra por
           horma, gramaje o color para encontrar tu prenda.
         </p>
-      </div>
+      </Reveal>
 
       <div className="mb-12 flex flex-col gap-6 border-y border-line py-6">
-        <div className="flex flex-wrap gap-2">
+        <div
+          role="group"
+          aria-label="Filtrar por horma y gramaje"
+          className="flex flex-wrap gap-2"
+        >
           {FIT_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => setFit(opt.value)}
+              aria-pressed={fit === opt.value}
               className={`label px-4 py-2 transition ${
                 fit === opt.value
                   ? "bg-ink text-paper"
@@ -76,6 +86,7 @@ export default function CatalogClient() {
             <button
               key={opt.label}
               onClick={() => setGsm(opt.value)}
+              aria-pressed={gsm === opt.value}
               className={`label px-4 py-2 transition ${
                 gsm === opt.value
                   ? "bg-ink text-paper"
@@ -87,10 +98,15 @@ export default function CatalogClient() {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div
+          role="group"
+          aria-label="Filtrar por color"
+          className="flex flex-wrap items-center gap-3"
+        >
           <span className="label mr-1 text-ink/40">Color</span>
           <button
             onClick={() => setColor("all")}
+            aria-pressed={color === "all"}
             className={`label rounded-full px-3 py-1 transition ${
               color === "all"
                 ? "bg-ink text-paper"
@@ -100,19 +116,18 @@ export default function CatalogClient() {
             Todos
           </button>
           {allColors.map((c) => (
-            <button
+            <ColorSwatch
               key={c}
-              onClick={() => setColor(c)}
-              title={COLORS[c].name}
-              className={`h-6 w-6 rounded-full ring-1 ring-inset ring-black/10 transition ${
-                color === c ? "ring-2 ring-ink scale-110" : "hover:scale-105"
-              }`}
-              style={{ backgroundColor: COLORS[c].hex }}
-              aria-label={COLORS[c].name}
+              color={c}
+              size="md"
+              selected={color === c}
+              onClick={() => setColor(color === c ? "all" : c)}
             />
           ))}
         </div>
       </div>
+
+      <p className="font-ui mb-8 text-xs text-ink/40">{resultLabel}</p>
 
       {filtered.length === 0 ? (
         <p className="py-24 text-center text-sm text-ink/50">

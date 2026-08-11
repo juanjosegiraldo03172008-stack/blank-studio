@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import CatalogClient from "./CatalogClient";
+
+export const metadata: Metadata = {
+  title: "Iconic — Essentials & Oversize",
+  description:
+    "Essentials y Oversize en 100% algodón peruano, 200 y 300 GSM. Horma limpia, colores sólidos, diseño atemporal.",
+};
 
 export default async function CatalogoPage({
   searchParams,
