@@ -34,7 +34,8 @@ export type ColorId =
   | "crema"
   | "melon"
   | "arena"
-  | "merlot";
+  | "merlot"
+  | "azul-profundo";
 
 /**
  * Hex aproximados a partir del catálogo oficial. Son de referencia visual;
@@ -69,6 +70,7 @@ export const COLORS: Record<ColorId, { name: string; hex: string }> = {
   melon: { name: "Melón", hex: "#f0d8b0" },
   arena: { name: "Arena", hex: "#e7e0d8" },
   merlot: { name: "Merlot", hex: "#3b1316" },
+  "azul-profundo": { name: "Azul Profundo", hex: "#0a1233" },
 };
 
 /**
@@ -197,6 +199,89 @@ export const PRODUCTS: Product[] = [
     imageFolder: "/products/essentials-200",
     coverImage: "/catalog/essentials-200-negro.jpg",
     retailPrice: 61900,
+
+    // ---- essentials-200 media ----
+    media: {
+      blanco: [
+        { src: "/products/essentials-200/blanco-front.jpg", alt: "Essentials 200 Blanco VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/blanco-back.jpg", alt: "Essentials 200 Blanco VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/blanco-detail.jpg", alt: "Essentials 200 Blanco VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/blanco-model-1.jpg", alt: "Essentials 200 Blanco VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/blanco-model-2.jpg", alt: "Essentials 200 Blanco VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/blanco-model-3.jpg", alt: "Essentials 200 Blanco VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      perla: [
+        { src: "/products/essentials-200/perla-front.jpg", alt: "Essentials 200 Perla VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/perla-back.jpg", alt: "Essentials 200 Perla VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/perla-detail.jpg", alt: "Essentials 200 Perla VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/perla-model-1.jpg", alt: "Essentials 200 Perla VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/perla-model-2.jpg", alt: "Essentials 200 Perla VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/perla-model-3.jpg", alt: "Essentials 200 Perla VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      vainilla: [
+        { src: "/products/essentials-200/vainilla-front.jpg", alt: "Essentials 200 Vainilla VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/vainilla-back.jpg", alt: "Essentials 200 Vainilla VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/vainilla-detail.jpg", alt: "Essentials 200 Vainilla VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/vainilla-model-1.jpg", alt: "Essentials 200 Vainilla VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/vainilla-model-2.jpg", alt: "Essentials 200 Vainilla VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/vainilla-model-3.jpg", alt: "Essentials 200 Vainilla VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      beige: [
+        { src: "/products/essentials-200/beige-front.jpg", alt: "Essentials 200 Beige VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/beige-back.jpg", alt: "Essentials 200 Beige VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/beige-detail.jpg", alt: "Essentials 200 Beige VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/beige-model-1.jpg", alt: "Essentials 200 Beige VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/beige-model-2.jpg", alt: "Essentials 200 Beige VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/beige-model-3.jpg", alt: "Essentials 200 Beige VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      tabaco: [
+        { src: "/products/essentials-200/tabaco-front.jpg", alt: "Essentials 200 Tabaco VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/tabaco-detail.jpg", alt: "Essentials 200 Tabaco VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/tabaco-model-1.jpg", alt: "Essentials 200 Tabaco VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/tabaco-model-2.jpg", alt: "Essentials 200 Tabaco VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/tabaco-model-3.jpg", alt: "Essentials 200 Tabaco VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      rojo: [
+        { src: "/products/essentials-200/rojo-front.jpg", alt: "Essentials 200 Rojo VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/rojo-back.jpg", alt: "Essentials 200 Rojo VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/rojo-detail.jpg", alt: "Essentials 200 Rojo VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/rojo-model-1.jpg", alt: "Essentials 200 Rojo VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/rojo-model-2.jpg", alt: "Essentials 200 Rojo VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/rojo-model-3.jpg", alt: "Essentials 200 Rojo VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "verde-botella": [
+        { src: "/products/essentials-200/verde-botella-front.jpg", alt: "Essentials 200 Verde Botella VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/verde-botella-back.jpg", alt: "Essentials 200 Verde Botella VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/verde-botella-detail.jpg", alt: "Essentials 200 Verde Botella VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/verde-botella-model-1.jpg", alt: "Essentials 200 Verde Botella VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/verde-botella-model-2.jpg", alt: "Essentials 200 Verde Botella VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/verde-botella-model-3.jpg", alt: "Essentials 200 Verde Botella VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "plomo-plata": [
+        { src: "/products/essentials-200/plomo-plata-back.jpg", alt: "Essentials 200 Plomo Plata VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/plomo-plata-detail.jpg", alt: "Essentials 200 Plomo Plata VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/plomo-plata-model-1.jpg", alt: "Essentials 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 1 de 4", role: "model" },
+        { src: "/products/essentials-200/plomo-plata-model-2.jpg", alt: "Essentials 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 2 de 4", role: "model" },
+        { src: "/products/essentials-200/plomo-plata-model-3.jpg", alt: "Essentials 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 3 de 4", role: "model" },
+        { src: "/products/essentials-200/plomo-plata-model-4.jpg", alt: "Essentials 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 4 de 4", role: "model" },
+      ],
+      "gris-oscuro": [
+        { src: "/products/essentials-200/gris-oscuro-front.jpg", alt: "Essentials 200 Gris Oscuro VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/gris-oscuro-back.jpg", alt: "Essentials 200 Gris Oscuro VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/gris-oscuro-detail.jpg", alt: "Essentials 200 Gris Oscuro VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/gris-oscuro-model-1.jpg", alt: "Essentials 200 Gris Oscuro VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/gris-oscuro-model-2.jpg", alt: "Essentials 200 Gris Oscuro VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/gris-oscuro-model-3.jpg", alt: "Essentials 200 Gris Oscuro VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      negro: [
+        { src: "/products/essentials-200/negro-front.jpg", alt: "Essentials 200 Negro VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-200/negro-back.jpg", alt: "Essentials 200 Negro VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-200/negro-detail.jpg", alt: "Essentials 200 Negro VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-200/negro-model-1.jpg", alt: "Essentials 200 Negro VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-200/negro-model-2.jpg", alt: "Essentials 200 Negro VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-200/negro-model-3.jpg", alt: "Essentials 200 Negro VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+    },
   },
   {
     slug: "essentials-300",
@@ -233,11 +318,88 @@ export const PRODUCTS: Product[] = [
       "beige",
       "azul-navy",
       "chocolate",
+      "plomo-plata",
     ],
     colorsTemporada: [],
     imageFolder: "/products/essentials-300",
     coverImage: "/catalog/essentials-300-beige.jpg",
     retailPrice: 87900,
+
+    // ---- essentials-300 media ----
+    media: {
+      blanco: [
+        { src: "/products/essentials-300/blanco-front.jpg", alt: "Essentials 300 Blanco VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/blanco-back.jpg", alt: "Essentials 300 Blanco VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/blanco-detail.jpg", alt: "Essentials 300 Blanco VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/blanco-model-1.jpg", alt: "Essentials 300 Blanco VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/blanco-model-2.jpg", alt: "Essentials 300 Blanco VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/blanco-model-3.jpg", alt: "Essentials 300 Blanco VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      perla: [
+        { src: "/products/essentials-300/perla-front.jpg", alt: "Essentials 300 Perla VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/perla-back.jpg", alt: "Essentials 300 Perla VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/perla-detail.jpg", alt: "Essentials 300 Perla VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/perla-model-1.jpg", alt: "Essentials 300 Perla VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/perla-model-2.jpg", alt: "Essentials 300 Perla VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/perla-model-3.jpg", alt: "Essentials 300 Perla VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      beige: [
+        { src: "/products/essentials-300/beige-front.jpg", alt: "Essentials 300 Beige VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/beige-back.jpg", alt: "Essentials 300 Beige VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/beige-detail.jpg", alt: "Essentials 300 Beige VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/beige-model-1.jpg", alt: "Essentials 300 Beige VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/beige-model-2.jpg", alt: "Essentials 300 Beige VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/beige-model-3.jpg", alt: "Essentials 300 Beige VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      chocolate: [
+        { src: "/products/essentials-300/chocolate-front.jpg", alt: "Essentials 300 Chocolate VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/chocolate-back.jpg", alt: "Essentials 300 Chocolate VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/chocolate-detail.jpg", alt: "Essentials 300 Chocolate VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/chocolate-model-1.jpg", alt: "Essentials 300 Chocolate VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/chocolate-model-2.jpg", alt: "Essentials 300 Chocolate VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/chocolate-model-3.jpg", alt: "Essentials 300 Chocolate VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "azul-navy": [
+        { src: "/products/essentials-300/azul-navy-front.jpg", alt: "Essentials 300 Azul Navy VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/azul-navy-back.jpg", alt: "Essentials 300 Azul Navy VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/azul-navy-detail.jpg", alt: "Essentials 300 Azul Navy VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/azul-navy-model-1.jpg", alt: "Essentials 300 Azul Navy VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/azul-navy-model-2.jpg", alt: "Essentials 300 Azul Navy VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/azul-navy-model-3.jpg", alt: "Essentials 300 Azul Navy VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "verde-botella": [
+        { src: "/products/essentials-300/verde-botella-front.jpg", alt: "Essentials 300 Verde Botella VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/verde-botella-back.jpg", alt: "Essentials 300 Verde Botella VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/verde-botella-detail.jpg", alt: "Essentials 300 Verde Botella VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/verde-botella-model-1.jpg", alt: "Essentials 300 Verde Botella VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/verde-botella-model-2.jpg", alt: "Essentials 300 Verde Botella VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/verde-botella-model-3.jpg", alt: "Essentials 300 Verde Botella VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "plomo-plata": [
+        { src: "/products/essentials-300/plomo-plata-front.jpg", alt: "Essentials 300 Plomo Plata VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/plomo-plata-back.jpg", alt: "Essentials 300 Plomo Plata VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/plomo-plata-detail.jpg", alt: "Essentials 300 Plomo Plata VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/plomo-plata-model-1.jpg", alt: "Essentials 300 Plomo Plata VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/plomo-plata-model-2.jpg", alt: "Essentials 300 Plomo Plata VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/plomo-plata-model-3.jpg", alt: "Essentials 300 Plomo Plata VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "gris-oscuro": [
+        { src: "/products/essentials-300/gris-oscuro-front.jpg", alt: "Essentials 300 Gris Oscuro VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/gris-oscuro-back.jpg", alt: "Essentials 300 Gris Oscuro VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/gris-oscuro-detail.jpg", alt: "Essentials 300 Gris Oscuro VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/gris-oscuro-model-1.jpg", alt: "Essentials 300 Gris Oscuro VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/gris-oscuro-model-2.jpg", alt: "Essentials 300 Gris Oscuro VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/gris-oscuro-model-3.jpg", alt: "Essentials 300 Gris Oscuro VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      negro: [
+        { src: "/products/essentials-300/negro-front.jpg", alt: "Essentials 300 Negro VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/essentials-300/negro-back.jpg", alt: "Essentials 300 Negro VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/essentials-300/negro-detail.jpg", alt: "Essentials 300 Negro VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/essentials-300/negro-model-1.jpg", alt: "Essentials 300 Negro VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/essentials-300/negro-model-2.jpg", alt: "Essentials 300 Negro VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/essentials-300/negro-model-3.jpg", alt: "Essentials 300 Negro VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+    },
   },
   {
     slug: "oversize-200",
@@ -275,11 +437,72 @@ export const PRODUCTS: Product[] = [
       "plomo-plata",
       "gris-oscuro",
       "negro",
+      "rojo",
     ],
-    colorsTemporada: ["rojo", "rubor", "bronce", "crema", "melon"],
+    colorsTemporada: ["rubor", "bronce", "crema", "melon"],
     imageFolder: "/products/oversize-200",
     coverImage: "/catalog/oversize-200-bronce.jpg",
     retailPrice: 77900,
+
+    // ---- oversize-200 media ----
+    media: {
+      blanco: [
+        { src: "/products/oversize-200/blanco-front.jpg", alt: "Oversize 200 Blanco VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-200/blanco-back.jpg", alt: "Oversize 200 Blanco VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/blanco-detail.jpg", alt: "Oversize 200 Blanco VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/blanco-model-1.jpg", alt: "Oversize 200 Blanco VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-200/blanco-model-2.jpg", alt: "Oversize 200 Blanco VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-200/blanco-model-3.jpg", alt: "Oversize 200 Blanco VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      perla: [
+        { src: "/products/oversize-200/perla-front.jpg", alt: "Oversize 200 Perla VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-200/perla-back.jpg", alt: "Oversize 200 Perla VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/perla-detail.jpg", alt: "Oversize 200 Perla VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/perla-model-1.jpg", alt: "Oversize 200 Perla VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-200/perla-model-2.jpg", alt: "Oversize 200 Perla VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-200/perla-model-3.jpg", alt: "Oversize 200 Perla VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      beige: [
+        { src: "/products/oversize-200/beige-front.jpg", alt: "Oversize 200 Beige VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-200/beige-back.jpg", alt: "Oversize 200 Beige VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/beige-detail.jpg", alt: "Oversize 200 Beige VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/beige-model-1.jpg", alt: "Oversize 200 Beige VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-200/beige-model-2.jpg", alt: "Oversize 200 Beige VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-200/beige-model-3.jpg", alt: "Oversize 200 Beige VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      rojo: [
+        { src: "/products/oversize-200/rojo-front.jpg", alt: "Oversize 200 Rojo VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-200/rojo-back.jpg", alt: "Oversize 200 Rojo VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/rojo-detail.jpg", alt: "Oversize 200 Rojo VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/rojo-model-1.jpg", alt: "Oversize 200 Rojo VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-200/rojo-model-2.jpg", alt: "Oversize 200 Rojo VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-200/rojo-model-3.jpg", alt: "Oversize 200 Rojo VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "verde-botella": [
+        { src: "/products/oversize-200/verde-botella-front.jpg", alt: "Oversize 200 Verde Botella VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-200/verde-botella-back.jpg", alt: "Oversize 200 Verde Botella VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/verde-botella-detail.jpg", alt: "Oversize 200 Verde Botella VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/verde-botella-model-1.jpg", alt: "Oversize 200 Verde Botella VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-200/verde-botella-model-2.jpg", alt: "Oversize 200 Verde Botella VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-200/verde-botella-model-3.jpg", alt: "Oversize 200 Verde Botella VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      "plomo-plata": [
+        { src: "/products/oversize-200/plomo-plata-back.jpg", alt: "Oversize 200 Plomo Plata VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/plomo-plata-detail.jpg", alt: "Oversize 200 Plomo Plata VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/plomo-plata-model-1.jpg", alt: "Oversize 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 1 de 4", role: "model" },
+        { src: "/products/oversize-200/plomo-plata-model-2.jpg", alt: "Oversize 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 2 de 4", role: "model" },
+        { src: "/products/oversize-200/plomo-plata-model-3.jpg", alt: "Oversize 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 3 de 4", role: "model" },
+        { src: "/products/oversize-200/plomo-plata-model-4.jpg", alt: "Oversize 200 Plomo Plata VALENCIANO ICONIC — modelo, vista 4 de 4", role: "model" },
+      ],
+      negro: [
+        { src: "/products/oversize-200/negro-front.jpg", alt: "Oversize 200 Negro VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-200/negro-back.jpg", alt: "Oversize 200 Negro VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-200/negro-detail.jpg", alt: "Oversize 200 Negro VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-200/negro-model-1.jpg", alt: "Oversize 200 Negro VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-200/negro-model-2.jpg", alt: "Oversize 200 Negro VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-200/negro-model-3.jpg", alt: "Oversize 200 Negro VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+    },
   },
   {
     slug: "oversize-300",
@@ -306,11 +529,55 @@ export const PRODUCTS: Product[] = [
       { size: "L", chestCm: 65, lengthCm: 80 },
       { size: "XL", chestCm: 69, lengthCm: 84 },
     ],
-    colorsLinea: ["blanco", "perla", "negro"],
+    colorsLinea: ["blanco", "perla", "negro", "beige", "merlot", "azul-profundo"],
     colorsTemporada: [],
     imageFolder: "/products/oversize-300",
     coverImage: "/catalog/oversize-300-stack.jpg",
     retailPrice: 106900,
+
+    // ---- oversize-300 media ----
+    media: {
+      blanco: [
+        { src: "/products/oversize-300/blanco-front.jpg", alt: "Oversize 300 Blanco VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-300/blanco-back.jpg", alt: "Oversize 300 Blanco VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-300/blanco-detail.jpg", alt: "Oversize 300 Blanco VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-300/blanco-model-1.jpg", alt: "Oversize 300 Blanco VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-300/blanco-model-2.jpg", alt: "Oversize 300 Blanco VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-300/blanco-model-3.jpg", alt: "Oversize 300 Blanco VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      beige: [
+        { src: "/products/oversize-300/beige-front.jpg", alt: "Oversize 300 Beige VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-300/beige-back.jpg", alt: "Oversize 300 Beige VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-300/beige-detail.jpg", alt: "Oversize 300 Beige VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-300/beige-model-1.jpg", alt: "Oversize 300 Beige VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-300/beige-model-2.jpg", alt: "Oversize 300 Beige VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-300/beige-model-3.jpg", alt: "Oversize 300 Beige VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      merlot: [
+        { src: "/products/oversize-300/merlot-back.jpg", alt: "Oversize 300 Merlot VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-300/merlot-detail.jpg", alt: "Oversize 300 Merlot VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-300/merlot-model-1.jpg", alt: "Oversize 300 Merlot VALENCIANO ICONIC — modelo, vista 1 de 4", role: "model" },
+        { src: "/products/oversize-300/merlot-model-2.jpg", alt: "Oversize 300 Merlot VALENCIANO ICONIC — modelo, vista 2 de 4", role: "model" },
+        { src: "/products/oversize-300/merlot-model-3.jpg", alt: "Oversize 300 Merlot VALENCIANO ICONIC — modelo, vista 3 de 4", role: "model" },
+        { src: "/products/oversize-300/merlot-model-4.jpg", alt: "Oversize 300 Merlot VALENCIANO ICONIC — modelo, vista 4 de 4", role: "model" },
+      ],
+      "azul-profundo": [
+        { src: "/products/oversize-300/azul-profundo-front.jpg", alt: "Oversize 300 Azul Profundo VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-300/azul-profundo-back.jpg", alt: "Oversize 300 Azul Profundo VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-300/azul-profundo-detail.jpg", alt: "Oversize 300 Azul Profundo VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-300/azul-profundo-model-1.jpg", alt: "Oversize 300 Azul Profundo VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-300/azul-profundo-model-2.jpg", alt: "Oversize 300 Azul Profundo VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-300/azul-profundo-model-3.jpg", alt: "Oversize 300 Azul Profundo VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+      negro: [
+        { src: "/products/oversize-300/negro-front.jpg", alt: "Oversize 300 Negro VALENCIANO ICONIC — vista frontal", role: "front" },
+        { src: "/products/oversize-300/negro-back.jpg", alt: "Oversize 300 Negro VALENCIANO ICONIC — vista posterior", role: "back" },
+        { src: "/products/oversize-300/negro-detail.jpg", alt: "Oversize 300 Negro VALENCIANO ICONIC — detalle del estampado", role: "detail" },
+        { src: "/products/oversize-300/negro-model-1.jpg", alt: "Oversize 300 Negro VALENCIANO ICONIC — modelo, vista 1 de 3", role: "model" },
+        { src: "/products/oversize-300/negro-model-2.jpg", alt: "Oversize 300 Negro VALENCIANO ICONIC — modelo, vista 2 de 3", role: "model" },
+        { src: "/products/oversize-300/negro-model-3.jpg", alt: "Oversize 300 Negro VALENCIANO ICONIC — modelo, vista 3 de 3", role: "model" },
+      ],
+    },
   },
   {
     slug: "origin-legacy-of-luxury",

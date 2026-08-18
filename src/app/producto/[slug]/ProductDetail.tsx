@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import ProductImage from "@/components/ProductImage";
+import Image from "next/image";
+import ProductCarousel, { type CarouselImage } from "@/components/ProductCarousel";
 import ColorSwatch from "@/components/ColorSwatch";
 import { useCart } from "@/context/CartContext";
 import {
@@ -21,6 +22,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const [size, setSize] = useState<Size>(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
 
   // Precio fijo B2C — no varía con la talla ni la cantidad.
   const unitPrice = getUnitPrice(product.line);
@@ -29,9 +31,20 @@ export default function ProductDetail({ product }: { product: Product }) {
   const sizeOptions = useMemo(() => product.sizes, [product.sizes]);
 
   const media = product.media?.[color];
+  const images: CarouselImage[] = media
+    ? media.map((m) => ({ src: m.src, alt: m.alt }))
+    : [
+        {
+          src: `${product.imageFolder}/${color}-1.jpg`,
+          alt: `${product.name} en ${COLORS[color].name}`,
+        },
+        { src: `${product.imageFolder}/${color}-2.jpg`, alt: `${product.name} detalle 1` },
+        { src: `${product.imageFolder}/${color}-3.jpg`, alt: `${product.name} detalle 2` },
+      ];
 
   function handleSelectColor(c: ColorId) {
     setColor(c);
+    setActiveImage(0);
     if (!isSizeAvailable(product, size, c)) {
       const fallback = product.sizes.find((s) => isSizeAvailable(product, s, c));
       if (fallback) setSize(fallback);
@@ -49,47 +62,46 @@ export default function ProductDetail({ product }: { product: Product }) {
     <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
         {/* Gallery */}
-        <div className="grid grid-cols-2 gap-3">
-          {media ? (
-            media.map((item, i) => (
-              <div key={item.src} className={i === 0 ? "col-span-2" : ""}>
-                <ProductImage
-                  src={item.src}
-                  alt={item.alt}
-                  fit={product.fit}
-                  hex={COLORS[color].hex}
-                  priority={i === 0}
-                  variant={i}
-                  bgClassName="bg-[#efece4]"
-                />
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="col-span-2">
-                <ProductImage
-                  src={`${product.imageFolder}/${color}-1.jpg`}
-                  fallbackSrc={product.coverImage}
-                  alt={`${product.name} en ${COLORS[color].name}`}
-                  fit={product.fit}
-                  hex={COLORS[color].hex}
-                  priority
-                  bgClassName="bg-[#efece4]"
-                />
-              </div>
-              {[1, 2].map((v) => (
-                <ProductImage
-                  key={v}
-                  src={`${product.imageFolder}/${color}-${v + 1}.jpg`}
-                  alt={`${product.name} detalle ${v}`}
-                  fit={product.fit}
-                  hex={COLORS[color].hex}
-                  variant={v}
-                  bgClassName="bg-[#efece4]"
-                />
+        <div className="flex flex-col-reverse gap-3 lg:flex-row">
+          {images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto lg:w-20 lg:flex-shrink-0 lg:flex-col lg:overflow-visible">
+              {images.map((img, i) => (
+                <button
+                  key={img.src}
+                  type="button"
+                  onClick={() => setActiveImage(i)}
+                  aria-label={`Ver imagen ${i + 1} de ${images.length}`}
+                  aria-current={i === activeImage}
+                  className={`relative aspect-[4/5] w-16 flex-shrink-0 overflow-hidden bg-[#efece4] transition lg:w-full ${
+                    i === activeImage ? "ring-1 ring-ink" : "opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  <Image
+                    src={img.src}
+                    alt=""
+                    fill
+                    unoptimized
+                    sizes="80px"
+                    className="object-cover"
+                  />
+                </button>
               ))}
-            </>
+            </div>
           )}
+          <div className="min-w-0 flex-1">
+            <ProductCarousel
+              key={color}
+              images={images}
+              fit={product.fit}
+              hex={COLORS[color].hex}
+              fallbackSrc={product.coverImage}
+              priority
+              bgClassName="bg-[#efece4]"
+              index={activeImage}
+              onIndexChange={setActiveImage}
+              showControls={false}
+            />
+          </div>
         </div>
 
         {/* Info */}
