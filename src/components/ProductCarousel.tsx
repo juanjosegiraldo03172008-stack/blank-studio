@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import TShirtSilhouette from "./TShirtSilhouette";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import type { Fit } from "@/data/products";
 
 export interface CarouselImage {
@@ -29,6 +30,7 @@ export default function ProductCarousel({
   onIndexChange,
   aspectClassName = "aspect-[4/5]",
   showControls = true,
+  sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
 }: {
   images: CarouselImage[];
   fit: Fit;
@@ -43,6 +45,8 @@ export default function ProductCarousel({
   aspectClassName?: string;
   /** Oculta flechas/dots (útil cuando el control externo, ej. thumbnails, ya cumple esa función). */
   showControls?: boolean;
+  /** Ajusta según el ancho real renderizado (grid card, PDP, thumbnail de carrito, etc). */
+  sizes?: string;
 }) {
   const [internalIndex, setInternalIndex] = useState(0);
   const index = controlledIndex ?? internalIndex;
@@ -50,6 +54,7 @@ export default function ProductCarousel({
   const [broken, setBroken] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
+  const reducedMotion = usePrefersReducedMotion();
 
   const dragState = useRef({
     active: false,
@@ -142,8 +147,7 @@ export default function ProductCarousel({
             src={activeSrc}
             alt={images[0]?.alt ?? ""}
             fill
-            unoptimized
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            sizes={sizes}
             className="object-cover"
           />
         ) : (
@@ -178,7 +182,10 @@ export default function ProductCarousel({
         className="flex h-full"
         style={{
           transform: `translateX(${translatePct}%)`,
-          transition: dragging ? "none" : "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
+          transition:
+            dragging || reducedMotion
+              ? "none"
+              : "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         {images.map((img, i) => {
@@ -190,10 +197,9 @@ export default function ProductCarousel({
                   src={img.src}
                   alt={img.alt}
                   fill
-                  unoptimized
                   draggable={false}
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  priority={priority && i === 0}
+                  sizes={sizes}
+                  preload={priority && i === 0}
                   loading={priority && i === 0 ? undefined : "lazy"}
                   className="object-cover pointer-events-none"
                   onError={() => setBroken(true)}

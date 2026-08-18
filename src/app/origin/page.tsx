@@ -35,7 +35,7 @@ export default function OriginPage() {
               src="/products/origin-arena/arena-1.jpg"
               alt="Origin — Legacy Of Luxury, color arena"
               fill
-              priority
+              preload
               sizes="(min-width: 1024px) 40vw, 90vw"
               className="object-contain"
             />

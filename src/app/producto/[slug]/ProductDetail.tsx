@@ -80,7 +80,6 @@ export default function ProductDetail({ product }: { product: Product }) {
                     src={img.src}
                     alt=""
                     fill
-                    unoptimized
                     sizes="80px"
                     className="object-cover"
                   />
@@ -100,6 +99,7 @@ export default function ProductDetail({ product }: { product: Product }) {
               index={activeImage}
               onIndexChange={setActiveImage}
               showControls={false}
+              sizes="(min-width: 1024px) 42vw, 100vw"
             />
           </div>
         </div>

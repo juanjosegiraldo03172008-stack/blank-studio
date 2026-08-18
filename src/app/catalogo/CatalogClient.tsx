@@ -135,8 +135,8 @@ export default function CatalogClient() {
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4">
-          {filtered.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+          {filtered.map((product, i) => (
+            <ProductCard key={product.slug} product={product} priority={i < 4} />
           ))}
         </div>
       )}

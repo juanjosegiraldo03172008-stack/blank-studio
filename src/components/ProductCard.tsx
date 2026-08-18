@@ -12,7 +12,13 @@ import {
   type Product,
 } from "@/data/products";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+  priority = false,
+}: {
+  product: Product;
+  priority?: boolean;
+}) {
   const colors = allColorsFor(product);
   const [hoverColor, setHoverColor] = useState(colors[0]);
   const price = getUnitPrice(product.line);
@@ -44,7 +50,9 @@ export default function ProductCard({ product }: { product: Product }) {
         fit={product.fit}
         hex={COLORS[hoverColor].hex}
         fallbackSrc={product.coverImage}
+        priority={priority}
         bgClassName="bg-[#efece4] transition-colors duration-500 group-hover:bg-[#e9e5db]"
+        sizes="(min-width: 1024px) 25vw, 50vw"
         onDragStateChange={(dragging) => {
           if (dragging) wasDragging.current = true;
         }}

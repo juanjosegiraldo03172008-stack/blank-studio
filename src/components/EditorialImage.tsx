@@ -41,7 +41,7 @@ export default function EditorialImage({
       src={src}
       alt={alt}
       fill
-      priority={priority}
+      preload={priority}
       sizes="100vw"
       className={`object-cover ${className}`}
       style={objectPosition ? { objectPosition } : undefined}
