@@ -63,14 +63,9 @@ export default function SiteHeader() {
 
         <Link
           href="/"
-          className="flex flex-col leading-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
+          className="font-logo text-xl tracking-[0.26em] whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
         >
-          <span className="font-logo text-xl tracking-[0.26em] whitespace-nowrap">
-            VALENCIANO
-          </span>
-          <span className="label mt-1 text-[9px] tracking-[0.34em] text-ink/65">
-            Iconic
-          </span>
+          VALENCIANO
         </Link>
 
         <nav className="hidden md:flex md:items-center md:gap-9">
