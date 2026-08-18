@@ -44,7 +44,7 @@ export type ColorId =
 export const COLORS: Record<ColorId, { name: string; hex: string }> = {
   blanco: { name: "Blanco", hex: "#f4f2ec" },
   perla: { name: "Perla", hex: "#e9e4da" },
-  vainilla: { name: "Vainilla", hex: "#e2d5b7" },
+  vainilla: { name: "Vainilla", hex: "#f6e0ac" },
   beige: { name: "Beige", hex: "#d6bfa7" },
   tabaco: { name: "Tabaco", hex: "#b56a3c" },
   "rosado-bebe": { name: "Rosado Bebé", hex: "#eec9c9" },

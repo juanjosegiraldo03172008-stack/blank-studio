@@ -9,18 +9,24 @@ import {
   COLORS,
   formatCOP,
   getUnitPrice,
+  type ColorId,
   type Product,
 } from "@/data/products";
 
 export default function ProductCard({
   product,
   priority = false,
+  initialColor,
 }: {
   product: Product;
   priority?: boolean;
+  /** Color mostrado por defecto (antes del hover) — útil para dar ritmo cromático a una grilla. */
+  initialColor?: ColorId;
 }) {
   const colors = allColorsFor(product);
-  const [hoverColor, setHoverColor] = useState(colors[0]);
+  const [hoverColor, setHoverColor] = useState(
+    initialColor && colors.includes(initialColor) ? initialColor : colors[0]
+  );
   const price = getUnitPrice(product.line);
   const wasDragging = useRef(false);
 
