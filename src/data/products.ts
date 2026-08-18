@@ -602,7 +602,8 @@ export const PRODUCTS: Product[] = [
     retailPrice: 138900,
     media: {
       arena: [
-        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin arena — frente", role: "front" },
+        { src: "/products/origin-arena/arena-2.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista frontal", role: "front" },
+        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin Arena VALENCIANO ORIGIN — modelo, vista frontal", role: "model" },
       ],
     },
   },
