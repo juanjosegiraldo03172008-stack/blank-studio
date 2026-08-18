@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useCart, type CartItemWithPrice } from "@/context/CartContext";
 import { COLORS, formatCOP, getProductBySlug } from "@/data/products";
-import ProductCarousel from "@/components/ProductCarousel";
+import CartItemThumbnail from "@/components/CartItemThumbnail";
 import { useDrawer } from "@/hooks/useDrawer";
 
 function CartLineItem({
@@ -18,33 +18,10 @@ function CartLineItem({
 }) {
   const product = getProductBySlug(item.slug);
   const colorMeta = COLORS[item.color];
-  const media = product?.media?.[item.color]?.[0];
 
   return (
     <li className="flex gap-4">
-      <div className="h-24 w-[4.8rem] flex-shrink-0 overflow-hidden bg-[#efece4]">
-        {product ? (
-          <ProductCarousel
-            images={[
-              {
-                src: media?.src ?? product.coverImage,
-                alt: media?.alt ?? `${item.name} en ${colorMeta.name}`,
-              },
-            ]}
-            fit={product.fit}
-            hex={colorMeta.hex}
-            fallbackSrc={product.coverImage}
-            bgClassName="bg-[#efece4]"
-            aspectClassName="aspect-[4/5]"
-            sizes="80px"
-          />
-        ) : (
-          <div
-            className="h-full w-full"
-            style={{ backgroundColor: colorMeta.hex }}
-          />
-        )}
-      </div>
+      <CartItemThumbnail slug={item.slug} color={item.color} name={item.name} />
       <div className="flex flex-1 flex-col">
         <p className="text-sm font-medium">{item.name}</p>
         {product && (

@@ -72,7 +72,7 @@ export default function CatalogClient() {
               key={opt.value}
               onClick={() => setFit(opt.value)}
               aria-pressed={fit === opt.value}
-              className={`label px-4 py-2 transition ${
+              className={`label px-4 py-2 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink ${
                 fit === opt.value
                   ? "bg-ink text-paper"
                   : "border border-line text-ink/60 hover:border-ink hover:text-ink"
@@ -87,7 +87,7 @@ export default function CatalogClient() {
               key={opt.label}
               onClick={() => setGsm(opt.value)}
               aria-pressed={gsm === opt.value}
-              className={`label px-4 py-2 transition ${
+              className={`label px-4 py-2 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink ${
                 gsm === opt.value
                   ? "bg-ink text-paper"
                   : "border border-line text-ink/60 hover:border-ink hover:text-ink"
@@ -107,7 +107,7 @@ export default function CatalogClient() {
           <button
             onClick={() => setColor("all")}
             aria-pressed={color === "all"}
-            className={`label rounded-full px-3 py-1 transition ${
+            className={`label rounded-full px-3 py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink ${
               color === "all"
                 ? "bg-ink text-paper"
                 : "border border-line text-ink/60 hover:border-ink"

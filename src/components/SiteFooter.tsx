@@ -45,7 +45,7 @@ export default function SiteFooter() {
               href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="label mt-6 inline-block text-ink/70 underline underline-offset-4 transition hover:text-ink"
+              className="label mt-6 inline-block text-ink/70 underline underline-offset-4 transition hover:text-ink focus-visible:outline-none focus-visible:text-ink"
             >
               @{INSTAGRAM_HANDLE}
             </a>
@@ -59,7 +59,7 @@ export default function SiteFooter() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="font-ui text-sm text-ink/70 transition hover:text-ink"
+                      className="font-ui text-sm text-ink/70 transition hover:text-ink focus-visible:outline-none focus-visible:text-ink"
                     >
                       {link.label}
                     </Link>

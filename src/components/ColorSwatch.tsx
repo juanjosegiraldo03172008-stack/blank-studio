@@ -24,7 +24,7 @@ export default function ColorSwatch({
       title={disabled ? `${meta.name} (no disponible en esta talla)` : meta.name}
       aria-label={meta.name}
       aria-pressed={selected}
-      className={`group relative flex items-center justify-center rounded-full transition ${
+      className={`group relative flex items-center justify-center rounded-full transition focus-visible:outline-none ${
         disabled ? "cursor-not-allowed opacity-30" : "cursor-pointer"
       }`}
     >
@@ -34,8 +34,12 @@ export default function ColorSwatch({
         }`}
         style={{ backgroundColor: meta.hex }}
       />
-      {selected && (
-        <span className="pointer-events-none absolute -inset-1 rounded-full ring-1 ring-ink" />
+      {(selected || !disabled) && (
+        <span
+          className={`pointer-events-none absolute -inset-1 rounded-full ring-1 ring-ink ${
+            selected ? "" : "opacity-0 group-focus-visible:opacity-100"
+          }`}
+        />
       )}
     </button>
   );

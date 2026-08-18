@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { COLORS, formatCOP } from "@/data/products";
+import CartItemThumbnail from "@/components/CartItemThumbnail";
 import {
   buildOrderMessage,
   copyOrderAndOpenInstagram,
@@ -82,9 +83,11 @@ export default function PedidoPage() {
           <ul className="mt-10 flex flex-col gap-5 border-y border-line py-8">
             {items.map((item) => (
               <li key={item.id} className="flex items-center gap-4">
-                <div
-                  className="h-16 w-14 flex-shrink-0"
-                  style={{ backgroundColor: COLORS[item.color].hex }}
+                <CartItemThumbnail
+                  slug={item.slug}
+                  color={item.color}
+                  name={item.name}
+                  className="h-16 w-14"
                 />
                 <div className="flex-1">
                   <p className="text-sm font-medium">{item.name}</p>
@@ -95,19 +98,21 @@ export default function PedidoPage() {
                     {formatCOP(item.unitPrice)} c/u
                   </p>
                 </div>
-                <div className="flex items-center border border-line">
+                <div className="font-ui flex items-center border border-line">
                   <button
-                    className="px-2 py-1 text-sm"
+                    className="flex h-9 w-8 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    aria-label={`Reducir cantidad de ${item.name}`}
                   >
                     −
                   </button>
-                  <span className="w-6 text-center text-sm">
+                  <span className="w-6 text-center text-sm" aria-live="polite">
                     {item.quantity}
                   </span>
                   <button
-                    className="px-2 py-1 text-sm"
+                    className="flex h-9 w-8 items-center justify-center text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    aria-label={`Aumentar cantidad de ${item.name}`}
                   >
                     +
                   </button>
@@ -116,7 +121,7 @@ export default function PedidoPage() {
                   {formatCOP(item.lineTotal)}
                 </p>
                 <button
-                  className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
+                  className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:text-ink"
                   onClick={() => removeItem(item.id)}
                 >
                   Quitar
