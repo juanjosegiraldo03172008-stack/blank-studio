@@ -602,7 +602,8 @@ export const PRODUCTS: Product[] = [
     media: {
       arena: [
         { src: "/products/origin-arena/arena-2.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista frontal", role: "front" },
-        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin Arena VALENCIANO ORIGIN — detalle de cuello, vista posterior", role: "detail" },
+        { src: "/products/origin-arena/arena-3.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista posterior, estampado Legacy Of Luxury", role: "back" },
+        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin Arena VALENCIANO ORIGIN — detalle de cuello", role: "detail" },
       ],
     },
   },
