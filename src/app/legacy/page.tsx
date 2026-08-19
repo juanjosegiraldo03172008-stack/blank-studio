@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import EditorialImage from "@/components/EditorialImage";
-import ProductCard from "@/components/ProductCard";
+import ProductGrid from "@/components/ProductGrid";
 import { PRODUCTS } from "@/data/products";
 
 export const metadata: Metadata = {
@@ -38,11 +38,7 @@ export default function LegacyPage() {
             Próximamente nuevas referencias.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.slug} product={product} />
-            ))}
-          </div>
+          <ProductGrid products={products} />
         )}
       </section>
     </div>

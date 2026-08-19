@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ProductCarousel, { type CarouselImage } from "@/components/ProductCarousel";
@@ -23,6 +23,8 @@ export default function ProductDetail({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const addToCartRef = useRef<HTMLButtonElement>(null);
 
   // Precio fijo B2C — no varía con la talla ni la cantidad.
   const unitPrice = getUnitPrice(product.line);
@@ -41,6 +43,17 @@ export default function ProductDetail({ product }: { product: Product }) {
         { src: `${product.imageFolder}/${color}-2.jpg`, alt: `${product.name} detalle 1` },
         { src: `${product.imageFolder}/${color}-3.jpg`, alt: `${product.name} detalle 2` },
       ];
+
+  useEffect(() => {
+    const el = addToCartRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   function handleSelectColor(c: ColorId) {
     setColor(c);
@@ -221,6 +234,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
           {/* Add to cart */}
           <button
+            ref={addToCartRef}
             onClick={handleAdd}
             className="label mt-8 w-full bg-ink py-4 text-center text-paper transition hover:bg-ink/85 sm:w-auto sm:px-14"
           >
@@ -241,6 +255,21 @@ export default function ProductDetail({ product }: { product: Product }) {
           </div>
         </div>
       </div>
+
+      {showStickyBar && (
+        <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-paper px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:hidden">
+          <div className="min-w-0">
+            <p className="truncate text-xs text-ink/50">{product.name} · {COLORS[color].name}</p>
+            <p className="text-sm font-medium">{formatCOP(unitPrice)}</p>
+          </div>
+          <button
+            onClick={handleAdd}
+            className="label flex-shrink-0 bg-ink px-6 py-3 text-center text-paper transition hover:bg-ink/85"
+          >
+            {added ? "Agregado ✓" : "Agregar"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

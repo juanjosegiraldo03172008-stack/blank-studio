@@ -69,7 +69,7 @@ export default function Home() {
           </div>
           <nav
             aria-label="Filtrar por categoría"
-            className="flex gap-5 overflow-x-auto sm:gap-6"
+            className="flex flex-wrap gap-x-5 gap-y-2 sm:flex-nowrap sm:gap-6"
           >
             {SHOP_FILTERS.map((f) => (
               <Link
