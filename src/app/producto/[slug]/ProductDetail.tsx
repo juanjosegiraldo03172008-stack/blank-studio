@@ -45,14 +45,39 @@ export default function ProductDetail({ product }: { product: Product }) {
       ];
 
   useEffect(() => {
-    const el = addToCartRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+    const btn = addToCartRef.current;
+    if (!btn) return;
+
+    let btnVisible = false;
+    let footerVisible = false;
+    const update = () => setShowStickyBar(!btnVisible && !footerVisible);
+
+    const btnObserver = new IntersectionObserver(
+      ([entry]) => {
+        btnVisible = entry.isIntersecting;
+        update();
+      },
       { threshold: 0 }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+    btnObserver.observe(btn);
+
+    const footer = document.querySelector("footer");
+    let footerObserver: IntersectionObserver | undefined;
+    if (footer) {
+      footerObserver = new IntersectionObserver(
+        ([entry]) => {
+          footerVisible = entry.isIntersecting;
+          update();
+        },
+        { threshold: 0 }
+      );
+      footerObserver.observe(footer);
+    }
+
+    return () => {
+      btnObserver.disconnect();
+      footerObserver?.disconnect();
+    };
   }, []);
 
   function handleSelectColor(c: ColorId) {
