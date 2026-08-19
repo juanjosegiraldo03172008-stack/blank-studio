@@ -17,11 +17,17 @@ export default function ProductCard({
   product,
   priority = false,
   initialColor,
+  sizes = "(min-width: 1024px) 25vw, 50vw",
+  linkColor = false,
 }: {
   product: Product;
   priority?: boolean;
   /** Color mostrado por defecto (antes del hover) — útil para dar ritmo cromático a una grilla. */
   initialColor?: ColorId;
+  /** Ajusta según el ancho real de la tarjeta en su contexto (grid 4-col, riel horizontal, etc). */
+  sizes?: string;
+  /** Enlaza directo al color mostrado (?color=) — para carriles de recomendación donde el color es parte de la sugerencia. */
+  linkColor?: boolean;
 }) {
   const colors = allColorsFor(product);
   const [hoverColor, setHoverColor] = useState(
@@ -42,7 +48,7 @@ export default function ProductCard({
 
   return (
     <Link
-      href={`/producto/${product.slug}`}
+      href={linkColor ? `/producto/${product.slug}?color=${hoverColor}` : `/producto/${product.slug}`}
       className="group block"
       onClickCapture={(e) => {
         if (wasDragging.current) {
@@ -58,7 +64,7 @@ export default function ProductCard({
         fallbackSrc={product.coverImage}
         priority={priority}
         bgClassName="bg-[#efece4] transition-colors duration-500 group-hover:bg-[#e9e5db]"
-        sizes="(min-width: 1024px) 25vw, 50vw"
+        sizes={sizes}
         onDragStateChange={(dragging) => {
           if (dragging) wasDragging.current = true;
         }}

@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import ProductCarousel, { type CarouselImage } from "@/components/ProductCarousel";
 import ColorSwatch from "@/components/ColorSwatch";
+import RelatedProducts from "@/components/RelatedProducts";
 import { useCart } from "@/context/CartContext";
+import { getRelatedProducts } from "@/lib/relatedProducts";
 import {
   COLORS,
   formatCOP,
@@ -15,6 +18,30 @@ import {
   type Product,
   type Size,
 } from "@/data/products";
+
+/**
+ * Sincroniza el color inicial/actual con ?color= (usado por los enlaces de
+ * "Seguir explorando" al saltar entre colores de la misma referencia).
+ * Aislado en Suspense para no forzar el resto de la PDP a renderizado
+ * dinámico — useSearchParams exige un boundary en páginas estáticas.
+ */
+function ColorFromQuery({
+  product,
+  onSync,
+}: {
+  product: Product;
+  onSync: (c: ColorId) => void;
+}) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const q = searchParams.get("color");
+    if (q && product.colorsLinea.includes(q as ColorId)) {
+      onSync(q as ColorId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+  return null;
+}
 
 export default function ProductDetail({ product }: { product: Product }) {
   const { addItem, openCart } = useCart();
@@ -31,6 +58,10 @@ export default function ProductDetail({ product }: { product: Product }) {
   const total = unitPrice === null ? null : unitPrice * quantity;
 
   const sizeOptions = useMemo(() => product.sizes, [product.sizes]);
+  const relatedItems = useMemo(
+    () => getRelatedProducts(product, color),
+    [product, color]
+  );
 
   const media = product.media?.[color];
   const images: CarouselImage[] = media
@@ -97,7 +128,17 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+    <>
+      <Suspense fallback={null}>
+        <ColorFromQuery
+          product={product}
+          onSync={(c) => {
+            setColor(c);
+            setActiveImage(0);
+          }}
+        />
+      </Suspense>
+      <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
         {/* Gallery */}
         <div className="flex flex-col-reverse gap-3 lg:flex-row">
@@ -295,6 +336,9 @@ export default function ProductDetail({ product }: { product: Product }) {
           </button>
         </div>
       )}
-    </div>
+      </div>
+
+      <RelatedProducts items={relatedItems} />
+    </>
   );
 }
