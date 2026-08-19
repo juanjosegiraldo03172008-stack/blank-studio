@@ -32,7 +32,7 @@ export default function OriginPage() {
         >
           <div className="relative h-[85%] w-[85%]">
             <Image
-              src="/products/origin-arena/arena-1.jpg"
+              src="/products/origin-arena/arena-2.jpg"
               alt="Origin — Legacy Of Luxury, color arena"
               fill
               preload

@@ -512,9 +512,8 @@ export const PRODUCTS: Product[] = [
       "Cuello en rib",
       "No se encoge, no se deforma",
     ],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL"],
     sizeChart: [
-      { size: "XS", chestCm: 58, lengthCm: 75 },
       { size: "S", chestCm: 59, lengthCm: 77 },
       { size: "M", chestCm: 63, lengthCm: 78 },
       { size: "L", chestCm: 65, lengthCm: 80 },
@@ -598,12 +597,12 @@ export const PRODUCTS: Product[] = [
     colorsLinea: ["arena"],
     colorsTemporada: [],
     imageFolder: "/products/origin-arena",
-    coverImage: "/products/origin-arena/arena-1.jpg",
+    coverImage: "/products/origin-arena/arena-2.jpg",
     retailPrice: 138900,
     media: {
       arena: [
         { src: "/products/origin-arena/arena-2.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista frontal", role: "front" },
-        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin Arena VALENCIANO ORIGIN — modelo, vista frontal", role: "model" },
+        { src: "/products/origin-arena/arena-1.jpg", alt: "Origin Arena VALENCIANO ORIGIN — detalle de cuello, vista posterior", role: "detail" },
       ],
     },
   },
@@ -640,7 +639,9 @@ export const PRODUCTS: Product[] = [
     media: {
       chocolate: [
         { src: "/products/legacy-chocolate/chocolate-1.jpg", alt: "Legacy chocolate — frente", role: "front" },
-        { src: "/products/legacy-chocolate/chocolate-2.jpg", alt: "Legacy chocolate — espalda", role: "back" },
+        { src: "/products/legacy-chocolate/chocolate-2.jpg", alt: "Legacy chocolate — espalda, estampado Valenciano Legacy", role: "back" },
+        { src: "/products/legacy-chocolate/chocolate-3.jpg", alt: "Legacy chocolate — detalle de cuello", role: "detail" },
+        { src: "/products/legacy-chocolate/chocolate-4.jpg", alt: "Legacy chocolate — detalle de tela y estampado", role: "detail" },
       ],
     },
   },
