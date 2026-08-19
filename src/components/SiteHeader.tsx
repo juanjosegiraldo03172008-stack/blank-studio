@@ -38,26 +38,44 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
       <div
-        className={`mx-auto flex max-w-[1600px] items-center justify-between px-5 transition-[height] duration-200 motion-reduce:transition-none sm:px-8 ${
+        className={`relative z-[55] mx-auto flex max-w-[1600px] items-center justify-between px-5 transition-[height] duration-200 motion-reduce:transition-none sm:px-8 ${
           scrolled ? "h-14" : "h-16"
         }`}
       >
         <button
-          className="relative flex h-9 w-9 flex-col items-center justify-center gap-1.5 p-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink md:hidden"
+          className="relative flex h-9 w-9 items-center justify-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink md:hidden"
           onClick={() => setMenuOpen((o) => !o)}
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav-drawer"
         >
+          {/* Hamburger — closed state */}
           <span
-            className={`block h-px w-5 bg-ink transition-transform duration-200 motion-reduce:transition-none ${
-              menuOpen ? "translate-y-[3.5px] rotate-45" : ""
+            aria-hidden="true"
+            className={`absolute inset-0 flex flex-col items-center justify-center gap-1.5 transition-all duration-200 ease-out motion-reduce:transition-none ${
+              menuOpen ? "scale-90 opacity-0" : "scale-100 opacity-100"
             }`}
-          />
+          >
+            <span className="block h-px w-5 bg-ink" />
+            <span className="block h-px w-5 bg-ink" />
+          </span>
+
+          {/* VALENCIANO monogram — open state */}
           <span
-            className={`block h-px w-5 bg-ink transition-transform duration-200 motion-reduce:transition-none ${
-              menuOpen ? "-translate-y-[3.5px] -rotate-45" : ""
+            aria-hidden="true"
+            className={`absolute inset-0 m-auto h-[18px] w-[18px] bg-ink transition-all duration-200 ease-out motion-reduce:transition-none ${
+              menuOpen ? "scale-100 opacity-100" : "scale-90 opacity-0"
             }`}
+            style={{
+              WebkitMaskImage: "url(/valenciano-monogram.png)",
+              maskImage: "url(/valenciano-monogram.png)",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+            }}
           />
         </button>
 
@@ -126,20 +144,10 @@ export default function SiteHeader() {
         aria-modal="true"
         aria-label="Menú"
         className={`fixed left-0 top-0 z-50 flex h-full w-full max-w-xs flex-col bg-paper transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none md:hidden ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+          scrolled ? "pt-14" : "pt-16"
+        } ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
         aria-hidden={!menuOpen}
       >
-        <div className="flex items-center justify-between border-b border-line px-5 py-5">
-          <span className="font-logo text-lg tracking-[0.22em]">VALENCIANO</span>
-          <button
-            onClick={() => setMenuOpen(false)}
-            aria-label="Cerrar menú"
-            className="flex h-9 w-9 items-center justify-center text-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
-          >
-            ×
-          </button>
-        </div>
         <nav className="flex flex-1 flex-col px-5 py-2">
           {NAV_LINKS.map((link) => (
             <Link
