@@ -102,7 +102,8 @@ export type ProductLine =
   | "oversize-300"
   | "origin"
   | "legacy-chocolate"
-  | "legacy-merlot";
+  | "legacy-merlot"
+  | "legacy-negro";
 
 export type Fit = "essential" | "oversize";
 
@@ -684,6 +685,44 @@ export const PRODUCTS: Product[] = [
         { src: "/products/legacy-merlot/merlot-4.jpg", alt: "Legacy merlot — modelo espalda", role: "model" },
         { src: "/products/legacy-merlot/merlot-5.jpg", alt: "Legacy merlot — detalle pecho", role: "detail" },
         { src: "/products/legacy-merlot/merlot-6.jpg", alt: "Legacy merlot — detalle espalda", role: "detail" },
+      ],
+    },
+  },
+  {
+    slug: "legacy-negro",
+    line: "legacy-negro",
+    collection: "legacy",
+    name: "Legacy — Negro",
+    fit: "oversize",
+    gsm: 300,
+    tagline: "Oversize · Negro",
+    description:
+      "Tercera referencia de Legacy: oversize en algodón peruano de 300 GSM, color negro, con texto pequeño al pecho y un gran estampado artístico 'Legacy' en la espalda — What we create may outlive us.",
+    details: [
+      "100% algodón peruano",
+      "300 GSM",
+      "Horma oversize unisex",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 58, lengthCm: 75 },
+      { size: "S", chestCm: 59, lengthCm: 77 },
+      { size: "M", chestCm: 63, lengthCm: 78 },
+      { size: "L", chestCm: 65, lengthCm: 80 },
+      { size: "XL", chestCm: 69, lengthCm: 84 },
+    ],
+    colorsLinea: ["negro"],
+    colorsTemporada: [],
+    imageFolder: "/products/legacy-negro",
+    coverImage: "/products/legacy-negro/negro-1.jpg",
+    retailPrice: 148900,
+    media: {
+      negro: [
+        { src: "/products/legacy-negro/negro-1.jpg", alt: "Legacy negro — frente", role: "front" },
+        { src: "/products/legacy-negro/negro-2.jpg", alt: "Legacy negro — espalda, estampado Legacy", role: "back" },
+        { src: "/products/legacy-negro/negro-3.jpg", alt: "Legacy negro — detalle de cuello", role: "detail" },
       ],
     },
   },
