@@ -102,6 +102,7 @@ export type ProductLine =
   | "oversize-300"
   | "origin"
   | "origin-negro"
+  | "origin-unstoppable"
   | "legacy-chocolate"
   | "legacy-merlot"
   | "legacy-negro";
@@ -613,12 +614,12 @@ export const PRODUCTS: Product[] = [
     slug: "origin-negro",
     line: "origin-negro",
     collection: "origin",
-    name: "Origin — Negro",
+    name: "Origin — Unreal Essentials",
     fit: "oversize",
     gsm: 200,
-    tagline: "Oversize · Negro",
+    tagline: "Horma oversize, estampado exclusivo",
     description:
-      "Segunda referencia de Origin: oversize en algodón peruano de 200 GSM, color negro, con texto pequeño al pecho y el estampado 'Unreal Essentials — Valenciano Montecarlo' en la espalda.",
+      "Segunda referencia de Origin: oversize en algodón peruano de 200 GSM, con texto pequeño al pecho y el estampado 'Unreal Essentials — Valenciano Montecarlo' en la espalda.",
     details: [
       "100% algodón peruano",
       "200 GSM",
@@ -634,7 +635,7 @@ export const PRODUCTS: Product[] = [
       { size: "L", chestCm: 62, lengthCm: 77 },
       { size: "XL", chestCm: 65, lengthCm: 79 },
     ],
-    colorsLinea: ["negro"],
+    colorsLinea: ["negro", "vainilla"],
     colorsTemporada: [],
     imageFolder: "/products/origin-negro",
     coverImage: "/products/origin-negro/negro-1.jpg",
@@ -644,6 +645,49 @@ export const PRODUCTS: Product[] = [
         { src: "/products/origin-negro/negro-1.jpg", alt: "Origin Negro VALENCIANO ORIGIN — vista frontal", role: "front" },
         { src: "/products/origin-negro/negro-2.jpg", alt: "Origin Negro VALENCIANO ORIGIN — vista posterior, estampado Unreal Essentials", role: "back" },
         { src: "/products/origin-negro/negro-3.jpg", alt: "Origin Negro VALENCIANO ORIGIN — detalle de estampado", role: "detail" },
+      ],
+      vainilla: [
+        { src: "/products/origin-negro/vainilla-1.jpg", alt: "Origin Vainilla VALENCIANO ORIGIN — vista frontal", role: "front" },
+        { src: "/products/origin-negro/vainilla-2.jpg", alt: "Origin Vainilla VALENCIANO ORIGIN — vista posterior, estampado Unreal Essentials", role: "back" },
+        { src: "/products/origin-negro/vainilla-3.jpg", alt: "Origin Vainilla VALENCIANO ORIGIN — detalle de estampado", role: "detail" },
+      ],
+    },
+  },
+  {
+    slug: "origin-unstoppable",
+    line: "origin-unstoppable",
+    collection: "origin",
+    name: "Origin — Unstoppable",
+    fit: "oversize",
+    gsm: 200,
+    tagline: "Horma oversize, estampado exclusivo",
+    description:
+      "Tercera referencia de Origin: oversize en algodón peruano de 200 GSM, con texto pequeño al pecho y el estampado 'Unstoppable — Stay In Motion' en la espalda.",
+    details: [
+      "100% algodón peruano",
+      "200 GSM",
+      "Horma oversize unisex",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 53, lengthCm: 70.5 },
+      { size: "S", chestCm: 57, lengthCm: 73 },
+      { size: "M", chestCm: 59, lengthCm: 76 },
+      { size: "L", chestCm: 62, lengthCm: 77 },
+      { size: "XL", chestCm: 65, lengthCm: 79 },
+    ],
+    colorsLinea: ["vainilla"],
+    colorsTemporada: [],
+    imageFolder: "/products/origin-unstoppable",
+    coverImage: "/products/origin-unstoppable/vainilla-1.jpg",
+    retailPrice: 138900,
+    media: {
+      vainilla: [
+        { src: "/products/origin-unstoppable/vainilla-1.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — vista frontal", role: "front" },
+        { src: "/products/origin-unstoppable/vainilla-2.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — vista posterior, estampado Unstoppable", role: "back" },
+        { src: "/products/origin-unstoppable/vainilla-3.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — detalle de estampado", role: "detail" },
       ],
     },
   },
