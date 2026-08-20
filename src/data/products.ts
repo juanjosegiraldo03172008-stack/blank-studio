@@ -101,6 +101,7 @@ export type ProductLine =
   | "oversize-200"
   | "oversize-300"
   | "origin"
+  | "origin-negro"
   | "legacy-chocolate"
   | "legacy-merlot"
   | "legacy-negro";
@@ -605,6 +606,44 @@ export const PRODUCTS: Product[] = [
         { src: "/products/origin-arena/arena-2.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista frontal", role: "front" },
         { src: "/products/origin-arena/arena-3.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista posterior, estampado Legacy Of Luxury", role: "back" },
         { src: "/products/origin-arena/arena-1.jpg", alt: "Origin Arena VALENCIANO ORIGIN — detalle de cuello", role: "detail" },
+      ],
+    },
+  },
+  {
+    slug: "origin-negro",
+    line: "origin-negro",
+    collection: "origin",
+    name: "Origin — Negro",
+    fit: "oversize",
+    gsm: 200,
+    tagline: "Oversize · Negro",
+    description:
+      "Segunda referencia de Origin: oversize en algodón peruano de 200 GSM, color negro, con texto pequeño al pecho y el estampado 'Unreal Essentials — Valenciano Montecarlo' en la espalda.",
+    details: [
+      "100% algodón peruano",
+      "200 GSM",
+      "Horma oversize unisex",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 53, lengthCm: 70.5 },
+      { size: "S", chestCm: 57, lengthCm: 73 },
+      { size: "M", chestCm: 59, lengthCm: 76 },
+      { size: "L", chestCm: 62, lengthCm: 77 },
+      { size: "XL", chestCm: 65, lengthCm: 79 },
+    ],
+    colorsLinea: ["negro"],
+    colorsTemporada: [],
+    imageFolder: "/products/origin-negro",
+    coverImage: "/products/origin-negro/negro-1.jpg",
+    retailPrice: 138900,
+    media: {
+      negro: [
+        { src: "/products/origin-negro/negro-1.jpg", alt: "Origin Negro VALENCIANO ORIGIN — vista frontal", role: "front" },
+        { src: "/products/origin-negro/negro-2.jpg", alt: "Origin Negro VALENCIANO ORIGIN — vista posterior, estampado Unreal Essentials", role: "back" },
+        { src: "/products/origin-negro/negro-3.jpg", alt: "Origin Negro VALENCIANO ORIGIN — detalle de estampado", role: "detail" },
       ],
     },
   },
