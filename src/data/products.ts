@@ -103,6 +103,7 @@ export type ProductLine =
   | "origin"
   | "origin-negro"
   | "origin-unstoppable"
+  | "origin-perla"
   | "legacy-chocolate"
   | "legacy-merlot"
   | "legacy-negro";
@@ -688,6 +689,44 @@ export const PRODUCTS: Product[] = [
         { src: "/products/origin-unstoppable/vainilla-1.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — vista frontal", role: "front" },
         { src: "/products/origin-unstoppable/vainilla-2.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — vista posterior, estampado Unstoppable", role: "back" },
         { src: "/products/origin-unstoppable/vainilla-3.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — detalle de estampado", role: "detail" },
+      ],
+    },
+  },
+  {
+    slug: "origin-perla",
+    line: "origin-perla",
+    collection: "origin",
+    name: "Origin — Perla",
+    fit: "oversize",
+    gsm: 200,
+    tagline: "Oversize · Perla",
+    description:
+      "Cuarta referencia de Origin: oversize en algodón peruano de 200 GSM, color perla, con texto pequeño al pecho y el estampado 'Built From Nothing — Driven By Purpose' en la espalda.",
+    details: [
+      "100% algodón peruano",
+      "200 GSM",
+      "Horma oversize unisex",
+      "Estampado frente y espalda",
+      "Empaque y etiquetado personalizado incluido",
+    ],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizeChart: [
+      { size: "XS", chestCm: 53, lengthCm: 70.5 },
+      { size: "S", chestCm: 57, lengthCm: 73 },
+      { size: "M", chestCm: 59, lengthCm: 76 },
+      { size: "L", chestCm: 62, lengthCm: 77 },
+      { size: "XL", chestCm: 65, lengthCm: 79 },
+    ],
+    colorsLinea: ["perla"],
+    colorsTemporada: [],
+    imageFolder: "/products/origin-perla",
+    coverImage: "/products/origin-perla/perla-1.jpg",
+    retailPrice: 138900,
+    media: {
+      perla: [
+        { src: "/products/origin-perla/perla-1.jpg", alt: "Origin Perla VALENCIANO ORIGIN — vista frontal", role: "front" },
+        { src: "/products/origin-perla/perla-2.jpg", alt: "Origin Perla VALENCIANO ORIGIN — vista posterior, estampado Built From Nothing", role: "back" },
+        { src: "/products/origin-perla/perla-3.jpg", alt: "Origin Perla VALENCIANO ORIGIN — detalle de estampado", role: "detail" },
       ],
     },
   },
