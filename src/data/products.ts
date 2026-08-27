@@ -197,7 +197,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/essentials-200",
     coverImage: "/catalog/essentials-200-negro.jpg",
-    retailPrice: 61900,
+    retailPrice: 64900,
 
     // ---- essentials-200 media ----
     media: {
@@ -321,7 +321,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/essentials-300",
     coverImage: "/catalog/essentials-300-beige.jpg",
-    retailPrice: 87900,
+    retailPrice: 89900,
 
     // ---- essentials-300 media ----
     media: {
@@ -437,7 +437,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/oversize-200",
     coverImage: "/catalog/oversize-200-bronce.jpg",
-    retailPrice: 77900,
+    retailPrice: 79900,
 
     // ---- oversize-200 media ----
     media: {
@@ -527,7 +527,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/oversize-300",
     coverImage: "/catalog/oversize-300-stack.jpg",
-    retailPrice: 106900,
+    retailPrice: 109900,
 
     // ---- oversize-300 media ----
     media: {
@@ -602,7 +602,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/origin-arena",
     coverImage: "/products/origin-arena/arena-2.jpg",
-    retailPrice: 138900,
+    retailPrice: 139900,
     media: {
       arena: [
         { src: "/products/origin-arena/arena-2.jpg", alt: "Origin Arena VALENCIANO ORIGIN — vista frontal", role: "front" },
@@ -640,7 +640,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/origin-negro",
     coverImage: "/products/origin-negro/negro-1.jpg",
-    retailPrice: 138900,
+    retailPrice: 139900,
     media: {
       negro: [
         { src: "/products/origin-negro/negro-1.jpg", alt: "Origin Negro VALENCIANO ORIGIN — vista frontal", role: "front" },
@@ -683,7 +683,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/origin-unstoppable",
     coverImage: "/products/origin-unstoppable/vainilla-1.jpg",
-    retailPrice: 138900,
+    retailPrice: 139900,
     media: {
       vainilla: [
         { src: "/products/origin-unstoppable/vainilla-1.jpg", alt: "Origin Unstoppable VALENCIANO ORIGIN — vista frontal", role: "front" },
@@ -721,7 +721,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/origin-perla",
     coverImage: "/products/origin-perla/perla-1.jpg",
-    retailPrice: 138900,
+    retailPrice: 139900,
     media: {
       perla: [
         { src: "/products/origin-perla/perla-1.jpg", alt: "Origin Perla VALENCIANO ORIGIN — vista frontal", role: "front" },
@@ -759,7 +759,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/legacy-chocolate",
     coverImage: "/products/legacy-chocolate/chocolate-1.jpg",
-    retailPrice: 129900,
+    retailPrice: 139900,
     media: {
       chocolate: [
         { src: "/products/legacy-chocolate/chocolate-1.jpg", alt: "Legacy chocolate — frente", role: "front" },
@@ -798,7 +798,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/legacy-merlot",
     coverImage: "/products/legacy-merlot/merlot-1.jpg",
-    retailPrice: 148900,
+    retailPrice: 159900,
     media: {
       merlot: [
         { src: "/products/legacy-merlot/merlot-1.jpg", alt: "Legacy merlot — frente", role: "front" },
@@ -839,7 +839,7 @@ export const PRODUCTS: Product[] = [
     colorsTemporada: [],
     imageFolder: "/products/legacy-negro",
     coverImage: "/products/legacy-negro/negro-1.jpg",
-    retailPrice: 148900,
+    retailPrice: 159900,
     media: {
       negro: [
         { src: "/products/legacy-negro/negro-1.jpg", alt: "Legacy negro — frente", role: "front" },
