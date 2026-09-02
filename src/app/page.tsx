@@ -74,8 +74,8 @@ export default function Home() {
                 200G / 300G. Dos estructuras, una misma exigencia.
               </h2>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-ink/60">
-                Colores sólidos que no se encogen ni se deforman — cada
-                gramaje responde a un propósito distinto.
+                Dos gramajes, dos sensaciones. Cada estructura responde a una
+                forma distinta de llevar VALENCIANO.
               </p>
             </Reveal>
           </div>
