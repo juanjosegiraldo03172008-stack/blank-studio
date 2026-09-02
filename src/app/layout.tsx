@@ -3,7 +3,7 @@ import { Archivo, Bodoni_Moda, Italiana } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
-import SiteHeader from "@/components/SiteHeader";
+import AppHeader from "@/components/AppHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 // Tipografía editorial — títulos, statements, nombres de producto, cuerpo de texto.
@@ -71,7 +71,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <CartProvider>
-          <SiteHeader />
+          <AppHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
           <CartDrawer />

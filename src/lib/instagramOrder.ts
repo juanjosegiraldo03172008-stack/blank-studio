@@ -9,13 +9,15 @@ export interface CustomerInfo {
   name: string;
   city: string;
   address: string;
+  /** Apto, torre, interior, etc. — opcional. */
+  addressLine2?: string;
   phone: string;
   notes?: string;
 }
 
 export function buildOrderMessage(
   items: CartItemWithPrice[],
-  customer: CustomerInfo
+  customer: CustomerInfo,
 ): string {
   const lines: string[] = [];
   lines.push("Hola VALENCIANO, quiero hacer este pedido:");
@@ -25,7 +27,7 @@ export function buildOrderMessage(
     const priceLabel =
       item.unitPrice === null ? "Próximamente" : formatCOP(item.unitPrice);
     lines.push(
-      `${idx + 1}. ${item.name} — Color: ${colorName} — Talla: ${item.size} — Cant: ${item.quantity} — ${priceLabel} c/u`
+      `${idx + 1}. ${item.name} — Color: ${colorName} — Talla: ${item.size} — Cant: ${item.quantity} — ${priceLabel} c/u`,
     );
   });
   lines.push("");
@@ -36,17 +38,30 @@ export function buildOrderMessage(
   lines.push("");
   lines.push(`Nombre: ${customer.name}`);
   lines.push(`Ciudad: ${customer.city}`);
-  lines.push(`Dirección: ${customer.address}`);
+  const address = customer.addressLine2
+    ? `${customer.address}, ${customer.addressLine2}`
+    : customer.address;
+  lines.push(`Dirección: ${address}`);
   lines.push(`Teléfono: ${customer.phone}`);
   if (customer.notes) lines.push(`Notas: ${customer.notes}`);
   return lines.join("\n");
 }
 
-export async function copyOrderAndOpenInstagram(message: string) {
+/** @returns true si el texto quedó realmente en el portapapeles. */
+export async function copyOrderAndOpenInstagram(
+  message: string,
+): Promise<boolean> {
+  // window.open debe llamarse de forma síncrona, en la misma tarea que el
+  // gesto del usuario (el click) — si se llama después de un await, algunos
+  // navegadores (y Safari en particular) ya no lo asocian al gesto y
+  // bloquean el popup. El portapapeles sí puede esperar.
+  window.open(INSTAGRAM_DM_URL, "_blank", "noopener,noreferrer");
   try {
     await navigator.clipboard.writeText(message);
+    return true;
   } catch {
-    // clipboard can fail (permissions/insecure context) — fallback below still opens IG
+    // clipboard puede fallar (permisos/contexto no seguro) — Instagram ya
+    // se abrió; el llamador debe avisar que hay que copiar a mano.
+    return false;
   }
-  window.open(INSTAGRAM_DM_URL, "_blank", "noopener,noreferrer");
 }
