@@ -1,15 +1,26 @@
 "use server";
 
 import { createOrder } from "@/lib/orders/createOrder";
-import type { CreateOrderResult } from "@/lib/orders/types";
+import { reportPayment } from "@/lib/orders/reportPayment";
+import type {
+  CreateOrderResult,
+  ReportPaymentResult,
+} from "@/lib/orders/types";
 
 /**
- * Server Action pública — es la única forma en que el navegador puede
- * llegar a createOrder()/db.ts. No exponer db.ts ni createOrder.ts
+ * Server Actions públicas — la única forma en que el navegador puede llegar
+ * a createOrder()/reportPayment()/db.ts. No exponer esos módulos ni db.ts
  * directamente desde ningún componente "use client".
  */
 export async function createOrderAction(
   input: unknown,
 ): Promise<CreateOrderResult> {
   return createOrder(input);
+}
+
+export async function reportPaymentAction(
+  orderId: unknown,
+  paymentMethod: unknown,
+): Promise<ReportPaymentResult> {
+  return reportPayment(orderId, paymentMethod);
 }

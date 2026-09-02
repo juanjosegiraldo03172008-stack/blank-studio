@@ -48,3 +48,47 @@ export type CreateOrderResult =
       error: string;
       fieldErrors?: CreateOrderFieldErrors;
     };
+
+/**
+ * FASE 4B — pago manual por transferencia (Nequi/Bancolombia), sin
+ * pasarela. "paid" solo se asigna manualmente tras verificar el dinero;
+ * nunca automáticamente por una acción del cliente.
+ */
+export type PaymentStatus =
+  | "pending_payment"
+  | "payment_reported"
+  | "paid"
+  | "failed"
+  | "refunded";
+
+export type PaymentMethod = "nequi" | "bancolombia";
+
+export type ReportPaymentResult =
+  | {
+      ok: true;
+      orderId: string;
+      orderNumber: string;
+      paymentStatus: PaymentStatus;
+    }
+  | {
+      ok: false;
+      error: string;
+    };
+
+export interface OrderForPaymentItem {
+  productSlug: string;
+  productName: string;
+  color: string;
+  size: string;
+  quantity: number;
+  lineTotal: number;
+}
+
+export interface OrderForPayment {
+  id: string;
+  orderNumber: string;
+  subtotal: number;
+  paymentStatus: PaymentStatus;
+  paymentMethod: PaymentMethod | null;
+  items: OrderForPaymentItem[];
+}

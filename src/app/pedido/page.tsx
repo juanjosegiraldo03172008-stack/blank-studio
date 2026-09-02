@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { COLORS, formatCOP } from "@/data/products";
@@ -11,13 +12,24 @@ import {
   INSTAGRAM_HANDLE,
   type CustomerInfo,
 } from "@/lib/instagramOrder";
+import { createOrderAction } from "@/app/actions/orders";
 
 type Step = "form" | "confirm";
-type FieldName = "name" | "city" | "address" | "phone";
+type FieldName = "name" | "email" | "city" | "address" | "phone";
+/** El flujo real de Instagram (CustomerInfo) no lleva email — este checkout
+ * sí lo pide, para poder crear el pedido real (FASE 4B). */
+type CheckoutCustomer = CustomerInfo & { email: string };
 
-function validate(customer: CustomerInfo): Partial<Record<FieldName, string>> {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validate(
+  customer: CheckoutCustomer,
+): Partial<Record<FieldName, string>> {
   const errors: Partial<Record<FieldName, string>> = {};
   if (!customer.name.trim()) errors.name = "Ingresa tu nombre completo.";
+  if (!customer.email.trim()) errors.email = "Ingresa tu correo.";
+  else if (!EMAIL_RE.test(customer.email.trim()))
+    errors.email = "Ingresa un correo válido.";
   if (!customer.city.trim()) errors.city = "Ingresa tu ciudad.";
   if (!customer.address.trim())
     errors.address = "Ingresa tu dirección de envío.";
@@ -60,14 +72,17 @@ const inputClass =
   "border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-ink";
 
 export default function PedidoPage() {
+  const router = useRouter();
   const {
     itemsWithPrice: items,
     totalPrice,
     updateQuantity,
     removeItem,
+    clearCart,
   } = useCart();
-  const [customer, setCustomer] = useState<CustomerInfo>({
+  const [customer, setCustomer] = useState<CheckoutCustomer>({
     name: "",
+    email: "",
     city: "",
     address: "",
     addressLine2: "",
@@ -77,12 +92,24 @@ export default function PedidoPage() {
   const [step, setStep] = useState<Step>("form");
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>(
     {},
   );
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
+  // Igual que en la herramienta de prueba de FASE 4A: generar el UUID en el
+  // initializer de useState rompería la hidratación (valor distinto en
+  // servidor vs. cliente) — se genera en un efecto, solo en el cliente.
+  const [idempotencyKey, setIdempotencyKey] = useState("");
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIdempotencyKey(crypto.randomUUID());
+  }, []);
+
   const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -91,6 +118,7 @@ export default function PedidoPage() {
     React.RefObject<HTMLInputElement | null>
   > = {
     name: nameRef,
+    email: emailRef,
     city: cityRef,
     address: addressRef,
     phone: phoneRef,
@@ -112,14 +140,57 @@ export default function PedidoPage() {
     setTouched((t) => (t[field] ? t : { ...t, [field]: true }));
   }
 
-  async function handleSend() {
-    if (isSubmitting) return;
+  function focusFirstInvalid() {
+    setSubmitAttempted(true);
+    const firstInvalid = (
+      ["name", "email", "city", "address", "phone"] as FieldName[]
+    ).find((f) => errors[f]);
+    if (firstInvalid) fieldRefs[firstInvalid].current?.focus();
+  }
+
+  /** Flujo nuevo (FASE 4B) — crea un pedido real y lleva a la pantalla de pago. */
+  async function handleContinueToPayment() {
+    if (isCreatingOrder || isSubmitting) return;
     if (!canSubmit) {
-      setSubmitAttempted(true);
-      const firstInvalid = (
-        ["name", "city", "address", "phone"] as FieldName[]
-      ).find((f) => errors[f]);
-      if (firstInvalid) fieldRefs[firstInvalid].current?.focus();
+      focusFirstInvalid();
+      return;
+    }
+    setIsCreatingOrder(true);
+    setOrderError(null);
+    const res = await createOrderAction({
+      customer: {
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        city: customer.city,
+        address: customer.address,
+        addressLine2: customer.addressLine2 || undefined,
+      },
+      items: items.map((i) => ({
+        slug: i.slug,
+        color: i.color,
+        size: i.size,
+        quantity: i.quantity,
+      })),
+      idempotencyKey,
+    });
+    if (res.ok) {
+      // El pedido ya quedó registrado en la base de datos (a diferencia del
+      // flujo de Instagram, donde nunca sabemos si realmente se envió) —
+      // aquí sí es seguro vaciar el carrito.
+      clearCart();
+      router.push(`/pedido/${res.orderId}`);
+    } else {
+      setOrderError(res.error);
+      setIsCreatingOrder(false);
+    }
+  }
+
+  /** Flujo existente — se mantiene intacto como alternativa/fallback. */
+  async function handleSend() {
+    if (isSubmitting || isCreatingOrder) return;
+    if (!canSubmit) {
+      focusFirstInvalid();
       return;
     }
     setIsSubmitting(true);
@@ -234,7 +305,7 @@ export default function PedidoPage() {
                 </span>
               </div>
               <p className="mt-1 text-xs text-ink/40">
-                El envío se confirma por Instagram antes de despachar el pedido.
+                Envío: pago contraentrega.
               </p>
             </div>
 
@@ -244,7 +315,7 @@ export default function PedidoPage() {
                 noValidate
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleSend();
+                  handleContinueToPayment();
                 }}
                 className="grid grid-cols-1 gap-5 sm:grid-cols-2"
               >
@@ -269,6 +340,31 @@ export default function PedidoPage() {
                       errorFor("name") ? "name-error" : undefined
                     }
                     className={`${inputClass} ${errorFor("name") ? "border-[#b23328]" : "border-line"}`}
+                  />
+                </Field>
+
+                <Field
+                  label="Email *"
+                  htmlFor="email"
+                  error={errorFor("email")}
+                  className="sm:col-span-2"
+                >
+                  <input
+                    id="email"
+                    ref={emailRef}
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={customer.email}
+                    onChange={(e) =>
+                      setCustomer((c) => ({ ...c, email: e.target.value }))
+                    }
+                    onBlur={() => markTouched("email")}
+                    aria-invalid={!!errorFor("email")}
+                    aria-describedby={
+                      errorFor("email") ? "email-error" : undefined
+                    }
+                    className={`${inputClass} ${errorFor("email") ? "border-[#b23328]" : "border-line"}`}
                   />
                 </Field>
 
@@ -375,12 +471,40 @@ export default function PedidoPage() {
                   />
                 </Field>
 
-                <div className="sm:col-span-2 mt-2 border border-line-soft bg-black/[0.02] p-5">
-                  <p className="label text-ink/50">Cómo funciona el envío</p>
+                <button
+                  type="submit"
+                  disabled={isCreatingOrder}
+                  className={`label mt-2 w-full py-4 text-center sm:col-span-2 ${
+                    isCreatingOrder
+                      ? "cursor-wait bg-ink/60 text-paper"
+                      : "bg-ink text-paper hover:bg-ink/85"
+                  }`}
+                >
+                  {isCreatingOrder ? "Procesando…" : "Continuar al pago"}
+                </button>
+                {orderError && (
+                  <p className="text-sm text-[#b23328] sm:col-span-2">
+                    {orderError}
+                  </p>
+                )}
+                <p className="text-xs text-ink/40 sm:col-span-2">
+                  * Campos obligatorios. Envío: pago contraentrega.
+                </p>
+
+                <div className="sm:col-span-2 mt-4 flex items-center gap-4 text-xs text-ink/40">
+                  <span className="h-px flex-1 bg-line-soft" />
+                  o
+                  <span className="h-px flex-1 bg-line-soft" />
+                </div>
+
+                <div className="sm:col-span-2 border border-line-soft bg-black/[0.02] p-5">
+                  <p className="label text-ink/50">
+                    ¿Prefieres coordinar por Instagram?
+                  </p>
                   <ol className="mt-3 flex flex-col gap-2 text-sm text-ink/70">
                     <li>
-                      1. Al presionar &quot;Enviar pedido&quot;, copiamos
-                      automáticamente el resumen a tu portapapeles.
+                      1. Al presionar &quot;Enviar pedido por Instagram&quot;,
+                      copiamos automáticamente el resumen a tu portapapeles.
                     </li>
                     <li>
                       2. Se abrirá el chat directo de Instagram con @
@@ -398,20 +522,17 @@ export default function PedidoPage() {
                 </div>
 
                 <button
-                  type="submit"
+                  type="button"
                   disabled={isSubmitting}
-                  className={`label mt-2 w-full py-4 text-center sm:col-span-2 ${
+                  onClick={handleSend}
+                  className={`label w-full border py-4 text-center sm:col-span-2 ${
                     isSubmitting
-                      ? "cursor-wait bg-ink/60 text-paper"
-                      : "bg-ink text-paper hover:bg-ink/85"
+                      ? "cursor-wait border-line text-ink/40"
+                      : "border-ink text-ink hover:bg-ink hover:text-paper"
                   }`}
                 >
                   {isSubmitting ? "Procesando…" : "Enviar pedido por Instagram"}
                 </button>
-                <p className="text-xs text-ink/40 sm:col-span-2">
-                  * Campos obligatorios. Los precios son estimados y se
-                  confirman por Instagram antes del envío.
-                </p>
               </form>
             </div>
           </div>
