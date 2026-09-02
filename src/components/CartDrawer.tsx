@@ -18,6 +18,11 @@ function CartLineItem({
 }) {
   const product = getProductBySlug(item.slug);
   const colorMeta = COLORS[item.color];
+  // Referencias de una sola variante (p. ej. "Legacy — Merlot") ya llevan
+  // el color en el nombre — evita repetirlo ("Legacy — Merlot · Merlot").
+  const showColorName =
+    !product ||
+    !product.name.toLowerCase().includes(colorMeta.name.toLowerCase());
 
   return (
     <li className="flex gap-4">
@@ -26,11 +31,12 @@ function CartLineItem({
         <p className="text-sm font-medium">{item.name}</p>
         {product && (
           <p className="label mt-0.5 text-ink/35">
-            {product.fit === "essential" ? "Essentials" : "Oversize"} · {product.gsm} GSM
+            {product.fit === "essential" ? "Essentials" : "Oversize"} ·{" "}
+            {product.gsm} GSM
           </p>
         )}
         <p className="mt-1 text-xs text-ink/50">
-          {colorMeta.name} · Talla {item.size}
+          {showColorName && `${colorMeta.name} · `}Talla {item.size}
         </p>
         <div className="mt-2.5 flex items-center gap-4">
           <div className="font-ui flex items-center border border-line">
@@ -68,8 +74,14 @@ function CartLineItem({
 }
 
 export default function CartDrawer() {
-  const { itemsWithPrice, isOpen, closeCart, removeItem, updateQuantity, totalPrice } =
-    useCart();
+  const {
+    itemsWithPrice,
+    isOpen,
+    closeCart,
+    removeItem,
+    updateQuantity,
+    totalPrice,
+  } = useCart();
   const asideRef = useRef<HTMLElement>(null);
 
   useDrawer(isOpen, closeCart, asideRef);
@@ -106,9 +118,16 @@ export default function CartDrawer() {
 
         <div className="flex-1 overflow-y-auto px-6 py-5">
           {itemsWithPrice.length === 0 ? (
-            <p className="mt-10 text-center text-sm text-ink/50">
-              Aún no has agregado prendas.
-            </p>
+            <div className="mt-10 flex flex-col items-center text-center">
+              <p className="text-sm text-ink/50">Tu carrito está vacío.</p>
+              <Link
+                href="/catalogo"
+                onClick={closeCart}
+                className="label mt-6 inline-block border-b border-ink pb-1"
+              >
+                Seguir explorando
+              </Link>
+            </div>
           ) : (
             <ul className="flex flex-col gap-6">
               {itemsWithPrice.map((item) => (

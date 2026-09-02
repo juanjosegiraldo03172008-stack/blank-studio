@@ -1,12 +1,22 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import ProductCarousel, { type CarouselImage } from "@/components/ProductCarousel";
+import ProductCarousel, {
+  type CarouselImage,
+} from "@/components/ProductCarousel";
 import ColorSwatch from "@/components/ColorSwatch";
 import RelatedProducts from "@/components/RelatedProducts";
+import SizeGuideDrawer from "@/components/SizeGuideDrawer";
 import { useCart } from "@/context/CartContext";
 import { getRelatedProducts } from "@/lib/relatedProducts";
 import {
@@ -15,9 +25,72 @@ import {
   getUnitPrice,
   isSizeAvailable,
   type ColorId,
+  type Collection,
   type Product,
   type Size,
 } from "@/data/products";
+
+/** ICONIC/LEGACY/ORIGIN son universos de producto, no marcas — se muestran
+ * como un dato más en la jerarquía, junto a fit y gramaje. */
+const COLLECTION_LABEL: Record<Collection, string> = {
+  iconic: "Iconic",
+  origin: "Origin",
+  legacy: "Legacy",
+};
+
+/** Acordeón nativo (details/summary): accesible y operable por teclado sin JS extra. */
+function AccordionSection({
+  title,
+  children,
+  defaultOpen = false,
+}: {
+  title: string;
+  children: ReactNode;
+  defaultOpen?: boolean;
+}) {
+  return (
+    <details
+      className="group border-b border-line-soft py-5"
+      open={defaultOpen}
+    >
+      <summary className="label flex cursor-pointer list-none items-center justify-between text-ink/70 [&::-webkit-details-marker]:hidden">
+        {title}
+        <span
+          aria-hidden="true"
+          className="ml-4 text-base font-light text-ink/40 transition-transform duration-200 motion-reduce:transition-none group-open:rotate-45"
+        >
+          +
+        </span>
+      </summary>
+      <div className="mt-4 text-sm leading-relaxed text-ink/70">{children}</div>
+    </details>
+  );
+}
+
+/**
+ * Algunas referencias de una sola variante (p. ej. "Legacy — Merlot") ya
+ * llevan el color en el nombre — evita mostrarlo dos veces ("Legacy —
+ * Merlot · Merlot") en contextos compactos como la barra sticky.
+ */
+function colorSuffix(product: Product, color: ColorId): string {
+  const colorName = COLORS[color].name;
+  return product.name.toLowerCase().includes(colorName.toLowerCase())
+    ? ""
+    : ` · ${colorName}`;
+}
+
+function BulletList({ items }: { items: string[] }) {
+  return (
+    <ul className="flex flex-col gap-2">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-2">
+          <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-ink/40" />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 /**
  * Sincroniza el color inicial/actual con ?color= (usado por los enlaces de
@@ -51,6 +124,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [showStickyBar, setShowStickyBar] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const addToCartRef = useRef<HTMLButtonElement>(null);
 
   // Precio fijo B2C — no varía con la talla ni la cantidad.
@@ -60,8 +134,14 @@ export default function ProductDetail({ product }: { product: Product }) {
   const sizeOptions = useMemo(() => product.sizes, [product.sizes]);
   const relatedItems = useMemo(
     () => getRelatedProducts(product, color),
-    [product, color]
+    [product, color],
   );
+
+  // product.details siempre trae composición y gramaje primero (verificado
+  // en los 11 productos) — se separan para Material; el resto son
+  // diferenciadores de horma/confección que van en Detalles.
+  const materialDetails = product.details.slice(0, 2);
+  const extraDetails = product.details.slice(2);
 
   const media = product.media?.[color];
   const images: CarouselImage[] = media
@@ -71,8 +151,14 @@ export default function ProductDetail({ product }: { product: Product }) {
           src: `${product.imageFolder}/${color}-1.jpg`,
           alt: `${product.name} en ${COLORS[color].name}`,
         },
-        { src: `${product.imageFolder}/${color}-2.jpg`, alt: `${product.name} detalle 1` },
-        { src: `${product.imageFolder}/${color}-3.jpg`, alt: `${product.name} detalle 2` },
+        {
+          src: `${product.imageFolder}/${color}-2.jpg`,
+          alt: `${product.name} detalle 1`,
+        },
+        {
+          src: `${product.imageFolder}/${color}-3.jpg`,
+          alt: `${product.name} detalle 2`,
+        },
       ];
 
   useEffect(() => {
@@ -88,7 +174,7 @@ export default function ProductDetail({ product }: { product: Product }) {
         btnVisible = entry.isIntersecting;
         update();
       },
-      { threshold: 0 }
+      { threshold: 0 },
     );
     btnObserver.observe(btn);
 
@@ -100,7 +186,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           footerVisible = entry.isIntersecting;
           update();
         },
-        { threshold: 0 }
+        { threshold: 0 },
       );
       footerObserver.observe(footer);
     }
@@ -115,13 +201,22 @@ export default function ProductDetail({ product }: { product: Product }) {
     setColor(c);
     setActiveImage(0);
     if (!isSizeAvailable(product, size, c)) {
-      const fallback = product.sizes.find((s) => isSizeAvailable(product, s, c));
+      const fallback = product.sizes.find((s) =>
+        isSizeAvailable(product, s, c),
+      );
       if (fallback) setSize(fallback);
     }
   }
 
   function handleAdd() {
-    addItem({ slug: product.slug, name: product.name, line: product.line, color, size, quantity });
+    addItem({
+      slug: product.slug,
+      name: product.name,
+      line: product.line,
+      color,
+      size,
+      quantity,
+    });
     setAdded(true);
     openCart();
     setTimeout(() => setAdded(false), 2000);
@@ -138,205 +233,240 @@ export default function ProductDetail({ product }: { product: Product }) {
           }}
         />
       </Suspense>
-      <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-        {/* Gallery */}
-        <div className="flex flex-col-reverse gap-3 lg:flex-row">
-          {images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto lg:w-20 lg:flex-shrink-0 lg:flex-col lg:overflow-visible">
-              {images.map((img, i) => (
-                <button
-                  key={img.src}
-                  type="button"
-                  onClick={() => setActiveImage(i)}
-                  aria-label={`Ver imagen ${i + 1} de ${images.length}`}
-                  aria-current={i === activeImage}
-                  className={`relative aspect-[4/5] w-16 flex-shrink-0 overflow-hidden bg-[#efece4] transition lg:w-full ${
-                    i === activeImage ? "ring-1 ring-ink" : "opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <Image
-                    src={img.src}
-                    alt=""
-                    fill
-                    sizes="80px"
-                    className="object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="min-w-0 flex-1">
-            <ProductCarousel
-              key={color}
-              images={images}
-              fit={product.fit}
-              hex={COLORS[color].hex}
-              fallbackSrc={product.coverImage}
-              priority
-              bgClassName="bg-[#efece4]"
-              index={activeImage}
-              onIndexChange={setActiveImage}
-              showControls={false}
-              sizes="(min-width: 1024px) 42vw, 100vw"
-            />
-          </div>
-        </div>
-
-        {/* Info */}
-        <div>
-          <p className="label text-ink/40">
-            {product.fit === "essential" ? "Essentials" : "Oversize"} · {product.gsm} GSM
-          </p>
-          <h1 className="font-display mt-2 text-4xl">{product.name}</h1>
-          <p className="mt-3 text-sm text-ink/60">{product.tagline}</p>
-          <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/70">
-            {product.description}
-          </p>
-
-          {/* Price */}
-          <div className="mt-8">
-            <p className="text-2xl font-medium">{formatCOP(unitPrice)}</p>
-            <p className="text-xs text-ink/45">
-              Precio por unidad · Total: {formatCOP(total)}
-            </p>
-          </div>
-
-          {/* Color */}
-          <div className="mt-8">
-            <p className="label text-ink/50">
-              Color — <span className="text-ink">{COLORS[color].name}</span>
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {product.colorsLinea.map((c) => (
-                <ColorSwatch
-                  key={c}
-                  color={c}
-                  selected={c === color}
-                  onClick={() => handleSelectColor(c)}
-                />
-              ))}
-            </div>
-            {product.colorsTemporada.length > 0 && (
-              <div className="mt-5">
-                <p className="label text-ink/40">
-                  Colores de temporada{" "}
-                  <span className="normal-case tracking-normal text-ink/35">
-                    (sujeto a disponibilidad)
-                  </span>
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {product.colorsTemporada.map((c) => (
-                    <ColorSwatch
-                      key={c}
-                      color={c}
-                      selected={c === color}
-                      onClick={() => handleSelectColor(c)}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Size */}
-          <div className="mt-8">
-            <div className="flex items-center justify-between">
-              <p className="label text-ink/50">Talla</p>
-              <Link
-                href="/guia-de-tallas"
-                className="text-xs text-ink/50 underline underline-offset-2 hover:text-ink"
-              >
-                Guía de tallas
-              </Link>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {sizeOptions.map((s) => {
-                const available = isSizeAvailable(product, s, color);
-                return (
+      {/* pb-28 en mobile reserva espacio fijo para la barra sticky (evita que
+          tape contenido) sin generar layout shift al aparecer/desaparecer. */}
+      <div className="mx-auto max-w-6xl px-5 pt-12 pb-28 sm:px-8 sm:py-16">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Gallery */}
+          <div className="flex flex-col-reverse gap-3 lg:flex-row">
+            {images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto lg:w-20 lg:flex-shrink-0 lg:flex-col lg:overflow-visible">
+                {images.map((img, i) => (
                   <button
-                    key={s}
-                    disabled={!available}
-                    onClick={() => setSize(s)}
-                    title={
-                      available
-                        ? undefined
-                        : "2XL solo disponible en Negro y Blanco"
-                    }
-                    className={`label h-11 min-w-11 px-3 transition ${
-                      !available
-                        ? "cursor-not-allowed border border-line text-ink/25 line-through"
-                        : s === size
-                        ? "bg-ink text-paper"
-                        : "border border-line text-ink/70 hover:border-ink hover:text-ink"
+                    key={img.src}
+                    type="button"
+                    onClick={() => setActiveImage(i)}
+                    aria-label={`Ver imagen ${i + 1} de ${images.length}`}
+                    aria-current={i === activeImage}
+                    className={`relative aspect-[4/5] w-16 flex-shrink-0 overflow-hidden bg-[#efece4] transition lg:w-full ${
+                      i === activeImage
+                        ? "ring-1 ring-ink"
+                        : "opacity-60 hover:opacity-100"
                     }`}
                   >
-                    {s}
+                    <Image
+                      src={img.src}
+                      alt=""
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
                   </button>
-                );
-              })}
+                ))}
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <ProductCarousel
+                key={color}
+                images={images}
+                fit={product.fit}
+                hex={COLORS[color].hex}
+                fallbackSrc={product.coverImage}
+                priority
+                bgClassName="bg-[#efece4]"
+                index={activeImage}
+                onIndexChange={setActiveImage}
+                showControls={false}
+                sizes="(min-width: 1024px) 42vw, 100vw"
+              />
             </div>
           </div>
 
-          {/* Quantity */}
-          <div className="mt-8">
-            <p className="label text-ink/50">Cantidad</p>
-            <div className="mt-3 flex items-center border border-line w-fit">
-              <button
-                className="px-4 py-3 text-sm"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              >
-                −
-              </button>
-              <span className="w-10 text-center text-sm">{quantity}</span>
-              <button
-                className="px-4 py-3 text-sm"
-                onClick={() => setQuantity((q) => q + 1)}
-              >
-                +
-              </button>
+          {/* Info */}
+          <div>
+            <p className="label text-ink/40">
+              {COLLECTION_LABEL[product.collection]} ·{" "}
+              {product.fit === "essential" ? "Essentials" : "Oversize"} ·{" "}
+              {product.gsm} GSM
+            </p>
+            <h1 className="font-display mt-2 text-4xl">{product.name}</h1>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink/60">
+              {product.tagline}
+            </p>
+
+            {/* Price */}
+            <div className="mt-8">
+              <p className="text-2xl font-medium">{formatCOP(unitPrice)}</p>
+              <p className="text-xs text-ink/45">
+                Precio por unidad · Total: {formatCOP(total)}
+              </p>
+            </div>
+
+            {/* Color */}
+            <div className="mt-8">
+              <p className="label text-ink/50">
+                Color — <span className="text-ink">{COLORS[color].name}</span>
+              </p>
+              <div className="mt-3 flex flex-wrap gap-1">
+                {product.colorsLinea.map((c) => (
+                  <ColorSwatch
+                    key={c}
+                    color={c}
+                    size="lg"
+                    selected={c === color}
+                    onClick={() => handleSelectColor(c)}
+                  />
+                ))}
+              </div>
+              {product.colorsTemporada.length > 0 && (
+                <div className="mt-5">
+                  <p className="label text-ink/40">
+                    Colores de temporada{" "}
+                    <span className="normal-case tracking-normal text-ink/35">
+                      (sujeto a disponibilidad)
+                    </span>
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-1">
+                    {product.colorsTemporada.map((c) => (
+                      <ColorSwatch
+                        key={c}
+                        color={c}
+                        size="lg"
+                        selected={c === color}
+                        onClick={() => handleSelectColor(c)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Size */}
+            <div className="mt-8">
+              <div className="flex items-center justify-between">
+                <p className="label text-ink/50">Talla</p>
+                <button
+                  type="button"
+                  onClick={() => setSizeGuideOpen(true)}
+                  className="text-xs text-ink/50 underline underline-offset-2 hover:text-ink focus-visible:text-ink focus-visible:outline-none"
+                >
+                  Guía de tallas
+                </button>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {sizeOptions.map((s) => {
+                  const available = isSizeAvailable(product, s, color);
+                  return (
+                    <button
+                      key={s}
+                      disabled={!available}
+                      onClick={() => setSize(s)}
+                      title={
+                        available
+                          ? undefined
+                          : "2XL solo disponible en Negro y Blanco"
+                      }
+                      className={`label h-11 min-w-11 px-3 transition ${
+                        !available
+                          ? "cursor-not-allowed border border-line text-ink/25 line-through"
+                          : s === size
+                            ? "bg-ink text-paper"
+                            : "border border-line text-ink/70 hover:border-ink hover:text-ink"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Quantity */}
+            <div className="mt-8">
+              <p className="label text-ink/50">Cantidad</p>
+              <div className="mt-3 flex items-center border border-line w-fit">
+                <button
+                  className="px-4 py-3 text-sm"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                >
+                  −
+                </button>
+                <span className="w-10 text-center text-sm">{quantity}</span>
+                <button
+                  className="px-4 py-3 text-sm"
+                  onClick={() => setQuantity((q) => q + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Add to cart */}
+            <button
+              ref={addToCartRef}
+              onClick={handleAdd}
+              className="label mt-8 w-full bg-ink py-4 text-center text-paper transition hover:bg-ink/85 sm:w-auto sm:px-14"
+            >
+              {added ? "Agregado ✓" : "Agregar al carrito"}
+            </button>
+
+            {/* Información de producto */}
+            <div className="mt-10 border-t border-line">
+              <AccordionSection title="Detalles" defaultOpen>
+                <BulletList items={extraDetails} />
+              </AccordionSection>
+
+              <AccordionSection title="Fit">
+                <p>{product.description}</p>
+              </AccordionSection>
+
+              <AccordionSection title="Material">
+                <BulletList items={materialDetails} />
+              </AccordionSection>
+
+              <AccordionSection title="Envíos y cambios">
+                <BulletList
+                  items={[
+                    "Envío el mismo día dentro de la ciudad; a nivel nacional, entre 3 y 6 días hábiles.",
+                    "Cambios por talla hasta 15 días después de recibido el pedido.",
+                    "Cambios por defecto de fábrica, sin costo.",
+                  ]}
+                />
+                <Link
+                  href="/terminos"
+                  className="label mt-4 inline-block border-b border-ink pb-1 text-ink"
+                >
+                  Ver términos completos →
+                </Link>
+              </AccordionSection>
             </div>
           </div>
-
-          {/* Add to cart */}
-          <button
-            ref={addToCartRef}
-            onClick={handleAdd}
-            className="label mt-8 w-full bg-ink py-4 text-center text-paper transition hover:bg-ink/85 sm:w-auto sm:px-14"
-          >
-            {added ? "Agregado ✓" : "Agregar al carrito"}
-          </button>
-
-          {/* Details */}
-          <div className="mt-10 border-t border-line pt-6">
-            <p className="label text-ink/40">Detalles</p>
-            <ul className="mt-4 flex flex-col gap-2">
-              {product.details.map((d) => (
-                <li key={d} className="flex items-start gap-2 text-sm text-ink/70">
-                  <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-ink/40" />
-                  {d}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
+
+        {showStickyBar && (
+          <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-paper px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:hidden">
+            <div className="min-w-0">
+              <p className="truncate text-xs text-ink/50">
+                {product.name}
+                {colorSuffix(product, color)}
+              </p>
+              <p className="text-sm font-medium">{formatCOP(unitPrice)}</p>
+            </div>
+            <button
+              onClick={handleAdd}
+              className="label flex-shrink-0 bg-ink px-6 py-3 text-center text-paper transition hover:bg-ink/85"
+            >
+              {added ? "Agregado ✓" : "Agregar"}
+            </button>
+          </div>
+        )}
       </div>
 
-      {showStickyBar && (
-        <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-paper px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:hidden">
-          <div className="min-w-0">
-            <p className="truncate text-xs text-ink/50">{product.name} · {COLORS[color].name}</p>
-            <p className="text-sm font-medium">{formatCOP(unitPrice)}</p>
-          </div>
-          <button
-            onClick={handleAdd}
-            className="label flex-shrink-0 bg-ink px-6 py-3 text-center text-paper transition hover:bg-ink/85"
-          >
-            {added ? "Agregado ✓" : "Agregar"}
-          </button>
-        </div>
-      )}
-      </div>
+      <SizeGuideDrawer
+        product={product}
+        open={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
+      />
 
       <RelatedProducts items={relatedItems} />
     </>
