@@ -291,13 +291,13 @@ export const PRODUCTS: Product[] = [
     gsm: 300,
     tagline: "Horma normal, peso completo",
     description:
-      "La misma horma essential en algodón peruano de 300 GSM: más cuerpo, más presencia y una caída firme y suave que no se encoge ni se deforma.",
+      "La misma horma essential en algodón peruano de 300 GSM: más cuerpo, más presencia y una caída firme y suave.",
     details: [
       "100% algodón peruano",
       "300 GSM — tacto firme y suave",
       "Horma normal (essential fit)",
-      "No se encoge, no se deforma",
-      "Colores sólidos que perduran",
+      "Caída más estructurada, con mayor cuerpo",
+      "Colores sólidos, sin estampados",
     ],
     sizes: ["XS", "S", "M", "L", "XL"],
     sizeChart: [
@@ -408,13 +408,13 @@ export const PRODUCTS: Product[] = [
     gsm: 200,
     tagline: "Horma oversize, peso ligero",
     description:
-      "Silueta amplia y caída relajada en algodón peruano de 200 GSM, con cuello en rib. Alto gramaje aparente, suavidad y durabilidad en un corte unisex.",
+      "Silueta amplia y caída relajada en algodón peruano de 200 GSM, con cuello en rib. Alto gramaje aparente y suavidad, en un corte unisex.",
     details: [
       "100% algodón peruano",
       "200 GSM — tela de alto gramaje",
       "Horma oversize unisex",
       "Cuello en rib",
-      "Resistente y duradera",
+      "Fit amplio, hombro caído y manga generosa",
     ],
     sizes: ["XS", "S", "M", "L", "XL", "2XL"],
     sizeChart: [
@@ -514,7 +514,7 @@ export const PRODUCTS: Product[] = [
       "300 GSM — alto gramaje",
       "Horma oversize unisex",
       "Cuello en rib",
-      "No se encoge, no se deforma",
+      "Tejido de mayor cuerpo, con una caída más estructurada y sensación de peso superior",
     ],
     sizes: ["S", "M", "L", "XL"],
     sizeChart: [
