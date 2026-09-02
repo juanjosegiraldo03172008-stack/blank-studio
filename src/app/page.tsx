@@ -9,8 +9,6 @@ const SHOP_FILTERS = [
   { href: "/catalogo", label: "Todos" },
   { href: "/catalogo?fit=essential", label: "Essentials" },
   { href: "/catalogo?fit=oversize", label: "Oversize" },
-  { href: "/origin", label: "Origin" },
-  { href: "/legacy", label: "Legacy" },
 ];
 
 // Un color inicial distinto por card para que la grilla tenga ritmo cromático
@@ -55,6 +53,78 @@ export default function Home() {
           >
             Ver colección
           </Link>
+        </div>
+      </section>
+
+      {/* ALGODÓN PERUANO — puente editorial entre el Hero y el producto */}
+      <section className="bg-black/[0.02] px-5 py-20 sm:px-8 sm:py-28">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
+            <Reveal className="lg:col-span-5">
+              <div className="relative aspect-[4/5] w-full max-w-md overflow-hidden bg-brand-stone">
+                <EditorialImage
+                  src="/products/essentials-200/blanco-detail.jpg"
+                  alt="Detalle de tela — 100% algodón peruano"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={100} className="lg:col-span-7">
+              <p className="label text-ink/40">100% algodón peruano</p>
+              <h2 className="font-display mt-3 text-3xl leading-snug sm:text-4xl">
+                200G / 300G. Dos estructuras, una misma exigencia.
+              </h2>
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-ink/60">
+                Colores sólidos que no se encogen ni se deforman — cada
+                gramaje responde a un propósito distinto.
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="mt-14 grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
+            <Reveal className="bg-paper p-8 sm:p-10">
+              <p className="label text-ink/40">200 GSM</p>
+              <p className="font-display mt-3 text-xl leading-snug">
+                Ligera, fresca y perfecta para el día a día.
+              </p>
+            </Reveal>
+            <Reveal delay={80} className="bg-paper p-8 sm:p-10">
+              <p className="label text-ink/40">300 GSM</p>
+              <p className="font-display mt-3 text-xl leading-snug">
+                Más cuerpo, más presencia, caída firme y suave.
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="mt-px grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
+            <Reveal className="relative flex aspect-[16/10] overflow-hidden bg-paper">
+              <div className="relative w-1/2">
+                <EditorialImage
+                  src={essentials200.media?.blanco?.[0]?.src ?? essentials200.coverImage}
+                  alt="Essentials — horma normal"
+                />
+              </div>
+              <div className="flex w-1/2 flex-col justify-center bg-paper p-6 sm:p-8">
+                <p className="label text-ink/40">Essentials</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink/65">
+                  Horma normal, corte recto.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={80} className="relative flex aspect-[16/10] overflow-hidden bg-paper">
+              <div className="relative w-1/2">
+                <EditorialImage
+                  src={oversize200.media?.negro?.[0]?.src ?? oversize200.coverImage}
+                  alt="Oversize — silueta amplia, cuello en rib"
+                />
+              </div>
+              <div className="flex w-1/2 flex-col justify-center bg-paper p-6 sm:p-8">
+                <p className="label text-ink/40">Oversize</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink/65">
+                  Silueta amplia, cuello en rib, caída relajada.
+                </p>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -201,68 +271,6 @@ export default function Home() {
                   alt="Legacy — detalle del estampado en la espalda"
                   gradient="from-[#2a1013] via-[#1c0a0c] to-[#0c0405]"
                 />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* GUÍA — gramaje y horma, muy breve */}
-      <section className="bg-black/[0.02] px-5 py-24 sm:px-8 sm:py-28">
-        <div className="mx-auto max-w-[1600px]">
-          <Reveal className="mb-14 max-w-lg">
-            <p className="label text-ink/40">Guía rápida</p>
-            <h2 className="font-display mt-3 text-3xl sm:text-4xl">
-              Dos gramajes, dos hormas
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-ink/60">
-              100% algodón peruano en toda la colección — colores sólidos
-              que no se encogen ni se deforman.
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
-            <Reveal className="bg-paper p-8 sm:p-10">
-              <p className="label text-ink/40">200 GSM</p>
-              <p className="font-display mt-3 text-xl leading-snug">
-                Ligera, fresca y perfecta para el día a día.
-              </p>
-            </Reveal>
-            <Reveal delay={80} className="bg-paper p-8 sm:p-10">
-              <p className="label text-ink/40">300 GSM</p>
-              <p className="font-display mt-3 text-xl leading-snug">
-                Más cuerpo, más presencia, caída firme y suave.
-              </p>
-            </Reveal>
-          </div>
-
-          <div className="mt-px grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
-            <Reveal className="relative flex aspect-[16/10] overflow-hidden bg-paper">
-              <div className="relative w-1/2">
-                <EditorialImage
-                  src={essentials200.media?.blanco?.[0]?.src ?? essentials200.coverImage}
-                  alt="Essentials — horma normal"
-                />
-              </div>
-              <div className="flex w-1/2 flex-col justify-center bg-paper p-6 sm:p-8">
-                <p className="label text-ink/40">Essentials</p>
-                <p className="mt-2 text-sm leading-relaxed text-ink/65">
-                  Horma normal, corte recto.
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={80} className="relative flex aspect-[16/10] overflow-hidden bg-paper">
-              <div className="relative w-1/2">
-                <EditorialImage
-                  src={oversize200.media?.negro?.[0]?.src ?? oversize200.coverImage}
-                  alt="Oversize — silueta amplia, cuello en rib"
-                />
-              </div>
-              <div className="flex w-1/2 flex-col justify-center bg-paper p-6 sm:p-8">
-                <p className="label text-ink/40">Oversize</p>
-                <p className="mt-2 text-sm leading-relaxed text-ink/65">
-                  Silueta amplia, cuello en rib, caída relajada.
-                </p>
               </div>
             </Reveal>
           </div>
