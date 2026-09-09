@@ -115,14 +115,14 @@ function DesktopDropdown({
             : "pointer-events-none -translate-y-1 opacity-0"
         }`}
       >
-        <div className="flex min-w-[190px] flex-col border border-line bg-paper py-2 shadow-md">
+        <div className="flex min-w-[200px] flex-col gap-1 bg-paper py-4 shadow-[0_12px_32px_rgba(10,10,10,0.09)]">
           {links.map((l) => (
             <Link
               key={l.label}
               href={l.href}
               tabIndex={open ? 0 : -1}
               onClick={() => setOpenMenu(null)}
-              className="label px-6 py-3.5 text-center text-ink/70 transition-colors duration-200 hover:bg-black/[0.03] hover:text-ink focus-visible:bg-black/[0.03] focus-visible:text-ink focus-visible:outline-none"
+              className="label px-8 py-2.5 text-center text-ink/65 transition-colors duration-200 hover:text-ink focus-visible:text-ink focus-visible:outline-none"
             >
               {l.label}
             </Link>
@@ -159,6 +159,16 @@ export default function SiteHeader() {
 
   return (
     <>
+      {/* Franja informativa — estática (no sticky), se desplaza con la
+          página; el header sigue pegado debajo de ella. Contenido real:
+          envíos y pago contraentrega ya son parte del flujo aprobado. */}
+      <div className="hidden items-center justify-between border-b border-line-soft bg-black/[0.03] px-8 py-2 sm:flex">
+        <p className="label text-ink/50">
+          Envíos a todo Colombia · Pago contraentrega · Calidad que perdura
+        </p>
+        <p className="label text-ink/50">Un estilo, más allá del tiempo.</p>
+      </div>
+
       <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
         <div
           className={`relative z-[55] mx-auto flex max-w-[1600px] items-center justify-between px-5 transition-[height] duration-200 motion-reduce:transition-none sm:px-8 ${
