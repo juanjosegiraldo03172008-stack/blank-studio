@@ -52,15 +52,41 @@ function DesktopDropdown({
   links: { href: string; label: string }[];
   menuKey: MenuKey;
   openMenu: MenuKey | null;
-  setOpenMenu: (m: MenuKey | null) => void;
+  setOpenMenu: (m: MenuKey | null | ((prev: MenuKey | null) => MenuKey | null)) => void;
 }) {
   const open = openMenu === menuKey;
+  // Cierre con un pequeño retraso: un movimiento diagonal del mouse entre el
+  // botón y el panel no debe cerrar el menú por accidente. Se cancela si el
+  // cursor vuelve a entrar antes de que el timeout dispare.
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function scheduleClose() {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    // Actualización funcional: si para cuando dispara el timeout el menú
+    // abierto ya es OTRO (el usuario pasó de Shop a Collections antes de que
+    // expiraran los 200ms de Shop), no debe cerrar ese otro menú.
+    closeTimer.current = setTimeout(
+      () => setOpenMenu((current) => (current === menuKey ? null : current)),
+      200,
+    );
+  }
+  function cancelClose() {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }
+
+  useEffect(() => () => cancelClose(), []);
 
   return (
     <div
       className="relative"
-      onMouseEnter={() => setOpenMenu(menuKey)}
-      onMouseLeave={() => setOpenMenu(null)}
+      onMouseEnter={() => {
+        cancelClose();
+        setOpenMenu(menuKey);
+      }}
+      onMouseLeave={scheduleClose}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node))
           setOpenMenu(null);
@@ -74,7 +100,7 @@ function DesktopDropdown({
     >
       <button
         type="button"
-        className="label flex items-center gap-1.5 text-ink/70 transition-colors duration-200 hover:text-ink focus-visible:text-ink focus-visible:outline-none"
+        className="label flex items-center gap-1.5 py-2 text-ink/70 transition-colors duration-200 hover:text-ink focus-visible:text-ink focus-visible:outline-none"
         aria-haspopup="true"
         aria-expanded={open}
         onClick={() => setOpenMenu(open ? null : menuKey)}
@@ -83,20 +109,20 @@ function DesktopDropdown({
         <ChevronIcon open={open} />
       </button>
       <div
-        className={`absolute left-1/2 top-full z-10 -translate-x-1/2 pt-4 transition-all duration-150 ease-out motion-reduce:transition-none ${
+        className={`absolute left-1/2 top-full z-10 -translate-x-1/2 pt-3 transition-all duration-150 ease-out motion-reduce:transition-none ${
           open
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-1 opacity-0"
         }`}
       >
-        <div className="flex min-w-[160px] flex-col border border-line bg-paper py-2 shadow-sm">
+        <div className="flex min-w-[190px] flex-col border border-line bg-paper py-2 shadow-md">
           {links.map((l) => (
             <Link
               key={l.label}
               href={l.href}
               tabIndex={open ? 0 : -1}
               onClick={() => setOpenMenu(null)}
-              className="label px-5 py-3 text-center text-ink/70 transition-colors duration-200 hover:text-ink focus-visible:text-ink focus-visible:outline-none"
+              className="label px-6 py-3.5 text-center text-ink/70 transition-colors duration-200 hover:bg-black/[0.03] hover:text-ink focus-visible:bg-black/[0.03] focus-visible:text-ink focus-visible:outline-none"
             >
               {l.label}
             </Link>
