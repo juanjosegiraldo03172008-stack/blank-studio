@@ -6,15 +6,9 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { COLORS, formatCOP } from "@/data/products";
 import CartItemThumbnail from "@/components/CartItemThumbnail";
-import {
-  buildOrderMessage,
-  copyOrderAndOpenInstagram,
-  INSTAGRAM_HANDLE,
-  type CustomerInfo,
-} from "@/lib/instagramOrder";
+import { INSTAGRAM_DM_URL, type CustomerInfo } from "@/lib/instagramOrder";
 import { createOrderAction } from "@/app/actions/orders";
 
-type Step = "form" | "confirm";
 type FieldName = "name" | "email" | "city" | "address" | "phone";
 /** El flujo real de Instagram (CustomerInfo) no lleva email — este checkout
  * sí lo pide, para poder crear el pedido real (FASE 4B). */
@@ -87,11 +81,7 @@ export default function PedidoPage() {
     address: "",
     addressLine2: "",
     phone: "",
-    notes: "",
   });
-  const [step, setStep] = useState<Step>("form");
-  const [copied, setCopied] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>(
@@ -124,11 +114,6 @@ export default function PedidoPage() {
     phone: phoneRef,
   };
 
-  const message = useMemo(
-    () => buildOrderMessage(items, customer),
-    [items, customer],
-  );
-
   const errors = useMemo(() => validate(customer), [customer]);
   const canSubmit = items.length > 0 && Object.keys(errors).length === 0;
 
@@ -148,9 +133,8 @@ export default function PedidoPage() {
     if (firstInvalid) fieldRefs[firstInvalid].current?.focus();
   }
 
-  /** Flujo nuevo (FASE 4B) — crea un pedido real y lleva a la pantalla de pago. */
   async function handleContinueToPayment() {
-    if (isCreatingOrder || isSubmitting) return;
+    if (isCreatingOrder) return;
     if (!canSubmit) {
       focusFirstInvalid();
       return;
@@ -186,30 +170,7 @@ export default function PedidoPage() {
     }
   }
 
-  /** Flujo existente — se mantiene intacto como alternativa/fallback. */
-  async function handleSend() {
-    if (isSubmitting || isCreatingOrder) return;
-    if (!canSubmit) {
-      focusFirstInvalid();
-      return;
-    }
-    setIsSubmitting(true);
-    const success = await copyOrderAndOpenInstagram(message);
-    setCopied(success);
-    setStep("confirm");
-    setIsSubmitting(false);
-  }
-
-  async function handleCopyAgain() {
-    try {
-      await navigator.clipboard.writeText(message);
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
-  }
-
-  if (items.length === 0 && step === "form") {
+  if (items.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-5 py-32 text-center sm:px-8">
         <h1 className="font-display text-2xl">Tu carrito está vacío.</h1>
@@ -230,12 +191,10 @@ export default function PedidoPage() {
     <div className="mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
       <p className="label text-ink/50">Pedido</p>
       <h1 className="mt-2 font-display text-3xl sm:text-4xl">
-        {step === "form" ? "Confirma tu pedido" : "Casi listo"}
+        Confirma tu pedido
       </h1>
 
-      {step === "form" && (
-        <>
-          <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
+      <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
             {/* Resumen — primero en mobile, columna derecha en desktop */}
             <div className="order-1 lg:order-2 lg:sticky lg:top-24">
               <p className="label text-ink/40">Tu pedido</p>
@@ -305,7 +264,7 @@ export default function PedidoPage() {
                 </span>
               </div>
               <p className="mt-1 text-xs text-ink/40">
-                Envío: pago contraentrega.
+                Envío: se paga al recibir.
               </p>
             </div>
 
@@ -456,21 +415,6 @@ export default function PedidoPage() {
                   />
                 </Field>
 
-                <Field
-                  label="Notas (opcional)"
-                  htmlFor="notes"
-                  className="sm:col-span-2"
-                >
-                  <input
-                    id="notes"
-                    value={customer.notes}
-                    onChange={(e) =>
-                      setCustomer((c) => ({ ...c, notes: e.target.value }))
-                    }
-                    className={`${inputClass} border-line`}
-                  />
-                </Field>
-
                 <button
                   type="submit"
                   disabled={isCreatingOrder}
@@ -488,118 +432,22 @@ export default function PedidoPage() {
                   </p>
                 )}
                 <p className="text-xs text-ink/40 sm:col-span-2">
-                  * Campos obligatorios. Envío: pago contraentrega.
+                  * Campos obligatorios. El envío se paga al recibir.
                 </p>
-
-                <div className="sm:col-span-2 mt-4 flex items-center gap-4 text-xs text-ink/40">
-                  <span className="h-px flex-1 bg-line-soft" />
-                  o
-                  <span className="h-px flex-1 bg-line-soft" />
-                </div>
-
-                <div className="sm:col-span-2 border border-line-soft bg-black/[0.02] p-5">
-                  <p className="label text-ink/50">
-                    ¿Prefieres coordinar por Instagram?
-                  </p>
-                  <ol className="mt-3 flex flex-col gap-2 text-sm text-ink/70">
-                    <li>
-                      1. Al presionar &quot;Enviar pedido por Instagram&quot;,
-                      copiamos automáticamente el resumen a tu portapapeles.
-                    </li>
-                    <li>
-                      2. Se abrirá el chat directo de Instagram con @
-                      {INSTAGRAM_HANDLE} en una pestaña nueva.
-                    </li>
-                    <li>
-                      3. Pega el mensaje ahí (mantén presionado y elige
-                      &quot;Pegar&quot;, o Ctrl/Cmd + V).
-                    </li>
-                    <li>
-                      4. Presiona enviar en Instagram — con eso tu pedido queda
-                      registrado.
-                    </li>
-                  </ol>
-                </div>
-
-                <button
-                  type="button"
-                  disabled={isSubmitting}
-                  onClick={handleSend}
-                  className={`label w-full border py-4 text-center sm:col-span-2 ${
-                    isSubmitting
-                      ? "cursor-wait border-line text-ink/40"
-                      : "border-ink text-ink hover:bg-ink hover:text-paper"
-                  }`}
-                >
-                  {isSubmitting ? "Procesando…" : "Enviar pedido por Instagram"}
-                </button>
               </form>
+
+              <div className="mt-6 text-center sm:text-left">
+                <a
+                  href={INSTAGRAM_DM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
+                >
+                  ¿Necesitas ayuda? Escríbenos por Instagram.
+                </a>
+              </div>
             </div>
           </div>
-
-          <div className="mt-16 border-t border-line pt-10">
-            <p className="label text-ink/50">
-              ¿Primera vez pidiendo con nosotros?
-            </p>
-            <h2 className="font-display mt-2 text-xl">
-              Mira cómo se hace en 20 segundos
-            </h2>
-            <div className="mt-6 max-w-sm overflow-hidden border border-line-soft">
-              <video
-                src="/videos/pedido-demo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls
-                className="w-full"
-              />
-            </div>
-          </div>
-        </>
-      )}
-
-      {step === "confirm" && (
-        <div className="mt-10 max-w-lg">
-          <div className="border border-ink/20 bg-black/[0.02] p-6">
-            <p className="text-sm font-medium">
-              {copied
-                ? "✅ Tu pedido fue copiado. Se abrió Instagram en una pestaña nueva."
-                : "No pudimos copiar el texto automáticamente. Se abrió Instagram en una pestaña nueva — copia el texto de abajo manualmente."}
-            </p>
-            <p className="mt-3 text-sm text-ink/70">
-              Ve a la pestaña de Instagram, toca el campo de mensaje, pega el
-              texto (Ctrl/Cmd + V, o mantén presionado → Pegar) y presiona
-              enviar. Así confirmamos tu pedido.
-            </p>
-          </div>
-
-          <div className="mt-6">
-            <p className="label text-ink/50">Texto de tu pedido</p>
-            <textarea
-              readOnly
-              value={message}
-              rows={10}
-              className="mt-3 w-full resize-none border border-line bg-transparent px-4 py-3 text-sm text-ink/80 outline-none"
-            />
-            <button
-              onClick={handleCopyAgain}
-              className="label mt-3 border border-ink px-6 py-3 text-ink transition hover:bg-ink hover:text-paper"
-            >
-              Copiar de nuevo
-            </button>
-          </div>
-
-          <a
-            href={`https://ig.me/m/${INSTAGRAM_HANDLE}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label mt-6 inline-block w-full bg-ink py-4 text-center text-paper transition hover:bg-ink/85 sm:w-auto sm:px-10"
-          >
-            Abrir Instagram de nuevo
-          </a>
-        </div>
-      )}
     </div>
   );
 }
