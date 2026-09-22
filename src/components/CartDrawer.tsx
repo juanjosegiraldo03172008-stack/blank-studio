@@ -148,7 +148,7 @@ export default function CartDrawer() {
             <span className="font-medium">{formatCOP(totalPrice)}</span>
           </div>
           <p className="mb-4 text-xs text-ink/40">
-            Envío calculado en el siguiente paso.
+            Envío: se paga al recibir.
           </p>
           <Link
             href="/pedido"

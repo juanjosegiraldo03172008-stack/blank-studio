@@ -17,7 +17,7 @@ Abre [http://localhost:3000](http://localhost:3000).
 | --- | --- |
 | Precios (por escala de cantidad) | `src/data/pricing.ts` |
 | Colores, tallas, medidas, descripciones de producto | `src/data/products.ts` |
-| Usuario de Instagram para pedidos | `src/lib/instagramOrder.ts` |
+| Usuario de Instagram (canal de soporte) | `src/lib/instagramOrder.ts` |
 | Textos de la home | `src/app/page.tsx` |
 | Textos de "La marca" | `src/app/marca/page.tsx` |
 
@@ -49,16 +49,18 @@ Mientras tanto, `BrandMark` muestra una "V" tipográfica de reemplazo.
 
 ## Pedidos
 
-El flujo real de compra sigue siendo por Instagram: "Hacer pedido" arma un
-resumen del carrito, lo copia al portapapeles y abre el chat directo de
-Instagram (`@valenciano.co`) para que el cliente lo pegue y lo envíe. Eso
-queda centralizado en `src/lib/instagramOrder.ts` — no se toca ni se
-reemplaza mientras se construye el pago real.
+Desde P0-A existe una sola ruta de compra, **sin pasarela de pago**:
 
-En paralelo (FASE 4A), existe una infraestructura de pedidos en base de
-datos — todavía **sin pasarela de pago conectada** — que valida todo
-server-side y persiste el pedido con estado `pending_payment`. Ver la
-siguiente sección para configurarla.
+carrito → `/pedido` (datos de entrega) → "Continuar al pago" → se crea el
+pedido real en base de datos (`pending_payment`) → `/pedido/[id]` (datos
+de Nequi/Bancolombia) → el cliente reporta la transferencia
+(`payment_reported`) → VALENCIANO verifica el ingreso manualmente → `paid`
+(solo manual, nunca automático). El envío se paga al recibir.
+
+Instagram (`@valenciano.co`, en `src/lib/instagramOrder.ts`) queda solo
+como canal de soporte: enlaces de ayuda y envío **opcional** del
+comprobante de transferencia desde `/pedido/[id]`. Ver la siguiente
+sección para configurar la base de datos.
 
 ## Base de datos (pedidos, FASE 4A)
 
@@ -91,15 +93,16 @@ migración nueva.
 corriendo (`npm run dev`) y un producto en el carrito, visita
 `/dev/crear-pedido-prueba` — es una herramienta interna, no enlazada desde
 ninguna navegación, y devuelve 404 en producción (`npm run build && npm run
-start`). Llama al mismo Server Action (`src/app/actions/orders.ts`) que
-usará el checkout real más adelante.
+start`). Llama al mismo Server Action (`src/app/actions/orders.ts`) que usa
+el checkout real (`/pedido`).
 
 **Reglas que ya aplica el servidor** (ver `src/lib/orders/`):
 
 - Precio, nombre y disponibilidad de color/talla se recalculan siempre
   desde `products.ts` — el navegador nunca puede fijar un precio o total.
-- El envío se paga contraentrega (`shipping_payment_method:
-  cash_on_delivery`) — nunca se suma un costo de envío al subtotal.
+- El envío se paga al recibir (`shipping_payment_method:
+  cash_on_delivery` — solo el envío, las prendas se pagan por
+  transferencia) — nunca se suma un costo de envío al subtotal.
 - Reenviar la misma solicitud (mismo `idempotencyKey`) devuelve el pedido
   ya creado en vez de duplicarlo.
 - El pedido y sus items se crean en una sola transacción — si falla algo,

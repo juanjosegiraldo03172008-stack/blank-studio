@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import CartItemThumbnail from "@/components/CartItemThumbnail";
-import { formatCOP } from "@/data/products";
+import { COLORS, formatCOP } from "@/data/products";
 import type { ColorId } from "@/data/products";
 import {
   INSTAGRAM_DM_URL,
@@ -44,6 +44,11 @@ export default function PaymentClient({
   const [reporting, setReporting] = useState(false);
   const [reportError, setReportError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  // Resultado del botón opcional "Enviar comprobante por Instagram": abre
+  // Instagram y copia un mensaje — hay que decirle al usuario qué pasó.
+  const [proofMessageCopied, setProofMessageCopied] = useState<
+    boolean | null
+  >(null);
 
   async function handleCopy(value: string) {
     try {
@@ -68,10 +73,11 @@ export default function PaymentClient({
     setReporting(false);
   }
 
+  const proofMessage = `Hola, realicé la transferencia correspondiente al pedido ${order.orderNumber}.`;
+
   async function handleSendProof() {
-    await copyOrderAndOpenInstagram(
-      `Hola, realicé la transferencia correspondiente al pedido ${order.orderNumber}.`,
-    );
+    const ok = await copyOrderAndOpenInstagram(proofMessage);
+    setProofMessageCopied(ok);
   }
 
   const orderSummary = (
@@ -93,7 +99,10 @@ export default function PaymentClient({
             <div className="flex flex-1 flex-col">
               <p className="text-sm font-medium">{item.productName}</p>
               <p className="mt-0.5 text-xs text-ink/50">
-                {item.color} · Talla {item.size} · Cant. {item.quantity}
+                {/* order_items.color guarda el id (p. ej. "verde-botella") —
+                    se muestra el nombre de COLORS, igual que en /pedido. */}
+                {COLORS[item.color as ColorId]?.name ?? item.color} · Talla{" "}
+                {item.size} · Cant. {item.quantity}
               </p>
             </div>
             <p className="font-ui whitespace-nowrap text-sm text-ink/70">
@@ -138,12 +147,52 @@ export default function PaymentClient({
         <p className="mt-4 text-sm text-ink/60">Envío: se paga al recibir.</p>
 
         <div className="mt-10 flex flex-col gap-3 border-t border-line pt-8">
+          {/* Opcional: la fuente de verdad es la verificación manual del
+              ingreso en la cuenta, no el comprobante. */}
+          <p className="text-sm leading-relaxed text-ink/70">
+            ¿Quieres agilizar la verificación? Puedes enviarnos el comprobante
+            por Instagram. Es opcional: verificamos el pago con el ingreso en
+            nuestra cuenta.
+          </p>
           <button
+            type="button"
             onClick={handleSendProof}
             className="label border border-ink px-6 py-4 text-center transition hover:bg-ink hover:text-paper"
           >
             Enviar comprobante por Instagram
           </button>
+          <div aria-live="polite">
+            {proofMessageCopied === true && (
+              <p className="text-xs leading-relaxed text-ink/60">
+                Abrimos Instagram y copiamos este mensaje para que lo pegues
+                junto con la captura del comprobante: “{proofMessage}”
+              </p>
+            )}
+            {proofMessageCopied === false && (
+              <p className="text-xs leading-relaxed text-ink/60">
+                Abrimos Instagram, pero no pudimos copiar el mensaje. Al enviar
+                la captura, menciona el pedido{" "}
+                <span className="font-medium text-ink">
+                  {order.orderNumber}
+                </span>
+                .
+              </p>
+            )}
+            {proofMessageCopied !== null && (
+              <p className="mt-1 text-xs text-ink/60">
+                ¿No se abrió Instagram?{" "}
+                <a
+                  href={INSTAGRAM_DM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-ink"
+                >
+                  Ábrelo aquí
+                </a>
+                .
+              </p>
+            )}
+          </div>
           <a
             href={INSTAGRAM_DM_URL}
             target="_blank"
@@ -249,6 +298,7 @@ export default function PaymentClient({
             method={selectedMethod}
             info={selectedMethod === "nequi" ? nequi! : bancolombia!}
             amount={order.subtotal}
+            orderNumber={order.orderNumber}
             copied={copied}
             onCopy={handleCopy}
           />
@@ -289,12 +339,14 @@ function PaymentMethodDetails({
   method,
   info,
   amount,
+  orderNumber,
   copied,
   onCopy,
 }: {
   method: PaymentMethod;
   info: AccountInfo;
   amount: number;
+  orderNumber: string;
   copied: boolean;
   onCopy: (value: string) => void;
 }) {
@@ -339,6 +391,13 @@ function PaymentMethodDetails({
             ? "Copiar número"
             : "Copiar número de cuenta"}
       </button>
+
+      {/* Permite identificar la transferencia al verificarla manualmente
+          (dos pedidos pueden tener el mismo valor). */}
+      <p className="mt-4 text-xs leading-relaxed text-ink/60">
+        Escribe <span className="font-medium text-ink">{orderNumber}</span> en
+        la descripción o referencia de la transferencia.
+      </p>
     </div>
   );
 }

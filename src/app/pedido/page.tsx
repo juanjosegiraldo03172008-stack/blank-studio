@@ -6,13 +6,21 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { COLORS, formatCOP } from "@/data/products";
 import CartItemThumbnail from "@/components/CartItemThumbnail";
-import { INSTAGRAM_DM_URL, type CustomerInfo } from "@/lib/instagramOrder";
+import { INSTAGRAM_DM_URL } from "@/lib/instagramOrder";
 import { createOrderAction } from "@/app/actions/orders";
 
 type FieldName = "name" | "email" | "city" | "address" | "phone";
-/** El flujo real de Instagram (CustomerInfo) no lleva email — este checkout
- * sí lo pide, para poder crear el pedido real (FASE 4B). */
-type CheckoutCustomer = CustomerInfo & { email: string };
+/** Datos del formulario de checkout — se envían tal cual a createOrderAction,
+ * que los valida de nuevo server-side (src/lib/orders/validate.ts). */
+interface CheckoutCustomer {
+  name: string;
+  email: string;
+  city: string;
+  address: string;
+  /** Apto, torre, interior, etc. — opcional. */
+  addressLine2?: string;
+  phone: string;
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -159,9 +167,8 @@ export default function PedidoPage() {
       idempotencyKey,
     });
     if (res.ok) {
-      // El pedido ya quedó registrado en la base de datos (a diferencia del
-      // flujo de Instagram, donde nunca sabemos si realmente se envió) —
-      // aquí sí es seguro vaciar el carrito.
+      // El pedido ya quedó registrado en la base de datos — aquí sí es
+      // seguro vaciar el carrito.
       clearCart();
       router.push(`/pedido/${res.orderId}`);
     } else {

@@ -7,7 +7,7 @@ import type { CreateOrderResult } from "@/lib/orders/types";
 
 /**
  * Herramienta de prueba interna — NO es el checkout real. Llama al mismo
- * Server Action que usará el checkout real más adelante, contra el carrito
+ * Server Action que usa el checkout real (/pedido), contra el carrito
  * real (useCart), para comprobar de punta a punta que CREATE ORDER
  * funciona: validación server-side, precios recalculados, inventario,
  * idempotencia y persistencia en base de datos. No hay pago involucrado.
@@ -56,8 +56,8 @@ export default function TestOrderForm() {
       <div className="border-2 border-dashed border-red-600 bg-red-50 p-4 text-red-800">
         <p className="font-bold">HERRAMIENTA DE PRUEBA INTERNA — FASE 4A</p>
         <p className="mt-1">
-          No es el checkout real. No procesa pagos. No reemplaza /pedido ni
-          Instagram. Solo visible en desarrollo (404 en producción).
+          No es el checkout real. No procesa pagos. No reemplaza /pedido.
+          Solo visible en desarrollo (404 en producción).
         </p>
       </div>
 

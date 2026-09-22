@@ -1,6 +1,6 @@
 /**
- * Tipos del sistema de pedidos (FASE 4A). Independientes de CustomerInfo en
- * instagramOrder.ts a propósito — ese flujo sigue intacto y no se toca.
+ * Tipos del sistema de pedidos (FASE 4A/4B). Es el único flujo de compra
+ * desde P0-A — Instagram queda solo como canal de soporte.
  */
 
 export interface CreateOrderItemInput {

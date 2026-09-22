@@ -1,53 +1,18 @@
-import { COLORS, formatCOP } from "@/data/products";
-import type { CartItemWithPrice } from "@/context/CartContext";
+/**
+ * Instagram es un canal de SOPORTE (ayuda y envío opcional del comprobante
+ * de transferencia) — ya no es una ruta de compra desde P0-A. La compra
+ * ocurre solo en /pedido → /pedido/[id].
+ */
 
 export const INSTAGRAM_HANDLE = "valenciano.co";
 /** ig.me abre directo el chat interno con la cuenta, no el perfil. */
 export const INSTAGRAM_DM_URL = `https://ig.me/m/${INSTAGRAM_HANDLE}`;
 
-export interface CustomerInfo {
-  name: string;
-  city: string;
-  address: string;
-  /** Apto, torre, interior, etc. — opcional. */
-  addressLine2?: string;
-  phone: string;
-  notes?: string;
-}
-
-export function buildOrderMessage(
-  items: CartItemWithPrice[],
-  customer: CustomerInfo,
-): string {
-  const lines: string[] = [];
-  lines.push("Hola VALENCIANO, quiero hacer este pedido:");
-  lines.push("");
-  items.forEach((item, idx) => {
-    const colorName = COLORS[item.color].name;
-    const priceLabel =
-      item.unitPrice === null ? "Próximamente" : formatCOP(item.unitPrice);
-    lines.push(
-      `${idx + 1}. ${item.name} — Color: ${colorName} — Talla: ${item.size} — Cant: ${item.quantity} — ${priceLabel} c/u`,
-    );
-  });
-  lines.push("");
-  const total = items.every((i) => i.unitPrice !== null)
-    ? items.reduce((sum, i) => sum + (i.lineTotal ?? 0), 0)
-    : null;
-  if (total !== null) lines.push(`Total: ${formatCOP(total)}`);
-  lines.push("");
-  lines.push(`Nombre: ${customer.name}`);
-  lines.push(`Ciudad: ${customer.city}`);
-  const address = customer.addressLine2
-    ? `${customer.address}, ${customer.addressLine2}`
-    : customer.address;
-  lines.push(`Dirección: ${address}`);
-  lines.push(`Teléfono: ${customer.phone}`);
-  if (customer.notes) lines.push(`Notas: ${customer.notes}`);
-  return lines.join("\n");
-}
-
-/** @returns true si el texto quedó realmente en el portapapeles. */
+/**
+ * Abre el chat de Instagram y copia `message` al portapapeles.
+ * @returns true si el texto quedó realmente en el portapapeles — el llamador
+ * debe informar al usuario qué ocurrió en ambos casos.
+ */
 export async function copyOrderAndOpenInstagram(
   message: string,
 ): Promise<boolean> {
@@ -61,7 +26,7 @@ export async function copyOrderAndOpenInstagram(
     return true;
   } catch {
     // clipboard puede fallar (permisos/contexto no seguro) — Instagram ya
-    // se abrió; el llamador debe avisar que hay que copiar a mano.
+    // se abrió; el llamador debe avisar que hay que escribirlo a mano.
     return false;
   }
 }
