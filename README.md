@@ -108,6 +108,40 @@ el checkout real (`/pedido`).
 - El pedido y sus items se crean en una sola transacción — si falla algo,
   no queda un pedido a medias.
 
+## Datos legales del vendedor (P0-B2)
+
+La ley (Ley 1480 de 2011, art. 50 lit. a) exige publicar la identidad y el
+contacto del vendedor. Esos datos son personales, así que **nunca van en el
+código ni en el repositorio**: viven solo en variables de entorno.
+
+| Variable | Contenido |
+| --- | --- |
+| `LEGAL_SELLER_NAME` | Nombre completo o razón social, como figura en el RUT |
+| `LEGAL_SELLER_NIT` | NIT con dígito de verificación, formato `NNNNNNNNN-D` |
+| `LEGAL_NOTICE_ADDRESS` | Dirección de notificación judicial |
+| `LEGAL_CITY` | Ciudad de esa dirección |
+| `LEGAL_PHONE` | Teléfono de atención |
+| `LEGAL_EMAIL` | Correo de atención de la marca |
+
+1. Complétalas en `.env.local` (local) y en Vercel → Project Settings →
+   Environment Variables (Production y Preview).
+2. Verifícalas con:
+   ```bash
+   npm run check:legal          # estado de cada variable (sin mostrar valores)
+   npm run check:legal -- --show  # además imprime los valores normalizados
+   ```
+   Requiere Node 22.6 o superior. Lee las variables del entorno y de
+   `.env.production.local`, `.env.local`, `.env.production` y `.env` (mismo
+   orden que Next.js en producción). Falla si falta una variable, está vacía,
+   parece un valor de ejemplo, el correo o el teléfono tienen formato
+   inválido o el dígito de verificación del NIT no corresponde (algoritmo de
+   la DIAN). Valida **formato**, no qué dato corresponde publicar legalmente.
+
+Código: `src/lib/legal/sellerIdentity.ts` (validación pura),
+`src/lib/legal/server.ts` (lectura server-side) y `src/data/legal.ts` (datos
+públicos de la marca: nombre comercial, Instagram, enlace a la SIC).
+Todavía ninguna página muestra estos datos.
+
 ## Deploy
 
 Este proyecto se puede desplegar gratis en [Vercel](https://vercel.com/new)
