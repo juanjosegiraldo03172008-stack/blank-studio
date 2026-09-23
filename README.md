@@ -145,6 +145,51 @@ npm run admin:quote -- VAL-1051 --valor 18500 --transportadora "Inter Rapidísim
 - Cotiza solo después de revisar una tarifa real con la transportadora: el
   sistema no tiene tarifas ni integración con transportadoras.
 
+## Verificación del pago y despacho (P0-B4a)
+
+`payment_reported` solo significa que el cliente **afirma** haber
+transferido. `paid` significa que VALENCIANO **verificó personalmente el
+ingreso real** en su cuenta. Ningún botón ni acción pública puede poner
+`paid`: solo `admin:paid`.
+
+```bash
+npm run admin:pending   # 1. por cotizar · 2. pagos reportados por verificar · 3. pagados por despachar
+npm run admin:paid -- VAL-1051 [--nota "Verificado en la app del banco"]
+npm run admin:paid -- VAL-1051 --sin-reporte --metodo nequi|bancolombia [--nota "..."]
+npm run admin:ship -- VAL-1051 --transportadora "Inter Rapidísimo" --guia "<número>" [--nota "..."]
+npm run admin:ship -- VAL-1051 --transportadora "..." --sin-guia --nota "<cómo se entrega>"
+npm run admin:ship -- VAL-1051 --corregir-guia "<número>"
+```
+
+- `admin:paid`: exige pago reportado (o `--sin-reporte --metodo` cuando el
+  cliente transfirió pero no pulsó "Ya realicé el pago"; `payment_reported_at`
+  queda vacío y la nota lo indica). Muestra el valor exacto a verificar (solo
+  prendas) y pide escribir el número del pedido. La referencia `VAL-XXXX` es
+  una ayuda: puede no aparecer en el movimiento bancario; lo que se verifica
+  es el ingreso real. Deja `paid` + `paid_at` + `order_status = preparing`.
+  No guardes números de cuenta en la nota.
+- `admin:ship`: solo pedidos pagados, no cancelados ni despachados. Deja
+  `shipped`, `shipped_at`, transportadora final, guía y nota. Si la
+  transportadora final es distinta de la aceptada, aborta salvo
+  `--cambio-transportadora-autorizado` con `--nota`. Nunca modifica el valor
+  de envío aceptado. `--sin-guia` exige `--nota`; nunca se guarda una guía de
+  relleno. `--corregir-guia` cambia solo la guía.
+- Ambos confirman escribiendo el número del pedido fuera de cualquier
+  transacción y luego guardan en una transacción corta que aborta si el
+  pedido cambió mientras lo revisabas.
+
+**Antes de aplicar `0004_payment_and_shipment.sql` en una base con datos**,
+verifica que no haya pedidos marcados `shipped` a mano (la migración fallaría
+completa, sin cambiar nada):
+
+```sql
+SELECT order_number, payment_status FROM orders WHERE order_status = 'shipped';
+```
+
+**Pendiente antes de abrir ventas reales (P0-B4b y P0-B5):** acuse de recibo
+durable, impresión/descarga del resumen, datos legales públicos, tiempo de
+entrega definitivo, tratamiento tributario, términos y privacidad.
+
 ## Datos legales del vendedor (P0-B2)
 
 La ley (Ley 1480 de 2011, art. 50 lit. a) exige publicar la identidad y el

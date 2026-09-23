@@ -10,7 +10,9 @@
     "db:migrate": "node db/migrate.mjs",
     "check:legal": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-legal.mts",
     "admin:pending": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin/pending.mts",
-    "admin:quote": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin/quote.mts"
+    "admin:quote": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin/quote.mts",
+    "admin:paid": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin/paid.mts",
+    "admin:ship": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin/ship.mts"
   },
   "dependencies": {
     "next": "16.2.10",

@@ -146,6 +146,16 @@ export interface OrderForPayment {
   /** Calculado con la hora de la base de datos al cargar la página. */
   quoteExpired: boolean;
   acceptedShippingAmount: number | null;
+
+  /** P0-B4a — ISO 8601. null también en pagos históricos anteriores a B4a. */
+  paidAt: string | null;
+  /** P0-B4a — ISO 8601. */
+  shippedAt: string | null;
+  /** Transportadora con la que realmente se despachó (≠ la cotizada). */
+  shippingCarrierFinal: string | null;
+  /** null si la entrega legítimamente no generó guía. */
+  trackingNumber: string | null;
+  shipmentNote: string | null;
 }
 
 export type QuoteActionFailureReason =

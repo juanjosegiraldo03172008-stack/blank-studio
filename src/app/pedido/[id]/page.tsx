@@ -48,7 +48,10 @@ export default async function OrderPaymentPage({
     );
   }
 
-  const holder = process.env.PAYMENT_ACCOUNT_HOLDER;
+  // P0-B4a: los datos de cuenta solo se necesitan mientras falta pagar. Una
+  // vez reportado, verificado o despachado, no se envían al navegador.
+  const awaitingPayment = order.paymentStatus === "pending_payment";
+  const holder = awaitingPayment ? process.env.PAYMENT_ACCOUNT_HOLDER : undefined;
   const nequiNumber = process.env.PAYMENT_NEQUI_NUMBER;
   const bancolombiaAccount = process.env.PAYMENT_BANCOLOMBIA_ACCOUNT;
   const bancolombiaAccountType = process.env.PAYMENT_BANCOLOMBIA_ACCOUNT_TYPE;
@@ -64,6 +67,14 @@ export default async function OrderPaymentPage({
       : null;
 
   return (
-    <PaymentClient order={order} nequi={nequi} bancolombia={bancolombia} />
+    <PaymentClient
+      order={order}
+      nequi={nequi}
+      bancolombia={bancolombia}
+      paidAtLabel={order.paidAt ? formatDateTimeCO(new Date(order.paidAt)) : null}
+      shippedAtLabel={
+        order.shippedAt ? formatDateTimeCO(new Date(order.shippedAt)) : null
+      }
+    />
   );
 }

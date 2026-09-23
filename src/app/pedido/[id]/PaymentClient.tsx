@@ -26,6 +26,8 @@ export default function PaymentClient({
   order,
   nequi,
   bancolombia,
+  paidAtLabel = null,
+  shippedAtLabel = null,
 }: {
   order: OrderForPayment;
   nequi: { holder: string; number: string } | null;
@@ -34,6 +36,9 @@ export default function PaymentClient({
     accountNumber: string;
     accountType: string;
   } | null;
+  /** P0-B4a: fechas ya formateadas en hora de Colombia (server-side). */
+  paidAtLabel?: string | null;
+  shippedAtLabel?: string | null;
 }) {
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(
     order.paymentStatus,
@@ -49,6 +54,8 @@ export default function PaymentClient({
   const [proofMessageCopied, setProofMessageCopied] = useState<
     boolean | null
   >(null);
+  // P0-B4a: botón "Copiar guía" en la vista de pedido despachado.
+  const [trackingCopied, setTrackingCopied] = useState(false);
 
   async function handleCopy(value: string) {
     try {
@@ -238,6 +245,101 @@ export default function PaymentClient({
     );
   }
 
+  // P0-B4a: resumen de lo pagado y del envío aceptado, para pagado y despachado.
+  const paidSummary = (
+    <dl className="font-ui mt-8 flex flex-col gap-2 border-t border-line pt-6 text-sm">
+      <div className="flex items-baseline justify-between gap-4">
+        <dt className="text-ink/60">Prendas pagadas</dt>
+        <dd className="font-medium">{formatCOP(order.subtotal)}</dd>
+      </div>
+      {acceptedShipping !== null ? (
+        <>
+          <div className="flex items-baseline justify-between gap-4">
+            <dt className="text-ink/60">Envío aceptado</dt>
+            <dd className="font-medium">{formatCOP(acceptedShipping)}</dd>
+          </div>
+          <p className="text-xs text-ink/50">
+            El envío se paga a la transportadora al recibir.
+          </p>
+        </>
+      ) : (
+        <p className="text-xs text-ink/50">Envío: se paga al recibir.</p>
+      )}
+    </dl>
+  );
+
+  // P0-B4a: despachado (solo con pago verificado; lo garantiza la base de datos).
+  if (paymentStatus === "paid" && order.orderStatus === "shipped") {
+    return (
+      <div className="mx-auto max-w-lg px-5 py-16 sm:px-8 sm:py-20">
+        <p className="label text-ink/40">Pedido despachado</p>
+        <h1 className="font-display mt-2 text-3xl sm:text-4xl">
+          {order.orderNumber}
+        </h1>
+        <p className="mt-6 text-sm leading-relaxed text-ink/70">
+          {shippedAtLabel
+            ? `Despachamos tu pedido el ${shippedAtLabel} (hora de Colombia).`
+            : "Despachamos tu pedido."}
+          {order.deliveryMode === "oficina" &&
+            " Lo recoges en la oficina de la transportadora."}
+        </p>
+
+        <dl className="mt-6 flex flex-col gap-3 border border-line px-5 py-4 text-sm">
+          <div className="flex items-baseline justify-between gap-4">
+            <dt className="text-ink/50">Transportadora</dt>
+            <dd className="text-right font-medium">
+              {order.shippingCarrierFinal}
+            </dd>
+          </div>
+          {order.trackingNumber && (
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="text-ink/50">Número de guía</dt>
+              <dd className="text-right font-medium break-all">
+                {order.trackingNumber}
+              </dd>
+            </div>
+          )}
+        </dl>
+        {order.trackingNumber && (
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(order.trackingNumber!);
+                setTrackingCopied(true);
+                setTimeout(() => setTrackingCopied(false), 2000);
+              } catch {
+                // la guía sigue visible en pantalla para copiarla a mano
+              }
+            }}
+            className="label mt-4 w-full border border-ink py-3 text-center transition hover:bg-ink hover:text-paper"
+          >
+            {trackingCopied ? "Guía copiada ✓" : "Copiar guía"}
+          </button>
+        )}
+        {order.shipmentNote && (
+          <p className="mt-5 border-l-2 border-line pl-3 text-sm leading-relaxed text-ink/70">
+            {order.shipmentNote}
+          </p>
+        )}
+
+        {paidSummary}
+
+        <div className="mt-10 border-t border-line-soft pt-6 text-center">
+          <a
+            href={INSTAGRAM_DM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
+          >
+            ¿Necesitas ayuda? Escríbenos por Instagram.
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // P0-B4a: pago verificado por VALENCIANO, en preparación.
   if (paymentStatus === "paid") {
     return (
       <div className="mx-auto max-w-lg px-5 py-16 sm:px-8 sm:py-20">
@@ -246,9 +348,27 @@ export default function PaymentClient({
           {order.orderNumber}
         </h1>
         <p className="mt-6 text-sm leading-relaxed text-ink/70">
-          Verificamos tu pago. Ya estamos preparando tu pedido.
+          {paidAtLabel
+            ? `Verificamos tu pago el ${paidAtLabel} (hora de Colombia). Estamos preparando tu pedido.`
+            : "Verificamos tu pago. Estamos preparando tu pedido."}
         </p>
-        <p className="mt-4 text-sm text-ink/60">{shippingLine}</p>
+        <p className="mt-3 text-sm leading-relaxed text-ink/60">
+          Cuando lo despachemos, aquí verás la transportadora y, si existe, el
+          número de guía.
+        </p>
+
+        {paidSummary}
+
+        <div className="mt-10 border-t border-line-soft pt-6 text-center">
+          <a
+            href={INSTAGRAM_DM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
+          >
+            ¿Necesitas ayuda? Escríbenos por Instagram.
+          </a>
+        </div>
       </div>
     );
   }

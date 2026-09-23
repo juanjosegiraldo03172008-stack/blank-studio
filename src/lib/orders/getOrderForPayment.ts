@@ -48,6 +48,11 @@ export async function getOrderForPayment(
       shippingQuoteExpiresAt: Date | null;
       quoteExpired: boolean;
       acceptedShippingAmount: number | null;
+      paidAt: Date | null;
+      shippedAt: Date | null;
+      shippingCarrierFinal: string | null;
+      trackingNumber: string | null;
+      shipmentNote: string | null;
     }>(
       `SELECT
          id,
@@ -69,7 +74,13 @@ export async function getOrderForPayment(
          shipping_quote_expires_at AS "shippingQuoteExpiresAt",
          -- Hora de la base de datos, la misma que usan las acciones.
          COALESCE(shipping_quote_expires_at <= now(), false) AS "quoteExpired",
-         accepted_shipping_amount AS "acceptedShippingAmount"
+         accepted_shipping_amount AS "acceptedShippingAmount",
+         -- P0-B4a: verificación del pago y despacho (sin datos bancarios).
+         paid_at AS "paidAt",
+         shipped_at AS "shippedAt",
+         shipping_carrier_final AS "shippingCarrierFinal",
+         tracking_number AS "trackingNumber",
+         shipment_note AS "shipmentNote"
        FROM orders WHERE id = $1`,
       [id],
     );
@@ -93,6 +104,8 @@ export async function getOrderForPayment(
       shippingQuoteExpiresAt: order.shippingQuoteExpiresAt
         ? order.shippingQuoteExpiresAt.toISOString()
         : null,
+      paidAt: order.paidAt ? order.paidAt.toISOString() : null,
+      shippedAt: order.shippedAt ? order.shippedAt.toISOString() : null,
       items: itemsRes.rows,
     };
   } catch (err) {
