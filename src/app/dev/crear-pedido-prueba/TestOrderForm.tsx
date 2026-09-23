@@ -39,6 +39,8 @@ export default function TestOrderForm() {
     setResult(null);
     const res = await createOrderAction({
       customer,
+      // P0-B3: la modalidad es obligatoria; la herramienta usa domicilio.
+      shipping: { deliveryMode: "domicilio" },
       items: items.map((i) => ({
         slug: i.slug,
         color: i.color,

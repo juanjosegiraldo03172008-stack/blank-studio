@@ -8,6 +8,14 @@ import { COLORS, formatCOP } from "@/data/products";
 import CartItemThumbnail from "@/components/CartItemThumbnail";
 import { INSTAGRAM_DM_URL } from "@/lib/instagramOrder";
 import { createOrderAction } from "@/app/actions/orders";
+import DeliveryModeSelector from "@/components/DeliveryModeSelector";
+import {
+  DEFAULT_CARRIER,
+  MAX_CARRIER_PREFERENCE_LENGTH,
+  MAX_PICKUP_OFFICE_LENGTH,
+  QUOTE_RESPONSE_TIME_COPY,
+  type DeliveryMode,
+} from "@/data/shipping";
 
 type FieldName = "name" | "email" | "city" | "address" | "phone";
 /** Datos del formulario de checkout — se envían tal cual a createOrderAction,
@@ -26,6 +34,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validate(
   customer: CheckoutCustomer,
+  deliveryMode: DeliveryMode,
 ): Partial<Record<FieldName, string>> {
   const errors: Partial<Record<FieldName, string>> = {};
   if (!customer.name.trim()) errors.name = "Ingresa tu nombre completo.";
@@ -33,7 +42,8 @@ function validate(
   else if (!EMAIL_RE.test(customer.email.trim()))
     errors.email = "Ingresa un correo válido.";
   if (!customer.city.trim()) errors.city = "Ingresa tu ciudad.";
-  if (!customer.address.trim())
+  // P0-B3: la dirección solo aplica a entrega en dirección.
+  if (deliveryMode === "domicilio" && !customer.address.trim())
     errors.address = "Ingresa tu dirección de envío.";
   const phoneDigits = customer.phone.replace(/\D/g, "");
   if (!customer.phone.trim()) errors.phone = "Ingresa tu teléfono.";
@@ -90,6 +100,11 @@ export default function PedidoPage() {
     addressLine2: "",
     phone: "",
   });
+  // P0-B3: "Entrega en tu dirección" preseleccionada; se puede cambiar a
+  // recogida en oficina (sin dirección).
+  const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>("domicilio");
+  const [pickupOfficePreference, setPickupOfficePreference] = useState("");
+  const [carrierPreference, setCarrierPreference] = useState("");
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>(
@@ -122,7 +137,10 @@ export default function PedidoPage() {
     phone: phoneRef,
   };
 
-  const errors = useMemo(() => validate(customer), [customer]);
+  const errors = useMemo(
+    () => validate(customer, deliveryMode),
+    [customer, deliveryMode],
+  );
   const canSubmit = items.length > 0 && Object.keys(errors).length === 0;
 
   function errorFor(field: FieldName) {
@@ -136,12 +154,12 @@ export default function PedidoPage() {
   function focusFirstInvalid() {
     setSubmitAttempted(true);
     const firstInvalid = (
-      ["name", "email", "city", "address", "phone"] as FieldName[]
+      ["name", "email", "city", "phone", "address"] as FieldName[]
     ).find((f) => errors[f]);
     if (firstInvalid) fieldRefs[firstInvalid].current?.focus();
   }
 
-  async function handleContinueToPayment() {
+  async function handleRequestQuote() {
     if (isCreatingOrder) return;
     if (!canSubmit) {
       focusFirstInvalid();
@@ -149,14 +167,23 @@ export default function PedidoPage() {
     }
     setIsCreatingOrder(true);
     setOrderError(null);
+    const isHome = deliveryMode === "domicilio";
     const res = await createOrderAction({
       customer: {
         name: customer.name,
         email: customer.email,
         phone: customer.phone,
         city: customer.city,
-        address: customer.address,
-        addressLine2: customer.addressLine2 || undefined,
+        // En oficina no se envía dirección: nunca se guarda una de relleno.
+        address: isHome ? customer.address : undefined,
+        addressLine2: isHome ? customer.addressLine2 || undefined : undefined,
+      },
+      shipping: {
+        deliveryMode,
+        pickupOfficePreference: isHome
+          ? undefined
+          : pickupOfficePreference || undefined,
+        carrierPreference: carrierPreference || undefined,
       },
       items: items.map((i) => ({
         slug: i.slug,
@@ -198,7 +225,7 @@ export default function PedidoPage() {
     <div className="mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
       <p className="label text-ink/50">Pedido</p>
       <h1 className="mt-2 font-display text-3xl sm:text-4xl">
-        Confirma tu pedido
+        Solicita tu pedido
       </h1>
 
       <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
@@ -265,13 +292,14 @@ export default function PedidoPage() {
               </ul>
 
               <div className="font-ui mt-1 flex items-center justify-between pt-5 text-sm">
-                <span className="text-ink/60">Subtotal</span>
+                <span className="text-ink/60">Prendas</span>
                 <span className="text-lg font-medium">
                   {formatCOP(totalPrice)}
                 </span>
               </div>
               <p className="mt-1 text-xs text-ink/40">
-                Envío: se paga al recibir.
+                Envío: se cotiza según tu ciudad y modalidad, y se paga al
+                recibir.
               </p>
             </div>
 
@@ -281,7 +309,7 @@ export default function PedidoPage() {
                 noValidate
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleContinueToPayment();
+                  handleRequestQuote();
                 }}
                 className="grid grid-cols-1 gap-5 sm:grid-cols-2"
               >
@@ -378,46 +406,94 @@ export default function PedidoPage() {
                   />
                 </Field>
 
-                <Field
-                  label="Dirección de envío *"
-                  htmlFor="address"
-                  error={errorFor("address")}
-                  className="sm:col-span-2"
-                >
-                  <input
-                    id="address"
-                    ref={addressRef}
-                    required
-                    autoComplete="street-address"
-                    placeholder="Calle, número, barrio"
-                    value={customer.address}
-                    onChange={(e) =>
-                      setCustomer((c) => ({ ...c, address: e.target.value }))
-                    }
-                    onBlur={() => markTouched("address")}
-                    aria-invalid={!!errorFor("address")}
-                    aria-describedby={
-                      errorFor("address") ? "address-error" : undefined
-                    }
-                    className={`${inputClass} ${errorFor("address") ? "border-[#b23328]" : "border-line"}`}
+                <div className="sm:col-span-2">
+                  <DeliveryModeSelector
+                    name="deliveryMode"
+                    value={deliveryMode}
+                    onChange={setDeliveryMode}
                   />
-                </Field>
+                </div>
+
+                {deliveryMode === "domicilio" ? (
+                  <>
+                    <Field
+                      label="Dirección de envío *"
+                      htmlFor="address"
+                      error={errorFor("address")}
+                      className="sm:col-span-2"
+                    >
+                      <input
+                        id="address"
+                        ref={addressRef}
+                        required
+                        autoComplete="street-address"
+                        placeholder="Calle, número, barrio"
+                        value={customer.address}
+                        onChange={(e) =>
+                          setCustomer((c) => ({
+                            ...c,
+                            address: e.target.value,
+                          }))
+                        }
+                        onBlur={() => markTouched("address")}
+                        aria-invalid={!!errorFor("address")}
+                        aria-describedby={
+                          errorFor("address") ? "address-error" : undefined
+                        }
+                        className={`${inputClass} ${errorFor("address") ? "border-[#b23328]" : "border-line"}`}
+                      />
+                    </Field>
+
+                    <Field
+                      label="Apto / interior (opcional)"
+                      htmlFor="addressLine2"
+                      className="sm:col-span-2"
+                    >
+                      <input
+                        id="addressLine2"
+                        autoComplete="address-line2"
+                        value={customer.addressLine2}
+                        onChange={(e) =>
+                          setCustomer((c) => ({
+                            ...c,
+                            addressLine2: e.target.value,
+                          }))
+                        }
+                        className={`${inputClass} border-line`}
+                      />
+                    </Field>
+                  </>
+                ) : (
+                  <Field
+                    label="Oficina o sede preferida (opcional)"
+                    htmlFor="pickupOfficePreference"
+                    className="sm:col-span-2"
+                  >
+                    <input
+                      id="pickupOfficePreference"
+                      maxLength={MAX_PICKUP_OFFICE_LENGTH}
+                      placeholder="Barrio o sede de la transportadora"
+                      value={pickupOfficePreference}
+                      onChange={(e) => setPickupOfficePreference(e.target.value)}
+                      className={`${inputClass} border-line`}
+                    />
+                  </Field>
+                )}
 
                 <Field
-                  label="Apto / interior (opcional)"
-                  htmlFor="addressLine2"
+                  label="Transportadora (opcional)"
+                  htmlFor="carrierPreference"
                   className="sm:col-span-2"
                 >
+                  <span className="-mt-1 text-xs text-ink/50">
+                    Normalmente enviamos con {DEFAULT_CARRIER}. Si prefieres
+                    otra transportadora, escríbela aquí.
+                  </span>
                   <input
-                    id="addressLine2"
-                    autoComplete="address-line2"
-                    value={customer.addressLine2}
-                    onChange={(e) =>
-                      setCustomer((c) => ({
-                        ...c,
-                        addressLine2: e.target.value,
-                      }))
-                    }
+                    id="carrierPreference"
+                    maxLength={MAX_CARRIER_PREFERENCE_LENGTH}
+                    value={carrierPreference}
+                    onChange={(e) => setCarrierPreference(e.target.value)}
                     className={`${inputClass} border-line`}
                   />
                 </Field>
@@ -431,15 +507,24 @@ export default function PedidoPage() {
                       : "bg-ink text-paper hover:bg-ink/85"
                   }`}
                 >
-                  {isCreatingOrder ? "Procesando…" : "Continuar al pago"}
+                  {isCreatingOrder ? "Enviando…" : "Solicitar cotización de envío"}
                 </button>
                 {orderError && (
                   <p className="text-sm text-[#b23328] sm:col-span-2">
                     {orderError}
                   </p>
                 )}
+                <div className="text-sm leading-relaxed text-ink/70 sm:col-span-2">
+                  <p className="font-medium text-ink">
+                    Todavía no realizas ningún pago.
+                  </p>
+                  <p className="mt-1">
+                    {QUOTE_RESPONSE_TIME_COPY} Cuando la veas, decides si
+                    aceptas el total.
+                  </p>
+                </div>
                 <p className="text-xs text-ink/40 sm:col-span-2">
-                  * Campos obligatorios. El envío se paga al recibir.
+                  * Campos obligatorios.
                 </p>
               </form>
 

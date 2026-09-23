@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getOrderForPayment } from "@/lib/orders/getOrderForPayment";
+import { formatDateTimeCO } from "@/data/shipping";
 import PaymentClient from "./PaymentClient";
+import QuoteClient from "./QuoteClient";
 
 export const metadata: Metadata = {
   title: "Tu pedido",
@@ -9,13 +11,15 @@ export const metadata: Metadata = {
 };
 
 /**
- * Página de pago por transferencia de un pedido real (FASE 4B). El acceso
- * es por el UUID interno del pedido (aleatorio, imposible de adivinar) —
- * nunca por order_number secuencial (VAL-1042), que sí sería enumerable.
+ * Página de un pedido real. El acceso es por el UUID interno del pedido
+ * (aleatorio, imposible de adivinar) — nunca por order_number secuencial
+ * (VAL-1042), que sí sería enumerable.
  *
- * Los datos de cuenta (Nequi/Bancolombia) viven en variables de entorno
- * server-side — se leen aquí y se pasan como props ya resueltas; nunca se
- * hardcodean ni se exponen fuera de esta página server-rendered.
+ * P0-B3: un pedido con cotización de envío pasa primero por QuoteClient
+ * (cotizando → cotizado → aceptar / no acepto / otra opción / cancelar). Los
+ * datos de cuenta (Nequi/Bancolombia) SOLO se leen y se envían al navegador
+ * cuando el cliente ya aceptó el total (o en pedidos anteriores a B3, que
+ * conservan el flujo original). Antes de eso no aparecen ni en el HTML.
  */
 export default async function OrderPaymentPage({
   params,
@@ -25,6 +29,24 @@ export default async function OrderPaymentPage({
   const { id } = await params;
   const order = await getOrderForPayment(id);
   if (!order) notFound();
+
+  const isCancelled = order.orderStatus === "cancelled";
+  const isQuoteFlow = order.quoteStatus !== null;
+  const canPay =
+    !isCancelled && (!isQuoteFlow || order.quoteStatus === "accepted");
+
+  if (!canPay) {
+    return (
+      <QuoteClient
+        order={order}
+        quoteExpiresAtLabel={
+          order.shippingQuoteExpiresAt
+            ? formatDateTimeCO(new Date(order.shippingQuoteExpiresAt))
+            : null
+        }
+      />
+    );
+  }
 
   const holder = process.env.PAYMENT_ACCOUNT_HOLDER;
   const nequiNumber = process.env.PAYMENT_NEQUI_NUMBER;

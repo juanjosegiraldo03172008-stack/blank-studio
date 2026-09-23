@@ -27,7 +27,7 @@ export async function createOrder(input: unknown): Promise<CreateOrderResult> {
       fieldErrors: validation.fieldErrors,
     };
   }
-  const { customer, items, subtotal } = validation;
+  const { customer, delivery, items, subtotal } = validation;
   const idempotencyKey = (input as CreateOrderInput).idempotencyKey;
 
   const client = await pool.connect();
@@ -54,6 +54,10 @@ export async function createOrder(input: unknown): Promise<CreateOrderResult> {
 
     // (xmax = 0) es una forma estándar en Postgres de saber si esta fila
     // fue insertada de nuevo o si ON CONFLICT devolvió una ya existente.
+    //
+    // P0-B3: el pedido nace como solicitud pendiente de cotización de envío
+    // (quote_status = 'pending', escrito explícitamente — la columna no tiene
+    // DEFAULT). En oficina, address/address_line2 van NULL.
     const orderRes = await client.query<{
       orderId: string;
       orderNumber: string;
@@ -62,8 +66,9 @@ export async function createOrder(input: unknown): Promise<CreateOrderResult> {
       inserted: boolean;
     }>(
       `INSERT INTO orders
-         (customer_name, customer_email, customer_phone, city, address, address_line2, subtotal, idempotency_key)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         (customer_name, customer_email, customer_phone, city, address, address_line2, subtotal, idempotency_key,
+          delivery_mode, pickup_office_preference, carrier_preference, quote_status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pending')
        ON CONFLICT (idempotency_key) DO UPDATE SET updated_at = orders.updated_at
        RETURNING
          id AS "orderId",
@@ -75,11 +80,14 @@ export async function createOrder(input: unknown): Promise<CreateOrderResult> {
         customer.name,
         customer.email,
         customer.phone,
-        customer.city,
-        customer.address,
-        customer.addressLine2,
+        delivery.city,
+        delivery.address,
+        delivery.addressLine2,
         subtotal,
         idempotencyKey,
+        delivery.deliveryMode,
+        delivery.pickupOfficePreference,
+        delivery.carrierPreference,
       ],
     );
     const order = orderRes.rows[0];

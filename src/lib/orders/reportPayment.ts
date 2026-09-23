@@ -17,6 +17,11 @@ const VALID_METHODS: PaymentMethod[] = ["nequi", "bancolombia"];
  * Idempotente: si el pedido ya no está en pending_payment (doble click, o
  * ya fue verificado), no se sobreescribe nada — se devuelve el estado
  * actual tal cual.
+ *
+ * P0-B3: un pedido con cotización de envío solo puede reportar pago cuando
+ * el cliente ya aceptó el total (quote_status = 'accepted'). Los pedidos
+ * anteriores a B3 (quote_status NULL) conservan el flujo original. Nunca
+ * sobre un pedido cancelado.
  */
 export async function reportPayment(
   orderId: unknown,
@@ -44,6 +49,8 @@ export async function reportPayment(
            payment_reported_at = now(),
            updated_at = now()
        WHERE id = $1 AND payment_status = 'pending_payment'
+         AND (quote_status IS NULL OR quote_status = 'accepted')
+         AND order_status <> 'cancelled'
        RETURNING
          id AS "orderId",
          order_number AS "orderNumber",
@@ -62,8 +69,11 @@ export async function reportPayment(
       orderId: string;
       orderNumber: string;
       paymentStatus: PaymentStatus;
+      quoteStatus: string | null;
+      orderStatus: string;
     }>(
-      `SELECT id AS "orderId", order_number AS "orderNumber", payment_status AS "paymentStatus"
+      `SELECT id AS "orderId", order_number AS "orderNumber", payment_status AS "paymentStatus",
+              quote_status AS "quoteStatus", order_status AS "orderStatus"
        FROM orders WHERE id = $1`,
       [orderId],
     );
@@ -71,7 +81,23 @@ export async function reportPayment(
     if (!existing) {
       return { ok: false, error: "Pedido no encontrado." };
     }
-    return { ok: true, ...existing };
+    // Sigue en pending_payment => el UPDATE lo bloqueó la protección P0-B3
+    // (total aún no aceptado) o el pedido está cancelado.
+    if (existing.paymentStatus === "pending_payment") {
+      return {
+        ok: false,
+        error:
+          existing.orderStatus === "cancelled"
+            ? "Este pedido fue cancelado. No realices ningún pago."
+            : "Todavía no has aceptado el total de este pedido. No realices ningún pago.",
+      };
+    }
+    return {
+      ok: true,
+      orderId: existing.orderId,
+      orderNumber: existing.orderNumber,
+      paymentStatus: existing.paymentStatus,
+    };
   } catch (err) {
     console.error(
       "reportPayment falló:",

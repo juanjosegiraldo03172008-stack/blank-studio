@@ -80,6 +80,13 @@ export default function PaymentClient({
     setProofMessageCopied(ok);
   }
 
+  // P0-B3: valor de envío aceptado (null en pedidos anteriores a B3).
+  const acceptedShipping = order.acceptedShippingAmount;
+  const shippingLine =
+    acceptedShipping !== null
+      ? `Valor de envío aceptado: ${formatCOP(acceptedShipping)} — se paga a la transportadora al recibir.`
+      : "Envío: se paga al recibir.";
+
   const orderSummary = (
     <div>
       <p className="label text-ink/40">Pedido</p>
@@ -113,16 +120,41 @@ export default function PaymentClient({
       </ul>
 
       <div className="font-ui mt-5 flex items-center justify-between text-sm">
-        <span className="text-ink/60">Total de productos</span>
+        <span className="text-ink/60">
+          {acceptedShipping !== null ? "Prendas" : "Total de productos"}
+        </span>
         <span className="font-medium">{formatCOP(order.subtotal)}</span>
       </div>
-      <div className="font-ui mt-2 flex items-center justify-between text-sm">
-        <span className="text-ink/60">Envío</span>
-        <span className="font-medium">Pago al recibir</span>
-      </div>
-      <p className="mt-1 text-xs text-ink/40">
-        El valor del envío se paga al recibir tu pedido.
-      </p>
+      {acceptedShipping !== null ? (
+        <>
+          {/* P0-B3: envío cotizado y aceptado — se paga a la transportadora,
+              nunca se suma a la transferencia. */}
+          <div className="font-ui mt-2 flex items-center justify-between text-sm">
+            <span className="text-ink/60">Envío aceptado</span>
+            <span className="font-medium">{formatCOP(acceptedShipping)}</span>
+          </div>
+          <p className="mt-1 text-xs text-ink/50">
+            {order.shippingQuoteCarrier} · se paga a la transportadora al
+            recibir. Este valor no se aumentará sin tu autorización.
+          </p>
+          <div className="font-ui mt-2 flex items-center justify-between text-sm">
+            <span className="text-ink/60">Total del pedido</span>
+            <span className="font-medium">
+              {formatCOP(order.subtotal + acceptedShipping)}
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="font-ui mt-2 flex items-center justify-between text-sm">
+            <span className="text-ink/60">Envío</span>
+            <span className="font-medium">Pago al recibir</span>
+          </div>
+          <p className="mt-1 text-xs text-ink/40">
+            El valor del envío se paga al recibir tu pedido.
+          </p>
+        </>
+      )}
 
       <div className="mt-6 flex items-center justify-between border-t border-line pt-5">
         <span className="label text-ink/60">Total a transferir ahora</span>
@@ -144,7 +176,7 @@ export default function PaymentClient({
           Hemos recibido tu confirmación de transferencia. Verificaremos el pago
           antes de preparar tu pedido.
         </p>
-        <p className="mt-4 text-sm text-ink/60">Envío: se paga al recibir.</p>
+        <p className="mt-4 text-sm text-ink/60">{shippingLine}</p>
 
         <div className="mt-10 flex flex-col gap-3 border-t border-line pt-8">
           {/* Opcional: la fuente de verdad es la verificación manual del
@@ -216,7 +248,7 @@ export default function PaymentClient({
         <p className="mt-6 text-sm leading-relaxed text-ink/70">
           Verificamos tu pago. Ya estamos preparando tu pedido.
         </p>
-        <p className="mt-4 text-sm text-ink/60">Envío: se paga al recibir.</p>
+        <p className="mt-4 text-sm text-ink/60">{shippingLine}</p>
       </div>
     );
   }
@@ -321,7 +353,19 @@ export default function PaymentClient({
         </div>
       )}
 
-      <div className="mt-10 border-t border-line-soft pt-6 text-center">
+      <div className="mt-10 flex flex-col items-center gap-3 border-t border-line-soft pt-6 text-center">
+        {/* P0-B3: tras aceptar no hay cancelación autoservicio (el cliente
+            podría haber transferido sin reportarlo aún) — va por soporte. */}
+        {order.quoteStatus === "accepted" && (
+          <a
+            href={INSTAGRAM_DM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-ink/40 underline underline-offset-2 hover:text-ink"
+          >
+            ¿Necesitas cancelar este pedido? Escríbenos por Instagram.
+          </a>
+        )}
         <a
           href={INSTAGRAM_DM_URL}
           target="_blank"

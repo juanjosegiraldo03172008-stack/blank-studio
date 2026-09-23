@@ -49,13 +49,24 @@ Mientras tanto, `BrandMark` muestra una "V" tipográfica de reemplazo.
 
 ## Pedidos
 
-Desde P0-A existe una sola ruta de compra, **sin pasarela de pago**:
+Existe una sola ruta de compra (P0-A), **sin pasarela de pago**, con el
+envío cotizado manualmente antes de pagar (P0-B3):
 
-carrito → `/pedido` (datos de entrega) → "Continuar al pago" → se crea el
-pedido real en base de datos (`pending_payment`) → `/pedido/[id]` (datos
-de Nequi/Bancolombia) → el cliente reporta la transferencia
-(`payment_reported`) → VALENCIANO verifica el ingreso manualmente → `paid`
-(solo manual, nunca automático). El envío se paga al recibir.
+carrito → `/pedido` (datos + modalidad: entrega en dirección o recogida en
+oficina + transportadora preferida opcional) → "Solicitar cotización de
+envío" → se crea el pedido como solicitud (`quote_status = pending`, sin
+pago) → VALENCIANO cotiza con una tarifa real (`npm run admin:quote`) →
+`/pedido/[id]` muestra prendas + envío + total → el cliente acepta
+(`accepted`) → recién ahí aparecen los datos de Nequi/Bancolombia → reporta
+la transferencia (`payment_reported`) → VALENCIANO verifica el ingreso →
+`paid` (solo manual). Las prendas se pagan por transferencia; el envío, a la
+transportadora al recibir.
+
+El cliente también puede responder "No acepto este valor" (`rejected`, el
+pedido sigue vivo), "Solicitar otra opción de envío" (vuelve a `pending`) o
+"Cancelar solicitud" (única acción que cancela; no disponible después de
+aceptar). Cada cotización vale 48 horas; los pedidos anteriores a P0-B3
+(`quote_status` NULL) conservan el flujo original.
 
 Instagram (`@valenciano.co`, en `src/lib/instagramOrder.ts`) queda solo
 como canal de soporte: enlaces de ayuda y envío **opcional** del
@@ -107,6 +118,32 @@ el checkout real (`/pedido`).
   ya creado en vez de duplicarlo.
 - El pedido y sus items se crean en una sola transacción — si falla algo,
   no queda un pedido a medias.
+- P0-B3: no se puede reportar pago de un pedido cuyo total no fue aceptado,
+  y los datos bancarios no llegan al navegador antes de aceptar. Aceptar,
+  rechazar, pedir otra opción y cancelar son idempotentes y rechazan
+  versiones viejas o cotizaciones vencidas.
+
+## Operación de cotizaciones de envío (P0-B3)
+
+Se ejecutan desde un entorno seguro (p. ej. Codespaces) con `DATABASE_URL`
+como secret — nunca escrita en el repositorio ni en archivos versionados.
+Requieren Node 22.6 o superior.
+
+```bash
+npm run admin:pending
+npm run admin:quote -- VAL-1051 --valor 18500 --transportadora "Inter Rapidísimo" [--nota "Recoges en la oficina del centro"]
+```
+
+- `admin:pending` lista las solicitudes que esperan cotización, con los
+  datos necesarios para cotizar y contactar al cliente (solo en la terminal).
+- `admin:quote` muestra el pedido y la cotización, pide confirmación y solo
+  entonces la guarda en una transacción corta; si el pedido cambió mientras
+  lo revisabas, no guarda nada y pide volver a ejecutarlo. Rechaza $0,
+  decimales, pedidos cancelados, aceptados o no aceptados. Imprime el
+  enlace del pedido (usa `SITE_URL`, ver `.env.example`) y un mensaje listo
+  para copiar; no asume desde qué aplicación se envía.
+- Cotiza solo después de revisar una tarifa real con la transportadora: el
+  sistema no tiene tarifas ni integración con transportadoras.
 
 ## Datos legales del vendedor (P0-B2)
 
