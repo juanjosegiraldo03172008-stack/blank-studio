@@ -98,6 +98,17 @@ body {
   color: var(--color-paper);
 }
 
+/* Foco de teclado visible en todo el sitio (WCAG 2.4.7). Va después de los
+ * utilitarios de Tailwind en este mismo archivo, así que gana el empate de
+ * especificidad sobre cualquier `focus-visible:outline-none` existente —
+ * sin tocar esas clases una por una ni cambiar el resto del diseño. Donde
+ * ya hay un anillo propio (`focus-visible:ring-*`), este contorno se suma,
+ * no lo reemplaza. */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
 .font-display {
   font-family: var(--font-brand), ui-serif, Georgia, serif;
 }

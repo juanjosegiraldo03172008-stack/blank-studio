@@ -17,6 +17,15 @@ export function useDrawer(
 ) {
   const triggerRef = useRef<Element | null>(null);
 
+  // Cerrado: el panel sigue en el DOM (solo desplazado fuera de pantalla con
+  // CSS), así que sin esto Tab/lectores de pantalla igual entran a sus
+  // enlaces y botones invisibles. `inert` lo saca por completo de la
+  // navegación/accesibilidad mientras está cerrado, sin tocar el layout.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) container.inert = !isOpen;
+  }, [isOpen, containerRef]);
+
   useEffect(() => {
     if (!isOpen) return;
 
