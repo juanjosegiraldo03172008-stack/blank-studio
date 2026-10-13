@@ -59,7 +59,7 @@ function CartLineItem({
             </button>
           </div>
           <button
-            className="font-ui text-xs text-ink/40 underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:text-ink"
+            className="-my-1 py-1 font-ui text-xs text-ink/40 underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:text-ink"
             onClick={() => onRemove(item.id)}
           >
             Quitar

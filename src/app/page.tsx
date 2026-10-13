@@ -177,7 +177,7 @@ export default function Home() {
       >
         <EditorialImage
           src="/products/oversize-300/negro-back.jpg"
-          alt="VALENCIANO ICONIC — Oversize 300 negro, espalda"
+          alt="VALENCIANO — Oversize 300 negro, espalda"
           gradient="from-[#111110] via-[#0c0b0a] to-[#050505]"
           className="opacity-90 transition-transform duration-700 ease-out group-hover:scale-105"
         />
