@@ -119,13 +119,15 @@ function ColorFromQuery({
 export default function ProductDetail({ product }: { product: Product }) {
   const { addItem, openCart } = useCart();
   const [color, setColor] = useState<ColorId>(product.colorsLinea[0]);
-  const [size, setSize] = useState<Size>(product.sizes[0]);
+  const [size, setSize] = useState<Size | null>(null);
+  const [sizeError, setSizeError] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const addToCartRef = useRef<HTMLButtonElement>(null);
+  const sizeGroupRef = useRef<HTMLDivElement>(null);
 
   // Precio fijo B2C — no varía con la talla ni la cantidad.
   const unitPrice = getUnitPrice(product.line);
@@ -200,7 +202,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   function handleSelectColor(c: ColorId) {
     setColor(c);
     setActiveImage(0);
-    if (!isSizeAvailable(product, size, c)) {
+    if (size !== null && !isSizeAvailable(product, size, c)) {
       const fallback = product.sizes.find((s) =>
         isSizeAvailable(product, s, c),
       );
@@ -209,6 +211,15 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   function handleAdd() {
+    if (size === null) {
+      setSizeError(true);
+      sizeGroupRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      sizeGroupRef.current?.focus();
+      return;
+    }
     addItem({
       slug: product.slug,
       name: product.name,
@@ -353,14 +364,24 @@ export default function ProductDetail({ product }: { product: Product }) {
                   Guía de tallas
                 </button>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div
+                ref={sizeGroupRef}
+                role="group"
+                aria-label="Talla"
+                aria-describedby={sizeError ? "size-error" : undefined}
+                tabIndex={-1}
+                className="mt-3 flex flex-wrap gap-2 focus:outline-none"
+              >
                 {sizeOptions.map((s) => {
                   const available = isSizeAvailable(product, s, color);
                   return (
                     <button
                       key={s}
                       disabled={!available}
-                      onClick={() => setSize(s)}
+                      onClick={() => {
+                        setSize(s);
+                        setSizeError(false);
+                      }}
                       title={
                         available
                           ? undefined
@@ -379,6 +400,15 @@ export default function ProductDetail({ product }: { product: Product }) {
                   );
                 })}
               </div>
+              {sizeError && (
+                <p
+                  id="size-error"
+                  role="alert"
+                  className="mt-2 text-xs text-[#b23328]"
+                >
+                  Selecciona tu talla.
+                </p>
+              )}
             </div>
 
             {/* Quantity */}
