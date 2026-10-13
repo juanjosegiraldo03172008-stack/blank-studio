@@ -58,6 +58,13 @@ export function validateCreateOrderInput(
   }
   const body = input as CreateOrderInput;
 
+  // H-16: campo señuelo — invisible y nunca tocado por una persona real.
+  // Si llega con contenido, se rechaza con el mismo tono que cualquier otro
+  // error de validación, sin revelar que fue detectado como automatizado.
+  if (typeof body.honeypot === "string" && body.honeypot.trim() !== "") {
+    return { ok: false, error: "No pudimos procesar tu solicitud. Intenta de nuevo." };
+  }
+
   if (
     typeof body.idempotencyKey !== "string" ||
     body.idempotencyKey.trim() === ""

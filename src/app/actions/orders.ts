@@ -1,7 +1,9 @@
 "use server";
 
+import { headers } from "next/headers";
 import { createOrder } from "@/lib/orders/createOrder";
 import { reportPayment } from "@/lib/orders/reportPayment";
+import { checkRateLimit } from "@/lib/orders/rateLimit";
 import {
   acceptQuote,
   cancelOrderRequest,
@@ -23,6 +25,20 @@ import type {
 export async function createOrderAction(
   input: unknown,
 ): Promise<CreateOrderResult> {
+  // H-16: límite de frecuencia por IP — solo en la creación (es la única
+  // acción que agrega una fila nueva; reportar pago o responder a una
+  // cotización operan sobre un pedido ya existente y no generan ruido).
+  const h = await headers();
+  const ip =
+    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    h.get("x-real-ip") ||
+    "unknown";
+  if (!checkRateLimit(ip)) {
+    return {
+      ok: false,
+      error: "Demasiados intentos. Espera un minuto y vuelve a intentarlo.",
+    };
+  }
   return createOrder(input);
 }
 

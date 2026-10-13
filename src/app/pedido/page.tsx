@@ -105,6 +105,9 @@ export default function PedidoPage() {
   const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>("domicilio");
   const [pickupOfficePreference, setPickupOfficePreference] = useState("");
   const [carrierPreference, setCarrierPreference] = useState("");
+  // H-16: campo señuelo — invisible y fuera del orden de tabulación; una
+  // persona real nunca lo completa.
+  const [honeypot, setHoneypot] = useState("");
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>(
@@ -192,6 +195,7 @@ export default function PedidoPage() {
         quantity: i.quantity,
       })),
       idempotencyKey,
+      honeypot,
     });
     if (res.ok) {
       // El pedido ya quedó registrado en la base de datos — aquí sí es
@@ -277,7 +281,7 @@ export default function PedidoPage() {
                         </div>
                         <button
                           type="button"
-                          className="font-ui text-xs text-ink/40 underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:text-ink"
+                          className="-my-1 py-1 font-ui text-xs text-ink/40 underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:text-ink"
                           onClick={() => removeItem(item.id)}
                         >
                           Quitar
@@ -313,6 +317,31 @@ export default function PedidoPage() {
                 }}
                 className="grid grid-cols-1 gap-5 sm:grid-cols-2"
               >
+                {/* H-16: honeypot — fuera de pantalla, aria-hidden, sin
+                    orden de tabulación; invisible para personas, visible
+                    para formularios automatizados que rellenan todo. */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    left: "-9999px",
+                    width: 1,
+                    height: 1,
+                    overflow: "hidden",
+                  }}
+                >
+                  <label htmlFor="company">Empresa</label>
+                  <input
+                    id="company"
+                    name="company"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 <Field
                   label="Nombre completo *"
                   htmlFor="name"

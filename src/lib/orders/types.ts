@@ -43,6 +43,9 @@ export interface CreateOrderInput {
   items: CreateOrderItemInput[];
   /** Generado una vez por intento de checkout (crypto.randomUUID() en el cliente). */
   idempotencyKey: string;
+  /** H-16: campo señuelo invisible para personas — si llega con contenido,
+   * quien envió el formulario es un bot, no un cliente real. */
+  honeypot?: string;
 }
 
 export type DeliveryFieldErrors = {
